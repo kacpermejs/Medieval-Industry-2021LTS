@@ -1,0 +1,29 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="Screen" style="flex-grow: 1; justify-content: space-between; align-items: stretch; flex-direction: row;">
+        <ui:VisualElement name="Left" style="flex-direction: row;">
+            <ui:VisualElement name="Buttons">
+                <ui:Button text="Build" display-tooltip-when-elided="true" name="BTN_buildMenu" />
+                <ui:Button text="Economy" display-tooltip-when-elided="true" name="BTN_economy" />
+                <ui:Button text="Button" display-tooltip-when-elided="true" />
+                <ui:Button text="Button" display-tooltip-when-elided="true" />
+            </ui:VisualElement>
+            <ui:VisualElement name="BuildMenu" style="flex-direction: column; justify-content: flex-start; align-items: stretch;">
+                <ui:VisualElement name="TabButtons" style="flex-direction: row;">
+                    <ui:Button text="Housing" display-tooltip-when-elided="true" name="BTN_housing" />
+                    <ui:Button text="Production" display-tooltip-when-elided="true" name="BTN_production" />
+                    <ui:Button text="Button" display-tooltip-when-elided="true" />
+                    <ui:Button text="Button" display-tooltip-when-elided="true" />
+                </ui:VisualElement>
+                <ui:VisualElement name="Tabs">
+                    <ui:VisualElement name="TAB_housing" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="Right" style="width: auto;">
+            <ui:Button text="Button" display-tooltip-when-elided="true" name="PauseButton" style="white-space: nowrap;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="CancelButtonArea" style="justify-content: space-around; flex-direction: row;">
+        <ui:Button text="Button" display-tooltip-when-elided="true" name="BTN_cancel" style="white-space: nowrap;" />
+    </ui:VisualElement>
+</ui:UXML>

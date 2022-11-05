@@ -1,0 +1,349 @@
+using Assets.Scripts.CustomTiles;
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.Tilemaps;
+
+namespace Assets.Scripts.BuildingSystem
+{
+    public class BuildManager : MonoBehaviour
+    {
+        public enum MarkerType
+        {
+            GreenBox,
+            RedBox,
+            GreenTile,
+            RedTile,
+            GreenDot
+        }
+
+        [SerializeField] private RoadTile _roadTile;
+
+        // TODO: temporary assignment - better load from resources
+        [SerializeField] private TileBase _greenBox;
+        [SerializeField] private TileBase _redBox;
+        [SerializeField] private TileBase _redTile;
+        [SerializeField] private TileBase _greenTile;
+        [SerializeField] private TileBase _greenDot;
+
+        private Dictionary<MarkerType, TileBase> _markerTiles = new Dictionary<MarkerType, TileBase>();
+
+        private bool _buildMode = false;
+
+        private IMapElement _tileToPlace;
+
+        private List<IMapElement> _placableTiles = new List<IMapElement>();
+
+        public List<IMapElement> PlacableTiles { get => _placableTiles; }
+
+        public static BuildManager Instance { get; private set; }
+
+        #region Unity methods
+
+        private void Awake()
+        {
+            Instance = this;
+
+            // TODO: Optimize loading - loading all GameObjects wastes a lot of memory
+            LoadPlacableObjectTiles("Prefabs/BuildingPrefabs");
+            LoadPlacableObjectTiles("Prefabs/ResourcePrefabs");
+            LoadRoadTiles();
+
+            GameManager.OnGameStateChanged += GameManagerOnGameStateChanged;
+        }
+
+        private void OnDestroy()
+        {
+            GameManager.OnGameStateChanged -= GameManagerOnGameStateChanged;
+        }
+
+        //void OnEnable()
+        //{
+
+        //}
+
+        // Start is called before the first frame update
+        void Start()
+        {
+            _markerTiles.Add(MarkerType.GreenBox, _greenBox);
+            _markerTiles.Add(MarkerType.RedBox, _redBox);
+            _markerTiles.Add(MarkerType.GreenTile, _greenTile);
+            _markerTiles.Add(MarkerType.RedTile, _redTile);
+            _markerTiles.Add(MarkerType.GreenDot, _greenDot);
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            if (_buildMode && _tileToPlace != null)
+            {
+                //Need to cleanup markers after placement
+
+
+                if (Input.GetMouseButtonDown(0))
+                {
+                    //Do not place any object if mouse is over a UI object
+                    if (!EventSystem.current.IsPointerOverGameObject())
+                    {
+                        Vector2 screenPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+                        Vector3Int gridPoint = GameManager.Instance.GridLayout.LocalToCell(screenPoint);
+
+                        Tilemap destTilemap;
+                        switch (_tileToPlace.Layer)
+                        {
+                            case IMapElement.DestinationMapLayer.Ground:
+                                destTilemap = GameManager.Instance.TilemapGround;
+                                break;
+                            case IMapElement.DestinationMapLayer.Surface:
+                                destTilemap = GameManager.Instance.TilemapSurface;
+                                break;
+                            case IMapElement.DestinationMapLayer.Markers:
+                                destTilemap = GameManager.Instance.TilemapMarkers;
+                                break;
+                            default:
+                                destTilemap = GameManager.Instance.TilemapSurface;
+                                break;
+                        }
+
+                        Debug.Log(gridPoint);
+                        Place(destTilemap, gridPoint, _tileToPlace, true);
+                    }
+
+
+                }
+            }
+        }
+
+        #endregion
+
+
+        #region LoadingAssets
+        private void LoadPlacableObjectTiles(string path)
+        {
+            GameObject[] prefabs = Resources.LoadAll<GameObject>(path);
+
+            foreach (GameObject prefab in prefabs)
+            {
+                if (!prefab.name.StartsWith("[base]"))
+                {
+                    PlaceableObjectTile temp = ScriptableObject.CreateInstance<PlaceableObjectTile>();
+                    temp.gameObject = prefab;
+                    PlacableTiles.Add(temp);
+                }
+            }
+        }
+
+        private void LoadRoadTiles()
+        {
+            PlacableTiles.Add(_roadTile);
+        }
+
+        #endregion
+
+        #region EventHandlers
+
+        private void GameManagerOnGameStateChanged(GameState state)
+        {
+            _buildMode = state == GameState.BuildMode;
+
+            if (state == GameState.Default)
+            {
+                ClearAllMarkers();
+            }
+            else if (state == GameState.BuildMode)
+            {
+                //DisplayBuildingMarkers();
+            }
+        }
+
+        #endregion
+
+        #region Markers
+
+        private void DisplayBuildingMarkers()
+        {
+            var area = new BoundsInt(new Vector3Int(-50, -50, 1), new Vector3Int(100, 100, 1));
+            SetTilesBlock(area, _markerTiles[MarkerType.GreenTile], GameManager.Instance.TilemapMarkers);
+        }
+
+        public void DisplayMarkers(BoundsInt area, MarkerType markerType)
+        {
+            SetTilesBlock(area, _markerTiles[markerType], GameManager.Instance.TilemapMarkers);
+        }
+
+        public void ClearAllMarkers()
+        {
+            GameManager.Instance.TilemapMarkers.ClearAllTiles();
+        }
+
+        public void PlaceMarker(Vector3Int pos, MarkerType markerType)
+        {
+            GameManager.Instance.TilemapMarkers.SetTile(pos, _markerTiles[markerType]);
+        }
+
+        #endregion
+
+        private void Place(Tilemap tilemap, Vector3Int gridPoint, IMapElement tile, bool useCanBePlaced)
+        {
+            //add offset if tile is a ground block like the road
+            if (tile.Layer == IMapElement.DestinationMapLayer.Surface)
+            {
+                gridPoint.z += 1;
+            }
+            //Only tiles with game objects attached can take area bigger than 1x1x1
+            var area = new BoundsInt(gridPoint, Vector3Int.one);
+
+            if (tile is PlaceableObjectTile tile1)
+            {
+                //set bound area size
+                area.size = tile1.PlaceableObject.Bounds.size;
+                //set offset to place building from the center not from the corner
+                area.position -= new Vector3Int(area.size.x / 2, area.size.y / 2, 0);
+            }
+
+
+            if (useCanBePlaced)
+            {
+                if (!CanBePlaced(tile, tilemap, area))
+                {
+                    return;//TODO: do something if cannot be placed like play audio or sth
+                }
+            }
+            tile.Place(tilemap, gridPoint);
+        }
+
+        private bool CanBePlaced(IMapElement tile, Tilemap tilemap, BoundsInt area)
+        {
+            // Standard rules
+            if (tile.UseStandardRules)
+            {
+                BoundsInt area2 = new BoundsInt(area.position + new Vector3Int(0, 0, -1), new Vector3Int(area.size.x, area.size.y, 1));
+                if
+                (
+                    !(CheckIfAreaEmpty(area, GameManager.Instance.TilemapGround) &&
+                    CheckIfAreaEmpty(area, GameManager.Instance.TilemapSurface) &&
+                    CheckIfCanBeBuiltUpon(GameManager.Instance.TilemapGround, area2) &&
+                    CheckIfCanBeBuiltUpon(GameManager.Instance.TilemapSurface, area2))
+                )
+                {
+                    return false;
+                }
+            }
+            // Implementation specific rules
+            if (!tile.CanBePlaced(tilemap, area))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public static bool CheckIfAreaEmpty(BoundsInt area, Tilemap tilemap)
+        {
+            var tiles = GetTilesBlock(area, tilemap);
+            foreach (var tile in tiles)
+            {
+                if (tile != null)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public static bool CheckIfAreaEmpty(Vector3Int blockPosition, Tilemap tilemap)
+        {
+            var tile = tilemap.GetTile(blockPosition);
+            if (tile != null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public static bool CheckIfCanBeBuiltUpon(Tilemap tilemap, BoundsInt area2)
+        {
+            var tiles = GetTilesBlock(area2, tilemap);
+            foreach (var tile in tiles)
+            {
+                if (tile is IMapElement element)
+                {
+                    if (!element.CanBuildUpon)
+                    {
+                        return false;
+                    }
+                }
+                // TODO: handle empty tile below
+            }
+
+            return true;
+        }
+
+        public static bool CheckIfCanBeBuiltUpon(Tilemap tilemap, Vector3Int blockPosition)
+        {
+            var tile = tilemap.GetTile(blockPosition);
+            if (tile is IMapElement element)
+            {
+                if (!element.CanBuildUpon)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if (tile == null)
+                {
+                    return false;
+                }
+                else
+                    throw new Exception("Wrong tile class present in the tilemap");
+            }
+
+
+            return true;
+        }
+
+        public void SetNewTileToBuild(int index)
+        {
+            _tileToPlace = _placableTiles[index];
+        }
+
+        #region Tilemap utility extension
+        public static TileBase[] GetTilesBlock(BoundsInt area, Tilemap tilemap)
+        {
+            TileBase[] arr = new TileBase[area.size.x * area.size.y * area.size.z];
+            int counter = 0;
+
+            foreach (var v in area.allPositionsWithin)
+            {
+                Vector3Int pos = new Vector3Int(v.x, v.y, v.z);
+                arr[counter] = tilemap.GetTile(pos);
+                counter++;
+            }
+            return arr;
+        }
+
+        public static void SetTilesBlock(BoundsInt area, TileBase tile, Tilemap tilemap)
+        {
+            int size = area.size.x * area.size.y * area.size.z;
+            TileBase[] arr = new TileBase[size];
+            FillTiles(arr, tile);
+            tilemap.SetTilesBlock(area, arr);
+
+
+        }
+
+        public static void FillTiles(TileBase[] arr, TileBase tile)
+        {
+            for (int i = 0; i < arr.Length; i++)
+            {
+                arr[i] = tile;
+            }
+        }
+
+        #endregion
+
+
+    }
+}
