@@ -1,19 +1,24 @@
 using Assets.Scripts.BuildingSystem;
-using Assets.Scripts.CustomTiles;
+using Assets.Scripts.Pathfinding;
 using Assets.Scripts.PlaceableObjectBehaviour;
+using Assets.Scripts.CustomTiles;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
-using static Assets.Scripts.AgentSystem.Pathfinding;
+using System;
 
 namespace Assets.Scripts.JobSystem
 {
     public interface IWorkerAgentTask
     {
         void AssignWorker(Worker worker);
+
+        void RequestTask(Worker worker);
+
+        
 
     }
 
@@ -68,21 +73,12 @@ namespace Assets.Scripts.JobSystem
 
         }
 
-        void PathfindNear(Vector3Int startPoint, Vector3Int endPoint)
+        
+
+        public void RequestTask(Worker worker)
         {
-            //find nearest neighbour cell
-
-
-            NativeList<int2> resultPath = new NativeList<int2>(Allocator.Persistent);
-
-            PathfindingJob job = CreatePathfindingJob(startPoint, endPoint, 100, resultPath);
-
-            JobHandle jobHandle = job.Schedule();
-
-            jobHandle.Complete();
-            BuildManager.Instance.ClearAllMarkers();
+            throw new System.NotImplementedException();
         }
-
     }
 
 }

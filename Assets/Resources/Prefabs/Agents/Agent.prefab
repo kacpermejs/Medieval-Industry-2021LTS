@@ -124,6 +124,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8941687385428455177}
+  - component: {fileID: 6317551921165730732}
   - component: {fileID: -3508533369386524880}
   m_Layer: 0
   m_Name: Agent
@@ -149,6 +150,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6317551921165730732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7459743790821869680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4de9567828a2eb4c96dfc224df16862, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &-3508533369386524880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,5 +174,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0066f80411bbf7a439515f68a14abd93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AbandonCommand: {fileID: 0}
+  InterruptCurrentActionCommand: {fileID: 0}
+  ContinueInterruptedActionsCommand: {fileID: 0}
   _moveSpeed: 2
+  _mouseMovement: 1
   MovePoint: {fileID: 573271921844499575}

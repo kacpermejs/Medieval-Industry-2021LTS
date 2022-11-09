@@ -1,18 +1,30 @@
 using Assets.Scripts.ItemSystem;
+using System;
 using System.Collections;
 using UnityEngine;
 
 namespace Assets.Scripts.PlaceableObjectBehaviour
 {
-    public class Producer : MonoBehaviour
+    public abstract class WorkplaceTask : MonoBehaviour
+    {
+        public abstract event EventHandler OnProductionFinished;
+
+        public abstract event EventHandler OnProductionStarted;
+        public abstract void StartDoingTask();
+    }
+
+    public class Producer : WorkplaceTask
     {
         [SerializeField] private Recipe[] _recipes;
 
         private int _activeRecipe = 0;
-        private bool _working = true;
+        private bool _working = false;
         private int _progress = 0;
 
         private Resource _currentResource;
+
+        public override event EventHandler OnProductionFinished;
+        public override event EventHandler OnProductionStarted;
 
         // Start is called before the first frame update
         void Start()
@@ -22,7 +34,7 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
 
 
             //TODO: this is a simulation of a npc arriving at his workplace and starting up the production process
-            ProductionStartup();
+            //ProductionStartup();
         }
 
         // Update is called once per frame
@@ -31,12 +43,14 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
 
         }
 
-        public void ProductionStartup()
+        private void ProductionStartup()
         {
+            _working = true;
             StartCoroutine(ProductionProgress1s());
+            OnProductionStarted?.Invoke(this, EventArgs.Empty);
         }
 
-        public IEnumerator ProductionProgress1s()
+        private IEnumerator ProductionProgress1s()
         {
             if (_progress >= _recipes[_activeRecipe].TimeNeeded)
             {
@@ -53,9 +67,16 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
                 StartCoroutine(ProductionProgress1s());
         }
 
-        public void OnProductionCycleFinished()
+        private void OnProductionCycleFinished()
         {
             Debug.Log("Produced: " + _recipes[_activeRecipe].OutputAmount + " " + _recipes[_activeRecipe].Output);
+            _working = false;
+            OnProductionFinished?.Invoke(this, EventArgs.Empty);
+        }
+
+        public override void StartDoingTask()
+        {
+            ProductionStartup();
         }
     }
 

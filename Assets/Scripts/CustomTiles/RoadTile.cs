@@ -35,7 +35,7 @@ namespace Assets.Scripts.CustomTiles
 
         public bool CanBePlaced(Tilemap tilemap, BoundsInt area)
         {
-            var tiles = BuildManager.GetTilesBlock(area, tilemap);
+            var tiles = GameManager.GetTilesBlock(area, tilemap);
             foreach (var tile in tiles)
             {
                 foreach (var groundTile in _canReplace)

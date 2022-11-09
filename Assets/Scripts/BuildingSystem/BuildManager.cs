@@ -165,12 +165,12 @@ namespace Assets.Scripts.BuildingSystem
         private void DisplayBuildingMarkers()
         {
             var area = new BoundsInt(new Vector3Int(-50, -50, 1), new Vector3Int(100, 100, 1));
-            SetTilesBlock(area, _markerTiles[MarkerType.GreenTile], GameManager.Instance.TilemapMarkers);
+            GameManager.SetTilesBlock(area, _markerTiles[MarkerType.GreenTile], GameManager.Instance.TilemapMarkers);
         }
 
         public void DisplayMarkers(BoundsInt area, MarkerType markerType)
         {
-            SetTilesBlock(area, _markerTiles[markerType], GameManager.Instance.TilemapMarkers);
+            GameManager.SetTilesBlock(area, _markerTiles[markerType], GameManager.Instance.TilemapMarkers);
         }
 
         public void ClearAllMarkers()
@@ -241,7 +241,7 @@ namespace Assets.Scripts.BuildingSystem
 
         public static bool CheckIfAreaEmpty(BoundsInt area, Tilemap tilemap)
         {
-            var tiles = GetTilesBlock(area, tilemap);
+            var tiles = GameManager.GetTilesBlock(area, tilemap);
             foreach (var tile in tiles)
             {
                 if (tile != null)
@@ -264,7 +264,7 @@ namespace Assets.Scripts.BuildingSystem
 
         public static bool CheckIfCanBeBuiltUpon(Tilemap tilemap, BoundsInt area2)
         {
-            var tiles = GetTilesBlock(area2, tilemap);
+            var tiles = GameManager.GetTilesBlock(area2, tilemap);
             foreach (var tile in tiles)
             {
                 if (tile is IMapElement element)
@@ -309,40 +309,7 @@ namespace Assets.Scripts.BuildingSystem
             _tileToPlace = _placableTiles[index];
         }
 
-        #region Tilemap utility extension
-        public static TileBase[] GetTilesBlock(BoundsInt area, Tilemap tilemap)
-        {
-            TileBase[] arr = new TileBase[area.size.x * area.size.y * area.size.z];
-            int counter = 0;
-
-            foreach (var v in area.allPositionsWithin)
-            {
-                Vector3Int pos = new Vector3Int(v.x, v.y, v.z);
-                arr[counter] = tilemap.GetTile(pos);
-                counter++;
-            }
-            return arr;
-        }
-
-        public static void SetTilesBlock(BoundsInt area, TileBase tile, Tilemap tilemap)
-        {
-            int size = area.size.x * area.size.y * area.size.z;
-            TileBase[] arr = new TileBase[size];
-            FillTiles(arr, tile);
-            tilemap.SetTilesBlock(area, arr);
-
-
-        }
-
-        public static void FillTiles(TileBase[] arr, TileBase tile)
-        {
-            for (int i = 0; i < arr.Length; i++)
-            {
-                arr[i] = tile;
-            }
-        }
-
-        #endregion
+        
 
 
     }
