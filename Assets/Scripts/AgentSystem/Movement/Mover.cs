@@ -8,7 +8,7 @@ using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Utils;
+using Utills;
 
 namespace Assets.Scripts.AgentSystem.Movement
 {
@@ -30,7 +30,7 @@ namespace Assets.Scripts.AgentSystem.Movement
         private Vector3Int _startPoint;
         private int _pathIndex = -1;
         private JobHandle _jobHandle;
-        [SerializeField] private bool _busy;
+        [SerializeField, ReadOnlyInspector] private bool _busy;
 
 
         //public event EventHandler OnArrivedAtDestination;

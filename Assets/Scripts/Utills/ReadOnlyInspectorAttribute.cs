@@ -1,10 +1,7 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Assets.Scripts.Utills
+public class ReadOnlyInspectorAttribute : PropertyAttribute
 {
-    public class ReadOnlyInspectorAttribute : PropertyAttribute
-    {
 
-    }
 }
+
