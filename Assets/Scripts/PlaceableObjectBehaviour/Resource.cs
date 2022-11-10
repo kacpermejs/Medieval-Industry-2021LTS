@@ -13,8 +13,8 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
         [SerializeField] private int _itemAmount;
         [SerializeField] private bool _renewable;
 
-        public UnityEvent OnDepleted;
-        public UnityEvent OnRenewed;
+        public UnityEvent OnDepleted = new UnityEvent();
+        public UnityEvent OnRenewed = new UnityEvent();
 
         public Item Item { get => _item; }
         public int ItemAmount { get => _itemAmount; }
@@ -25,7 +25,7 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
             if (_renewable)
             {
                 _itemAmount += amount;
-                OnRenewed.Invoke();
+                OnRenewed?.Invoke();
             }
         }
 
@@ -38,7 +38,7 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
             else
             {
                 _itemAmount = 0;
-                OnDepleted.Invoke();
+                OnDepleted?.Invoke();
             }
         }
     }

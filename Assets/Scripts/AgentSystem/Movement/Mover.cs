@@ -10,7 +10,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Utils;
 
-namespace Assets.Scripts.AgentSystem
+namespace Assets.Scripts.AgentSystem.Movement
 {
 
 
@@ -87,7 +87,7 @@ namespace Assets.Scripts.AgentSystem
                         Vector3Int endPoint = GameManager.Instance.GridLayout.LocalToCell(screenPoint);
 
                         var manualMoveCommand = ScriptableObject.CreateInstance<MoveCommand>();
-                        manualMoveCommand.CreateCommand(this, endPoint, priority: -1);
+                        manualMoveCommand.CreateCommand(this, this, endPoint, priority: -1);
 
                         AddCommand(manualMoveCommand);
 

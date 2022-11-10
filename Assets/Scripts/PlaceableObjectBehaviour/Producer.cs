@@ -2,14 +2,15 @@ using Assets.Scripts.ItemSystem;
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Assets.Scripts.PlaceableObjectBehaviour
 {
     public abstract class WorkplaceTask : MonoBehaviour
     {
-        public abstract event EventHandler OnProductionFinished;
+        public UnityEvent OnProductionFinished = new UnityEvent();
 
-        public abstract event EventHandler OnProductionStarted;
+        public UnityEvent OnProductionStarted = new UnityEvent();
         public abstract void StartDoingTask();
     }
 
@@ -22,9 +23,6 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
         private int _progress = 0;
 
         private Resource _currentResource;
-
-        public override event EventHandler OnProductionFinished;
-        public override event EventHandler OnProductionStarted;
 
         // Start is called before the first frame update
         void Start()
@@ -47,7 +45,7 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
         {
             _working = true;
             StartCoroutine(ProductionProgress1s());
-            OnProductionStarted?.Invoke(this, EventArgs.Empty);
+            OnProductionStarted?.Invoke();
         }
 
         private IEnumerator ProductionProgress1s()
@@ -71,7 +69,8 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
         {
             Debug.Log("Produced: " + _recipes[_activeRecipe].OutputAmount + " " + _recipes[_activeRecipe].Output);
             _working = false;
-            OnProductionFinished?.Invoke(this, EventArgs.Empty);
+            OnProductionFinished?.Invoke();
+            
         }
 
         public override void StartDoingTask()

@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.JobSystem;
+﻿using Assets.Scripts.AgentSystem;
+using Assets.Scripts.AgentSystem.JobSystem;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,34 +11,12 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
         [SerializeField] private int _workerCapacity = 1;
         [SerializeField] private List<Worker> _assignedWorkers;
 
-        //[SerializeField] private bool assigned = false;
+        [SerializeField] private List<Command> _workCycle;
 
-        private void Awake()
-        {
-            GetComponent<WorkplaceTask>().OnProductionStarted += ProcessingStartedHandler;
-            GetComponent<WorkplaceTask>().OnProductionFinished += ProcessingFinishedHandler;
-        }
-        private void OnDestroy()
-        {
-            GetComponent<WorkplaceTask>().OnProductionStarted -= ProcessingStartedHandler;
-            GetComponent<WorkplaceTask>().OnProductionFinished -= ProcessingFinishedHandler;
-        }
+        [SerializeField] private List<IWorkerAgentTask> _workerTasks;
 
-        private void ProcessingStartedHandler(object sender, EventArgs e)
-        {
-            Debug.Log("Task started");
-        }
-
-
-        private void ProcessingFinishedHandler(object sender, EventArgs e)
-        {
-            Debug.Log("Task finished");
-        }
-
-        public void DoProcessingAction()
-        {
-            GetComponent<WorkplaceTask>().StartDoingTask();
-        }
+        public List<Command> WorkCycle { get => _workCycle; set => _workCycle = value; }
+        public List<IWorkerAgentTask> WorkerTasks { get => _workerTasks;  }
 
         public void AddWorker(Worker worker)
         {
@@ -45,6 +24,11 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
             {
                 _assignedWorkers.Add(worker);
             }
+        }
+
+        public Vector3Int GetResourcePosition()
+        {
+            return new Vector3Int(0, 0, 0);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Assets.Scripts.AgentSystem
+namespace Assets.Scripts.AgentSystem.Movement
 {
 
     [CreateAssetMenu]
@@ -9,8 +9,6 @@ namespace Assets.Scripts.AgentSystem
     {
         [HideInInspector]
         public Mover Mover;
-        [HideInInspector]
-        public Action Callback;
         
         public int Seconds;
 
@@ -22,7 +20,6 @@ namespace Assets.Scripts.AgentSystem
         public override void OnExecutionEnded()
         {
             base.OnExecutionEnded();
-            Callback?.Invoke();
         }
     }
         

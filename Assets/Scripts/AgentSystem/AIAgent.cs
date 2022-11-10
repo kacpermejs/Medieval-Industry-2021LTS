@@ -15,7 +15,10 @@ namespace Assets.Scripts.AgentSystem
 
             foreach (var component in AIBehaviourComponents)
             {
-                component.AbandonCommand?.Execute();
+                if (component.AbandonCommand != null)
+                {
+                    component.AbandonCommand.Execute();
+                }
             }
         }
     }

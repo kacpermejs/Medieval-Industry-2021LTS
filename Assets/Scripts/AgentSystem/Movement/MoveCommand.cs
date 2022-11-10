@@ -1,7 +1,9 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Analytics;
+using UnityEngine.Events;
 
-namespace Assets.Scripts.AgentSystem
+namespace Assets.Scripts.AgentSystem.Movement
 {
 
     /// <summary>
@@ -14,26 +16,28 @@ namespace Assets.Scripts.AgentSystem
         public Mover Mover;
         [HideInInspector]
         public Vector3Int Destination;
-        [HideInInspector]
-        public Action Callback = null;
             
         public int Range = 50;
         public bool ComeNextTo = false;
         public float SlowDownFactor = 1f;
 
-        public void CreateCommand(Mover mover, Vector3Int destination, Action callback = null, int range = 50, bool comeNextTo = false, int priority = 20, float slowDownFactor = 1f)
+        public void CreateCommand(object sender, Mover mover, Vector3Int destination, int priority = 20, int range = 50, bool comeNextTo = false, float slowDownFactor = 1f)
         {
+            //base class parameters
+            Sender = sender;
+            Priority = priority;
+
             Mover = mover;
+
             Destination = destination;
-            Callback = callback;
             Range = range;
             ComeNextTo = comeNextTo;
-            Priority = priority;
             SlowDownFactor = slowDownFactor;
         }
 
         public override void Execute()
         {
+            base.Execute();
             //Agent will follow the path starting the next frame from execution (not including the waiting queue)
             Mover.SchedulePathfinding(Destination, Range, ComeNextTo);
         }
@@ -41,7 +45,6 @@ namespace Assets.Scripts.AgentSystem
         public override void OnExecutionEnded()
         {
             base.OnExecutionEnded();
-            Callback?.Invoke();
         }
     }
 

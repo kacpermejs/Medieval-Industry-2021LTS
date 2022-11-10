@@ -218,6 +218,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94bd39f1f2ef02846a619617ce12d740, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnProductionFinished:
+    m_PersistentCalls:
+      m_Calls: []
+  OnProductionStarted:
+    m_PersistentCalls:
+      m_Calls: []
   _recipes:
   - {fileID: 11400000, guid: 47413b3e1ad8f7c4389de9088b039f6e, type: 2}
 --- !u!114 &3781437239544452723
@@ -247,3 +253,7 @@ MonoBehaviour:
   _workerCapacity: 1
   _assignedWorkers:
   - {fileID: 0}
+  _workCycle:
+  - {fileID: 11400000, guid: 46ec6713890117b499a01cd33153255e, type: 2}
+  - {fileID: 11400000, guid: 96ab4b4697ae1ad4186aa9cfd2be9742, type: 2}
+  - {fileID: 11400000, guid: 792109ee44e50be4da87a20cb06faa77, type: 2}

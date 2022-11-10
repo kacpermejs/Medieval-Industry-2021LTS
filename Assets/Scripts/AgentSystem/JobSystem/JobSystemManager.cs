@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Assets.Scripts.JobSystem
+namespace Assets.Scripts.AgentSystem.JobSystem
 {
     public class JobSystemManager : MonoBehaviour
     {

@@ -10,7 +10,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using System;
 
-namespace Assets.Scripts.JobSystem
+namespace Assets.Scripts.AgentSystem.JobSystem
 {
     public interface IWorkerAgentTask
     {
