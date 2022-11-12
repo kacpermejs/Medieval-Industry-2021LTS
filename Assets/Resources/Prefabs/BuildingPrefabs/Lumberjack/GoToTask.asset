@@ -9,13 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61c8e0dfbf64856448103035d9baa81a, type: 3}
-  m_Name: Command_3
+  m_Script: {fileID: 11500000, guid: bd6ae604bdf311347ac87e25100edbc7, type: 3}
+  m_Name: GoToTask
   m_EditorClassIdentifier: 
   Priority: 20
-  ExecutionStartedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  ExecutionFinishedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+  workplace: {fileID: 0}
+  worker: {fileID: 0}

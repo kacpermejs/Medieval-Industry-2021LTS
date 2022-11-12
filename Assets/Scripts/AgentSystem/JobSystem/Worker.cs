@@ -16,12 +16,23 @@ namespace Assets.Scripts.AgentSystem.JobSystem
 
     public class Worker : AIBehaviourInvoker
     {
-        [SerializeField] private WorkerState _workerState;
+        [field: SerializeField] public WorkerState WorkerState { get; private set; }
         private WorkerState _previousWorkerState;
+        
         [SerializeField] private Workplace _workplace;
+        public Workplace Workplace
+        {
+            get => _workplace;
+            set
+            {
+                _workplace = value;
+                WorkerAssignedHandler();
+            }
+        }
 
 
         private Command _command;
+
         [SerializeField, ReadOnlyInspector] private int _currentInstructionIndex = 0;
         [SerializeField, ReadOnlyInspector] private bool _commandExecuted = true;
 
@@ -31,13 +42,12 @@ namespace Assets.Scripts.AgentSystem.JobSystem
         public WorkingState WorkingState = new WorkingState();
         public WaitingState WaitingState = new WaitingState();
 
-        public Workplace Workplace
+
+        private void WorkerAssignedHandler()
         {
-            get => _workplace;
-            set
+            if (true)
             {
-                _workplace = value;
-                //WorkerAssignedHandler();
+                _currentWorkerState = WaitingState;
             }
         }
 
@@ -54,10 +64,10 @@ namespace Assets.Scripts.AgentSystem.JobSystem
 
         private void Update()
         {
-            if(_workerState != _previousWorkerState)
+            if(WorkerState != _previousWorkerState)
             {
                 
-                switch (_workerState)
+                switch (WorkerState)
                 {
                     case WorkerState.Idle:
                         SwitchState(IdleState);
@@ -72,7 +82,7 @@ namespace Assets.Scripts.AgentSystem.JobSystem
                         break;
                 }
             }
-            _previousWorkerState = _workerState;
+            _previousWorkerState = WorkerState;
 
             _currentWorkerState.UpdateState(this);
         }
@@ -105,15 +115,20 @@ namespace Assets.Scripts.AgentSystem.JobSystem
                     ((GoToWorkplaceCommand)_command).worker = this;
                     ((GoToWorkplaceCommand)_command).workplace = this.Workplace;
                 }
-                else if (_command is GoToResourceCommand)
+                else if (_command is GoToTaskAreaCommand)
                 {
-                    ((GoToResourceCommand)_command).worker = this;
-                    ((GoToResourceCommand)_command).workplace = this.Workplace;
+                    ((GoToTaskAreaCommand)_command).worker = this;
+                    ((GoToTaskAreaCommand)_command).workplace = this.Workplace;
                 }
-                else if (_command is ProcessingCommand)
+                else if (_command is DoWorkplaceProcessingCommand)
                 {
-                    ((ProcessingCommand)_command).worker = this;
-                    ((ProcessingCommand)_command).workplace = this.Workplace;
+                    ((DoWorkplaceProcessingCommand)_command).worker = this;
+                    ((DoWorkplaceProcessingCommand)_command).workplace = this.Workplace;
+                }
+                else if (_command is DoTask)
+                {
+                    ((DoTask)_command).worker = this;
+                    ((DoTask)_command).workplace = this.Workplace;
                 }
                 else
                 {
@@ -144,17 +159,8 @@ namespace Assets.Scripts.AgentSystem.JobSystem
 
         private void OnCommandFinished()
         {
-
-            int count = Workplace.WorkCycle.Count;
-            if ( count > 1 && _currentInstructionIndex < count - 1)
-            {
-                _currentInstructionIndex++;
-            }
-            else
-            {
-                _currentInstructionIndex = 0;
-            }
-
+            _currentInstructionIndex++;
+            _currentInstructionIndex = _currentInstructionIndex % Workplace.WorkCycle.Count;
             _commandExecuted = true;
             _command.ExecutionFinishedEvent.RemoveListener(OnCommandFinished);
         }

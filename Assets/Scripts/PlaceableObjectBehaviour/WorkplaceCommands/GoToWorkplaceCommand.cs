@@ -5,16 +5,15 @@ using UnityEngine;
 
 namespace Assets.Scripts.PlaceableObjectBehaviour
 {
+
+
     [CreateAssetMenu]
-    public class ProcessingCommand : Command
+    public class GoToWorkplaceCommand : Command
     {
         [HideInInspector]
         public Workplace workplace;
         [HideInInspector]
         public Worker worker;
-
-        public int Seconds = 2;
-
         public override void Execute()
         {
             base.Execute();
@@ -22,13 +21,19 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
 
             Vector3Int workplaceCellPos = GameManager.ConvertToGridPosition(workplace.transform.position);
 
-            HoldCommand holdCommand = ScriptableObject.CreateInstance<HoldCommand>();
-            holdCommand.Sender = this;
-            holdCommand.Mover = mover;
-            holdCommand.Seconds = Seconds;
-            holdCommand.ExecutionFinishedEvent.AddListener(OnExecutionEnded);
+            MoveCommand moveCommand = ScriptableObject.CreateInstance<MoveCommand>();
+            moveCommand.CreateCommand(this, mover, workplaceCellPos, comeNextTo: true);
+            moveCommand.ExecutionFinishedEvent.AddListener(OnExecutionEnded);
 
-            worker.GetComponent<Mover>().AddCommand(holdCommand);
+            worker.GetComponent<Mover>().AddCommand(moveCommand);
+
+            
+
+        }
+
+        public override void OnExecutionEnded()
+        {
+            base.OnExecutionEnded();
 
         }
     }

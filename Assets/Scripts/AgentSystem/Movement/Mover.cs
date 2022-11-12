@@ -60,6 +60,15 @@ namespace Assets.Scripts.AgentSystem.Movement
                 _jobHandle.Complete();
             }
 
+            if (!_busy)
+            {
+                if (_commandQueue.Count > 0)
+                {
+                    ExecuteCommand();
+                    _busy = true;
+                }
+            }
+
             if (_commandQueue.Count > 0)
             {
                 if (_commandQueue.Peek() is MoveCommand)
@@ -95,14 +104,7 @@ namespace Assets.Scripts.AgentSystem.Movement
                 }
             }
 
-            if(!_busy)
-            {
-                if(_commandQueue.Count > 0)
-                {
-                    ExecuteCommand();
-                    _busy = true;
-                }
-            }
+            
             
 
         }
@@ -143,17 +145,24 @@ namespace Assets.Scripts.AgentSystem.Movement
             if (_jobHandle.IsCompleted)
             {
                 _jobHandle.Complete();
-                if (_resultPath.Length > 0 && _pathIndex < 0)
-                {
-                    //recieved new path
-                    _pathIndex = _resultPath.Length - 1;
-                }
+                
 
-
-                if (Vector3.Distance(transform.position, MovePoint.position) <= 0.05f)
+                if (Vector3.Distance(transform.position, MovePoint.position) <= 0.05f)//Point reached
                 {
+                    if (_resultPath.Length > 0 && _pathIndex < 0)
+                    {
+                        //recieved new path
+                        _pathIndex = _resultPath.Length - 1;
+                    }
+                    else if (_resultPath.Length <= 0)
+                    {
+                        _commandQueue.Dequeue().OnExecutionEnded();
+                        _busy = false;
+                        return;
+                    }
                     if (_pathIndex >= 0)
                     {
+                        
                         //set a new point to walk towards
                         var cellPos = ConvertToMapPosition(_startPoint, ((MoveCommand)_commandQueue.Peek()).Range, _resultPath[_pathIndex]);
                         var newPos = GameManager.Instance.GridLayout.CellToWorld(cellPos);
@@ -175,19 +184,17 @@ namespace Assets.Scripts.AgentSystem.Movement
                                 }
                             }
                         }
-
                         _pathIndex--;
 
-                        //path completed
-                        if (_pathIndex < 0)
+                        if (_pathIndex < 0) //path completed
                         {
                             _resultPath.Clear();
-                            _commandQueue.Dequeue().OnExecutionEnded();
-                            _busy = false;
                         }
+
                     }
 
                 }
+                
             }
             
         }

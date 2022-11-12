@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7185f762024a0fa42a64cb604eebdc03, type: 3}
-  m_Name: Command_2
+  m_Script: {fileID: 11500000, guid: 3bb987d32facb274791d5e7e6d06b4ca, type: 3}
+  m_Name: GoToWorkplace
   m_EditorClassIdentifier: 
   Priority: 20
   ExecutionStartedEvent:
@@ -19,4 +19,3 @@ MonoBehaviour:
   ExecutionFinishedEvent:
     m_PersistentCalls:
       m_Calls: []
-  Seconds: 2

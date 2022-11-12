@@ -15,6 +15,9 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
 
         [SerializeField] private List<IWorkerAgentTask> _workerTasks;
 
+        [field:SerializeField]
+        public bool IsOpen { get; private set; }
+
         public List<Command> WorkCycle { get => _workCycle; set => _workCycle = value; }
         public List<IWorkerAgentTask> WorkerTasks { get => _workerTasks;  }
 

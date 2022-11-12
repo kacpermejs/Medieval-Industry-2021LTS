@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Assets.Scripts.PlaceableObjectBehaviour
 {
     [CreateAssetMenu]
-    public class GoToResourceCommand : Command
+    public class GoToTaskAreaCommand : Command
     {
         [HideInInspector]
         public Workplace workplace;
@@ -17,10 +17,10 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
             base.Execute();
             Mover mover = worker.GetComponent<Mover>();
 
-            Vector3Int workplaceCellPos = workplace.GetResourcePosition();
+            Vector3Int resourceCellPos = workplace.GetResourcePosition();
 
             MoveCommand moveCommand = ScriptableObject.CreateInstance<MoveCommand>();
-            moveCommand.CreateCommand(this, mover, workplaceCellPos, comeNextTo: false);
+            moveCommand.CreateCommand(this, mover, resourceCellPos, comeNextTo: false);
             moveCommand.ExecutionFinishedEvent.AddListener(OnExecutionEnded);
 
             worker.GetComponent<Mover>().AddCommand(moveCommand);

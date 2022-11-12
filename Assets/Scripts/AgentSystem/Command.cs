@@ -4,14 +4,17 @@ using UnityEngine.Events;
 
 namespace Assets.Scripts.AgentSystem
 {
-    public abstract class Command : ScriptableObject
+    public abstract class Command : ScriptableObject, ICommand
     {
         [HideInInspector]
         public object Sender;
         public int Priority = 20;
 
-        public UnityEvent ExecutionStartedEvent = new UnityEvent();
-        public UnityEvent ExecutionFinishedEvent = new UnityEvent();
+        private UnityEvent _executionStartedEvent = new UnityEvent();
+        private UnityEvent _executionFinishedEvent = new UnityEvent();
+
+        public UnityEvent ExecutionStartedEvent { get => _executionStartedEvent; private set => _executionStartedEvent = value; }
+        public UnityEvent ExecutionFinishedEvent { get => _executionFinishedEvent; private set => _executionFinishedEvent = value; }
 
         public virtual void Execute()
         {
@@ -33,5 +36,5 @@ namespace Assets.Scripts.AgentSystem
     }
 
 
-    
+
 }
