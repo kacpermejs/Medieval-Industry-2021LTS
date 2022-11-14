@@ -1,0 +1,79 @@
+.tab {
+    background-color: rgb(176, 108, 77);
+    border-color: rgb(108, 61, 48);
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 2px;
+    border-bottom-width: 0;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 0;
+    height: 20px;
+    font-size: 10px;
+    justify-content: center;
+}
+
+#tabs {
+    flex-direction: row;
+    flex-grow: 0;
+    justify-content: flex-start;
+    align-items: flex-end;
+    margin-top: 4px;
+}
+
+#tabContentContainer {
+    background-color: rgb(176, 108, 77);
+    border-color: rgb(108, 61, 48);
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    padding-left: 2px;
+    padding-right: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.selectedTab {
+    height: 25px;
+}
+
+.unselectedTabContent {
+    display: none;
+}
+
+.unity-label {
+    margin: 0;
+    padding: 0;
+}
+
+#close {
+    width: 10px;
+    height: 10px;
+    background-color: rgba(197, 40, 40, 255);
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-left-color: rgba(0, 0, 0, 0.97);
+    border-right-color: rgba(0, 0, 0, 0.97);
+    border-top-color: rgba(0, 0, 0, 0.97);
+    border-bottom-color: rgba(0, 0, 0, 0.97);
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}

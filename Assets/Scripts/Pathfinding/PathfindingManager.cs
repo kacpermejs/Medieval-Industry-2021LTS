@@ -1,16 +1,15 @@
 
+using System;
 using UnityEngine;
 using Unity.Mathematics;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Burst;
-using Unity.VisualScripting;
-using System.IO;
 using Assets.Scripts.BuildingSystem;
 using System.Collections;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Tilemaps;
+using Assets.Scripts.AgentSystem;
 
 namespace Assets.Scripts.Pathfinding
 {
@@ -25,7 +24,6 @@ namespace Assets.Scripts.Pathfinding
         public int2 areaSize;
         public bool closestAvaliable;
 
-        [DeallocateOnJobCompletion]
         public NativeArray<bool> walkableArray;
 
         public NativeList<int2> path;
@@ -275,33 +273,123 @@ namespace Assets.Scripts.Pathfinding
 
     }
 
-    public static class PathfindingJobFactory
+    public class PathfindingManager : MonoBehaviour
     {
+        public static readonly int MAP_X_SIZE = 1024;
+        public static readonly int MAP_Y_SIZE = 1024;
+
+        private NativeArray<bool> _walkableArray;
+
+        #region Public Accesors
+
+        public static NativeArray<bool> WalkableArray { get => Instance._walkableArray; }
+        public static Vector3Int ZeroPointOffset { get; private set; }
+
+        #endregion
+
+        #region Events and Handlers
+
+        public static event Action OnWalkableArrayChanged;
         
+        #endregion
 
+        #region UnityMethods
 
-        public static PathfindingJob CreatePathfindingJob(Vector3Int startPos, Vector3Int endPos, int range, bool closestAvaliable, NativeList<int2> path)
+        public static PathfindingManager Instance { get; private set; }
+
+        private void Awake()
         {
-            NativeArray<bool>  walkableArray = new NativeArray<bool>((range * 2 + 1) * (range * 2 + 1), Allocator.TempJob);
+            Instance = this;
+        }
 
-            int2 areaSize = new int2(range * 2 + 1, range * 2 + 1);
-            Vector3Int startEnd = endPos - startPos;
-            int2 start = new int2(range + 1, range + 1);
-            int2 end = new int2(start.x + startEnd.x, start.y + startEnd.y);
+        private void Start()
+        {
+            _walkableArray = new NativeArray<bool>(MAP_X_SIZE * MAP_Y_SIZE, Allocator.Persistent);
+            ZeroPointOffset = new Vector3Int(-MAP_X_SIZE / 2, -MAP_Y_SIZE / 2);
+
+            GameManager.OnMapChanged += UpdateWalkableArray;
+
+            
+            //TODO: This is temporary solution to make sure that update happens after the map has been loaded
+            StartCoroutine(UpdateWalkableArrayNextFrame());
+        }
+
+        private void OnDestroy()
+        {
+            WalkableArray.Dispose();
+        }
+
+        #endregion
+
+        #region PublicMethods
+
+        public static Vector3Int ConvertToTilemapCoordinates(int2 vec)
+        {
+            return new Vector3Int(vec.x + ZeroPointOffset.x, vec.y + ZeroPointOffset.y);
+        }
+
+        public static Vector3Int ConvertToArrayCoordinates(Vector3Int vec)
+        {
+            return new Vector3Int(vec.x - ZeroPointOffset.x, vec.y - ZeroPointOffset.y);
+        }
+
+        public static PathfindingJob CreatePathfindingJob(Vector3Int startPos, Vector3Int endPos, bool closestAvaliable, NativeList<int2> path)
+        {
+
+            int2 areaSize = new int2(MAP_X_SIZE, MAP_Y_SIZE);
+            //Vector3Int startEnd = endPos - startPos;
+
+            Vector3Int convertedCoordinates = ConvertToArrayCoordinates(startPos);
+            int2 start = new int2(convertedCoordinates.x, convertedCoordinates.y);
+
+            convertedCoordinates = ConvertToArrayCoordinates(endPos);
+            int2 end = new int2(convertedCoordinates.x, convertedCoordinates.y);
+
+
             path.Clear();
 
-
-
-            for (int x = 0; x < areaSize.x; x++)
+            return new PathfindingJob
             {
-                for (int y = 0; y < areaSize.y; y++)
+                start = start,
+                end = end,
+                areaSize = areaSize,
+                closestAvaliable = closestAvaliable,
+                walkableArray = WalkableArray,
+                path = path,
+            };
+        }
+
+        #endregion
+
+        #region PrivateMethods
+
+
+        /// <summary>
+        /// Coroutine used to update a native array of walkable tiles one frame after its called
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator UpdateWalkableArrayNextFrame()
+        {
+            yield return null;
+            UpdateWalkableArray();
+        }
+
+        private void UpdateWalkableArray()
+        {
+
+            for (int x = 0; x < MAP_X_SIZE; x++)
+            {
+                for (int y = 0; y < MAP_Y_SIZE; y++)
                 {
+
                     bool value = false;
-                    Vector3Int vec = new Vector3Int(x, y) + startPos - new Vector3Int(range + 1, range + 1);
+                    Vector3Int vec = ConvertToTilemapCoordinates(new int2(x, y));
+
                     if (GameManager.Instance.TilemapGround.GetTile(vec) != null)
                     {
                         if (((IMapElement)GameManager.Instance.TilemapGround.GetTile(vec)).Walkable)
                         {
+                            
                             if (GameManager.Instance.TilemapSurface.GetTile(vec + new Vector3Int(0, 0, 1)) == null)
                             {
                                 value = true;
@@ -314,21 +402,15 @@ namespace Assets.Scripts.Pathfinding
                     }
 
 
-                    walkableArray[x + y * areaSize.x] = value;
+                    _walkableArray[x + y * MAP_X_SIZE] = value;
+
                 }
             }
-            
-
-            return new PathfindingJob
-            {
-                start = start,
-                end = end,
-                areaSize = areaSize,
-                closestAvaliable = closestAvaliable,
-                walkableArray = walkableArray,
-                path = path,
-            };
+            OnWalkableArrayChanged?.Invoke();
         }
+
+        #endregion
+
 
     }
 }

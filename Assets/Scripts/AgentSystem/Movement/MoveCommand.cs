@@ -16,12 +16,10 @@ namespace Assets.Scripts.AgentSystem.Movement
         public Mover Mover;
         [HideInInspector]
         public Vector3Int Destination;
-            
-        public int Range = 50;
         public bool ComeNextTo = false;
         public float SlowDownFactor = 1f;
 
-        public void CreateCommand(object sender, Mover mover, Vector3Int destination, int priority = 20, int range = 50, bool comeNextTo = false, float slowDownFactor = 1f)
+        public void CreateCommand(object sender, Mover mover, Vector3Int destination, int priority = 20, bool comeNextTo = false, float slowDownFactor = 1f)
         {
             //base class parameters
             Sender = sender;
@@ -30,7 +28,6 @@ namespace Assets.Scripts.AgentSystem.Movement
             Mover = mover;
 
             Destination = destination;
-            Range = range;
             ComeNextTo = comeNextTo;
             SlowDownFactor = slowDownFactor;
         }
@@ -39,7 +36,7 @@ namespace Assets.Scripts.AgentSystem.Movement
         {
             base.Execute();
             //Agent will follow the path starting the next frame from execution (not including the waiting queue)
-            Mover.SchedulePathfinding(Destination, Range, ComeNextTo);
+            Mover.SchedulePathfinding(Destination, ComeNextTo);
         }
 
         public override void OnExecutionEnded()

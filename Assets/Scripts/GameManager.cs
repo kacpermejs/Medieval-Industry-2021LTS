@@ -15,6 +15,10 @@ public enum GameState
     /// Builder is enabled Clicking on the map will place selected building there
     /// </summary>
     BuildMode,
+    /// <summary>
+    /// 
+    /// </summary>
+    WorkerAssignment,
 
 }
 
@@ -26,7 +30,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Tilemap _tilemapSurface;
     [SerializeField] private Tilemap _tilemapMarkers;
 
-
+    public static event Action OnMapChanged;
 
     public Grid GridLayout { get => _gridLayout; }
     public Tilemap TilemapGround { get => _tilemapGround; }
@@ -38,7 +42,12 @@ public class GameManager : MonoBehaviour
 
     public GameState GameState { get; private set; }
 
-    public static Action<GameState> OnGameStateChanged;
+    [field: SerializeField, ReadOnlyInspector]
+    public static event Action<GameState> OnGameStateChanged;
+
+    #region UnityMethods
+
+
     public static GameManager Instance { get; private set; }
 
     private void Awake()
@@ -57,6 +66,8 @@ public class GameManager : MonoBehaviour
     {
 
     }
+
+    #endregion
 
     public void UpdateGameState(GameState newState)
     {
@@ -90,6 +101,11 @@ public class GameManager : MonoBehaviour
     public static Vector3Int ConvertToGridPosition(Vector3 pos)
     {
         return Instance.GridLayout.LocalToCell(pos);
+    }
+
+    public static void NotifyMapChanged()
+    {
+        OnMapChanged?.Invoke();
     }
 
     #region Tilemap utility extension

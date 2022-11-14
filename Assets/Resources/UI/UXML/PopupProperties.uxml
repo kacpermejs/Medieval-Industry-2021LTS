@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="PopUpTemplate" src="project://database/Assets/Resources/UI/UXML/PopUpTemplate.uxml?fileID=9197481963319205126&amp;guid=a0dbdd1725c62424d8a84b6ac71f1bfe&amp;type=3#PopUpTemplate" />
+    <ui:VisualElement name="Screen" picking-mode="Ignore" style="flex-grow: 1;">
+        <ui:VisualElement name="Unfocused" />
+        <ui:VisualElement name="Focused">
+            <ui:Instance template="PopUpTemplate" name="PopUpTemplate" style="position: absolute; top: 20px; left: 231px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

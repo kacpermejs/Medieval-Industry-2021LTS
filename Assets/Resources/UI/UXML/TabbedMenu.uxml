@@ -1,0 +1,21 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/Resources/UI/Styles/TabbedMenu.uss?fileID=7433441132597879392&amp;guid=98083fee9497abb4bac471950f77fea9&amp;type=3#TabbedMenu" />
+    <ui:VisualElement name="TabbedMenu">
+        <ui:VisualElement name="tabs">
+            <ui:Label text="properties" name="propertiesTab" class="tab selectedTab" />
+            <ui:Label text="production" display-tooltip-when-elided="true" name="productionTab" class="tab" />
+            <ui:Label text="inventory" display-tooltip-when-elided="true" name="inventoryTab" class="tab" />
+        </ui:VisualElement>
+        <ui:VisualElement name="tabContentContainer" class="tabContainer">
+            <ui:VisualElement name="propertiesContent">
+                <ui:Label text="properties" style="white-space: normal;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="productionContent" class="unselectedTabContent">
+                <ui:Label text="production" style="white-space: normal;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="inventoryContent" class="unselectedTabContent">
+                <ui:Label text="inventory" style="white-space: normal;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

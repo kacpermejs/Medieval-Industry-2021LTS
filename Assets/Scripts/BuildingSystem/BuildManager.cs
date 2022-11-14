@@ -212,6 +212,8 @@ namespace Assets.Scripts.BuildingSystem
                 }
             }
             tile.Place(tilemap, gridPoint);
+
+            GameManager.NotifyMapChanged();
         }
 
         private bool CanBePlaced(IMapElement tile, Tilemap tilemap, BoundsInt area)

@@ -47,6 +47,7 @@ namespace Assets.Scripts.AgentSystem.Movement
         void Start()
         {
             MovePoint.parent = null;
+            GameManager.OnMapChanged += HandleMapChanges;
         }
 
         // Update is called once per frame
@@ -68,7 +69,6 @@ namespace Assets.Scripts.AgentSystem.Movement
                     _busy = true;
                 }
             }
-
             if (_commandQueue.Count > 0)
             {
                 if (_commandQueue.Peek() is MoveCommand)
@@ -82,9 +82,8 @@ namespace Assets.Scripts.AgentSystem.Movement
                     //Command is served by coroutine
                 }
             }
-
             // Schedule pathfinding by clicking the mouse on the map
-            if (_mouseMovement)
+            if (_mouseMovement && GameManager.Instance.GameState == GameState.Default)
             {
                 if (Input.GetMouseButtonDown(0))
                 {
@@ -104,8 +103,7 @@ namespace Assets.Scripts.AgentSystem.Movement
                 }
             }
 
-            
-            
+
 
         }
         private void OnDestroy()
@@ -128,6 +126,8 @@ namespace Assets.Scripts.AgentSystem.Movement
             _busy = false;
 
         }
+
+        
 
         public void AddCommand(Command command)
         {
@@ -164,7 +164,7 @@ namespace Assets.Scripts.AgentSystem.Movement
                     {
                         
                         //set a new point to walk towards
-                        var cellPos = ConvertToMapPosition(_startPoint, ((MoveCommand)_commandQueue.Peek()).Range, _resultPath[_pathIndex]);
+                        var cellPos = PathfindingManager.ConvertToTilemapCoordinates(_resultPath[_pathIndex]);
                         var newPos = GameManager.Instance.GridLayout.CellToWorld(cellPos);
 
                         var lowerTile = GameManager.Instance.TilemapGround.GetTile(cellPos);
@@ -199,20 +199,42 @@ namespace Assets.Scripts.AgentSystem.Movement
             
         }
         
-        public bool SchedulePathfinding(Vector3Int targetPoint, int range, bool comeNextTo = false)
+        public bool SchedulePathfinding(Vector3Int targetPoint, bool comeNextTo = false)
         {
-            _startPoint = GameManager.Instance.GridLayout.LocalToCell(MovePoint.position);
 
+            _startPoint = GameManager.Instance.GridLayout.LocalToCell(MovePoint.position);
+            
             _pathIndex = -1;
             _resultPath.Clear();
-            PathfindingJob job = PathfindingJobFactory.CreatePathfindingJob(_startPoint, targetPoint, range, comeNextTo, _resultPath);
+
+            PathfindingJob job = PathfindingManager.CreatePathfindingJob(_startPoint, targetPoint, comeNextTo, _resultPath);
+            
             _jobHandle = job.Schedule();
+
             return true;
         }
 
-        private static Vector3Int ConvertToMapPosition(Vector3Int startPoint, int range, int2 pos)
+        private void HandleMapChanges()
         {
-            return new Vector3Int(pos.x, pos.y) + startPoint - new Vector3Int(range + 1, range + 1, 0);
+            _jobHandle.Complete();
+            //if agent is walking
+            if(_busy)
+            {
+                Command currentCommand;
+                if(_commandQueue.TryPeek(out currentCommand))
+                {
+                    if (currentCommand is MoveCommand)
+                    {
+                        //Set to default
+                        _pathIndex = -1;
+                        _resultPath.Clear();
+                        //Execute again
+                        currentCommand.Execute();
+                    }
+                }
+
+            }
+            //Recalculate path
         }
 
         

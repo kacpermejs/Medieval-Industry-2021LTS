@@ -464,7 +464,7 @@ GameObject:
   - component: {fileID: 596100462}
   - component: {fileID: 596100461}
   m_Layer: 0
-  m_Name: UIDocument
+  m_Name: MainUIDocument
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -547,7 +547,7 @@ MonoBehaviour:
   m_PanelSettings: {fileID: 11400000, guid: 7788a22b38374e7488f4a2fbe10ae196, type: 2}
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 0918631f4396e674b91f33a21f41e1ab, type: 3}
-  m_SortingOrder: 5
+  m_SortingOrder: 0
 --- !u!1 &643105765
 GameObject:
   m_ObjectHideFlags: 0
@@ -791,7 +791,7 @@ TilemapRenderer:
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 3
-  m_Mode: 1
+  m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
 --- !u!1839735485 &975277060
@@ -21825,7 +21825,7 @@ GameObject:
   - component: {fileID: 1108687893}
   - component: {fileID: 1108687894}
   m_Layer: 0
-  m_Name: Agent Manager
+  m_Name: Pathfinding Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21855,7 +21855,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1108687892}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01c250d614847b645a4a15f36d44ff51, type: 3}
+  m_Script: {fileID: 11500000, guid: 0377c8c629d7b1b41976657900ed925b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1324522640
@@ -21887,9 +21887,71 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 596100460}
+  - {fileID: 1392378887}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1392378886
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1392378887}
+  - component: {fileID: 1392378888}
+  - component: {fileID: 1392378889}
+  m_Layer: 5
+  m_Name: PopupUIDocument
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1392378887
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1392378886}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1324522641}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1392378888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1392378886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 7788a22b38374e7488f4a2fbe10ae196, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: ba615caa4c3a1e24f8e3fac45d63a6a2, type: 3}
+  m_SortingOrder: 0
+--- !u!114 &1392378889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1392378886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd6269f09563dc642b942cfd37e932c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1459596518
 GameObject:
   m_ObjectHideFlags: 0
@@ -22251,7 +22313,7 @@ TilemapRenderer:
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 3
-  m_Mode: 1
+  m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
 --- !u!1839735485 &1911450359
