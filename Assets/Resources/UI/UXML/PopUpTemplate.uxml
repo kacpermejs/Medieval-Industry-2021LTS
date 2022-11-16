@@ -1,11 +1,13 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <ui:Template name="TabbedMenu" src="project://database/Assets/Resources/UI/UXML/TabbedMenu.uxml?fileID=9197481963319205126&amp;guid=21d30b41a052c8f449654500df79492d&amp;type=3#TabbedMenu" />
     <Style src="project://database/Assets/Resources/UI/Styles/TabbedMenu.uss?fileID=7433441132597879392&amp;guid=98083fee9497abb4bac471950f77fea9&amp;type=3#TabbedMenu" />
-    <ui:VisualElement name="popUp" style="background-color: rgb(159, 62, 35); padding-left: 3px; padding-right: 3px; padding-top: 3px; padding-bottom: 3px; border-left-width: 2px; border-right-width: 2px; border-top-width: 2px; border-bottom-width: 2px; border-left-color: rgb(108, 61, 48); border-right-color: rgb(108, 61, 48); border-top-color: rgb(108, 61, 48); border-bottom-color: rgb(108, 61, 48); border-top-left-radius: 4px; border-bottom-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; max-width: 200px; min-width: 100px; align-items: stretch;">
-        <ui:VisualElement name="Header" style="flex-direction: row; justify-content: space-between; align-items: flex-end;">
-            <ui:Label text="Label" display-tooltip-when-elided="true" name="Title" />
-            <ui:Button text="X" display-tooltip-when-elided="true" name="close" />
+    <ui:VisualElement name="PopUpWindow" class="windowBackground">
+        <ui:VisualElement name="WindowHeader">
+            <ui:VisualElement name="WindowHeader" style="flex-direction: row; justify-content: space-between; align-items: flex-start;">
+                <ui:Label text="Label" display-tooltip-when-elided="true" name="Title" />
+                <ui:Button text="X" name="CloseButton" class="close" />
+            </ui:VisualElement>
         </ui:VisualElement>
-        <ui:Instance template="TabbedMenu" name="TabbedMenu" />
+        <ui:Instance template="TabbedMenu" name="TabbedMenu" class="TabbedMenuArea" />
     </ui:VisualElement>
 </ui:UXML>

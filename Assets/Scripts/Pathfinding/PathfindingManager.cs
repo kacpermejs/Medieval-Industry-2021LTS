@@ -24,6 +24,7 @@ namespace Assets.Scripts.Pathfinding
         public int2 areaSize;
         public bool closestAvaliable;
 
+        [ReadOnly]
         public NativeArray<bool> walkableArray;
 
         public NativeList<int2> path;
@@ -275,8 +276,8 @@ namespace Assets.Scripts.Pathfinding
 
     public class PathfindingManager : MonoBehaviour
     {
-        public static readonly int MAP_X_SIZE = 1024;
-        public static readonly int MAP_Y_SIZE = 1024;
+        public static readonly int MAP_X_SIZE = 256;
+        public static readonly int MAP_Y_SIZE = 256;
 
         private NativeArray<bool> _walkableArray;
 
