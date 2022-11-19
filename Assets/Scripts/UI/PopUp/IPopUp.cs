@@ -2,8 +2,6 @@
 {
     public interface IPopUp
     {
-        void Open();
         void Close();
-
     }
 }

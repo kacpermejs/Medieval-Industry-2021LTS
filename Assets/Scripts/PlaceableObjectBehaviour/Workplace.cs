@@ -18,10 +18,13 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
 
         [field:SerializeField]
         public bool IsOpen { get; private set; }
-
         public List<Command> WorkCycle { get => _workCycle; set => _workCycle = value; }
         public List<IWorkerAgentTask> WorkerTasks { get => _workerTasks;  }
 
+        #region UI Elements
+            private Button _newWorkerButton;
+        #endregion
+        
         public string title => "Workplace";
 
         public void AddWorker(Worker worker)
@@ -32,16 +35,36 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
             }
         }
 
-        public VisualElement CreateUIContent()
-        {
-            var label = new Label(title);
-
-            return label;
-        }
-
         public Vector3Int GetResourcePosition()
         {
             return new Vector3Int(0, 0, 0);
         }
+
+        #region IUICreator methods
+        public VisualElement CreateUIContent()
+        {
+
+            VisualElement content = Resources.Load<VisualTreeAsset>("UI/UXML/WorkplaceTabContent").Instantiate();
+
+            _newWorkerButton = content.Q<Button>("NewWorkerButton");
+
+            return content;
+        }
+
+        public void RegisterCallbacks()
+        {
+            _newWorkerButton.RegisterCallback<ClickEvent>(
+                (evt) =>
+                {
+                    AgentSelector.EnterAgentSelection();
+                }
+            );
+        }
+
+        public void UnregisterCallbacks()
+        {
+            
+        }
+        #endregion
     }
 }

@@ -14,7 +14,7 @@ namespace Assets.Scripts.AgentSystem.JobSystem
         Waiting = 20,
     }
 
-    public class Worker : AIBehaviourInvoker
+    public partial class Worker : AIBehaviourInvoker
     {
         [field: SerializeField] public WorkerState WorkerState { get; private set; }
         private WorkerState _previousWorkerState;
@@ -36,18 +36,18 @@ namespace Assets.Scripts.AgentSystem.JobSystem
         [SerializeField, ReadOnlyInspector] private int _currentInstructionIndex = 0;
         [SerializeField, ReadOnlyInspector] private bool _commandExecuted = true;
 
-        private WorkerStateBase _currentWorkerState;
+        private StateBase _currentWorkerState;
 
-        public IdleState IdleState = new IdleState();
-        public WorkingState WorkingState = new WorkingState();
-        public WaitingState WaitingState = new WaitingState();
+        private IdleState _idleState = new IdleState();
+        private WorkingState _workingState = new WorkingState();
+        private WaitingState _waitingState = new WaitingState();
 
 
         private void WorkerAssignedHandler()
         {
             if (true)
             {
-                _currentWorkerState = WaitingState;
+                _currentWorkerState = _waitingState;
             }
         }
 
@@ -57,7 +57,7 @@ namespace Assets.Scripts.AgentSystem.JobSystem
 
         private void Start()
         {
-            _currentWorkerState = IdleState;
+            _currentWorkerState = _idleState;
             _currentWorkerState.EnterState(this);
         }
 
@@ -70,13 +70,13 @@ namespace Assets.Scripts.AgentSystem.JobSystem
                 switch (WorkerState)
                 {
                     case WorkerState.Idle:
-                        SwitchState(IdleState);
+                        SwitchState(_idleState);
                         break;
                     case WorkerState.Working:
-                        SwitchState(WorkingState);
+                        SwitchState(_workingState);
                         break;
                     case WorkerState.Waiting:
-                        SwitchState(WaitingState);
+                        SwitchState(_waitingState);
                         break;
                     default:
                         break;
@@ -90,7 +90,7 @@ namespace Assets.Scripts.AgentSystem.JobSystem
 
         #endregion
 
-        public void SwitchState(WorkerStateBase state)
+        public void SwitchState(StateBase state)
         {
             _currentWorkerState = state;
             _currentWorkerState.EnterState(this);

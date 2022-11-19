@@ -14,6 +14,16 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
             return label;
         }
 
+        public void RegisterCallbacks()
+        {
+            
+        }
+
+        public void UnregisterCallbacks()
+        {
+            
+        }
+
         // Start is called before the first frame update
         void Start()
         {

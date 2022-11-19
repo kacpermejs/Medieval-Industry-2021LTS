@@ -13,12 +13,15 @@ namespace Assets.Scripts.UI
 
         private VisualElement _contentContainer;
 
+        
+        public event Action OnClose;
+
         public PopUpCustomControl()
         {
             this.styleSheets.Add(Resources.Load<StyleSheet>(STYLESHEET_PATH));
             this.AddToClassList("windowContainer");
             this.pickingMode = PickingMode.Ignore;
-
+            
 
             var window = new VisualElement();
 
@@ -50,20 +53,15 @@ namespace Assets.Scripts.UI
 
             window.Add(header);
             window.Add(_contentContainer);
-
-            var btn = new Label("text");
             
-            SetContent(CreateMenuTest());
+            //SetContent(CreateMenuTest());
 
         }
 
         public void Close()
         {
-        }
-
-        public void Open()
-        {
-            
+            OnClose?.Invoke();
+            parent.Remove(this);
         }
 
         public void SetContent(VisualElement content)

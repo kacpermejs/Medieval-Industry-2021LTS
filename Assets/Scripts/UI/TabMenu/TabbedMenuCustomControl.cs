@@ -41,7 +41,7 @@ namespace Assets.Scripts.UI
             _tabContentContainer.name = CONTENT_CONTAINER_NAME;
 
             //TODO: temporary
-            var tempVE = new VisualElement();
+            /*var tempVE = new VisualElement();
             tempVE.style.backgroundColor = Color.red;
             tempVE.style.width = 100;
             tempVE.style.height = 150;
@@ -51,7 +51,7 @@ namespace Assets.Scripts.UI
             tempVE2.style.backgroundColor = Color.blue;
             tempVE2.style.width = 100;
             tempVE2.style.height = 150;
-            AddTab("temp2", tempVE2, false);
+            AddTab("temp2", tempVE2, false);*/
 
             //Init();
         }

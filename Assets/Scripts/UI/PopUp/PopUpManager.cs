@@ -9,7 +9,7 @@ namespace Assets.Scripts.UI
     {
         private List<PopUpCustomControl> _popUps = new List<PopUpCustomControl>();
         private VisualElement _root;
-        private VisualElement _windowRoot;
+        private VisualElement _popupContainer;
 
         /*TabbedMenuController _menuController;*/
 
@@ -23,10 +23,9 @@ namespace Assets.Scripts.UI
 
         private void OnEnable()
         {
-            UIDocument menu = GetComponent<UIDocument>();
-            _root = menu.rootVisualElement;
+            _root = GetComponent<UIDocument>().rootVisualElement;
 
-            _windowRoot = _root.Q("Screen");
+            _popupContainer = _root.Q("PopupContainer");
 
         }
 
@@ -37,7 +36,7 @@ namespace Assets.Scripts.UI
             popUp.contentContainer.Add(content);
 
             _popUps.Add(popUp);
-            _windowRoot.Add(popUp);
+            _popupContainer.Add(popUp);
         }
 
 

@@ -20,12 +20,22 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
             foreach (var tab in tabs)
             {
                 content.AddTab(tab.title, tab.CreateUIContent(), false);
+                tab.RegisterCallbacks();
             }
 
             //Attach content to pop-up window
-            Debug.Log("open");
+            //Debug.Log("open");
             PopUpManager.Instance.OpenNewPopup(new Label("fhsdfyug"));
 
+        }
+        private void OnDestroy()
+        {
+            var tabs = GetComponents<IUICreator>();
+
+            foreach (var tab in tabs)
+            {
+                tab.UnregisterCallbacks();
+            }  
         }
     }
 
@@ -33,6 +43,10 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
     {
         string title { get; }
         VisualElement CreateUIContent();
+
+        void RegisterCallbacks();
+
+        void UnregisterCallbacks();
     }
 }
 
