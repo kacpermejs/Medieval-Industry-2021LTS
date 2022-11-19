@@ -18,13 +18,13 @@ namespace Assets.Scripts.AgentSystem
 
         public virtual void Execute()
         {
-            Debug.Log("Command " + this.GetType().Name + " started execution!");
+            //Debug.Log("Command " + this.GetType().Name + " started execution!");
             ExecutionStartedEvent?.Invoke();
         }
 
         public virtual void OnExecutionEnded()
         {
-            Debug.Log("Command " + this.GetType().Name + " ended execution!");
+            //Debug.Log("Command " + this.GetType().Name + " ended execution!");
             ExecutionFinishedEvent?.Invoke();
         }
 

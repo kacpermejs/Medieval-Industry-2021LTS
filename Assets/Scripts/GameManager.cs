@@ -28,15 +28,17 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Tilemap _tilemapGround;
     //[SerializeField] private Tilemap _tilemapResources;
     [SerializeField] private Tilemap _tilemapSurface;
+    [SerializeField] private Tilemap _tilemapColliders;
     [SerializeField] private Tilemap _tilemapMarkers;
 
     public static event Action OnMapChanged;
 
     public Grid GridLayout { get => _gridLayout; }
     public Tilemap TilemapGround { get => _tilemapGround; }
-    public Tilemap TilemapSurface { get => _tilemapSurface; }
+    //public Tilemap TilemapSurface { get => _tilemapSurface; }
     //public Tilemap TilemapResources { get => _tilemapResources; }
     public Tilemap TilemapMarkers { get => _tilemapMarkers; }
+    public Tilemap TilemapColliders { get => _tilemapColliders; }
 
     private List<PlaceableObject> _objects;
 

@@ -1,13 +1,11 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <ui:Template name="TabbedMenu" src="project://database/Assets/Resources/UI/UXML/TabbedMenu.uxml?fileID=9197481963319205126&amp;guid=21d30b41a052c8f449654500df79492d&amp;type=3#TabbedMenu" />
     <Style src="project://database/Assets/Resources/UI/Styles/TabbedMenu.uss?fileID=7433441132597879392&amp;guid=98083fee9497abb4bac471950f77fea9&amp;type=3#TabbedMenu" />
+    <Style src="project://database/Assets/Resources/UI/Styles/PopUpStylesheet.uss?fileID=7433441132597879392&amp;guid=62ca1d63193900945afb2a0ca9dae492&amp;type=3#PopUpStylesheet" />
     <ui:VisualElement name="PopUpWindow" class="windowBackground">
-        <ui:VisualElement name="WindowHeader">
-            <ui:VisualElement name="WindowHeader" style="flex-direction: row; justify-content: space-between; align-items: flex-start;">
-                <ui:Label text="Label" display-tooltip-when-elided="true" name="Title" />
-                <ui:Button text="X" name="CloseButton" class="close" />
-            </ui:VisualElement>
+        <ui:VisualElement name="WindowHeader" class="WindowHeader">
+            <ui:Label text="Label" display-tooltip-when-elided="true" name="Title" />
+            <ui:Button text="X" name="CloseButton" class="Close" />
         </ui:VisualElement>
-        <ui:Instance template="TabbedMenu" name="TabbedMenu" class="TabbedMenuArea" />
+        <ui:VisualElement name="ContentArea" style="min-width: 100px; min-height: 30px; margin-left: 2px; margin-right: 2px; margin-top: 2px; margin-bottom: 2px;" />
     </ui:VisualElement>
 </ui:UXML>

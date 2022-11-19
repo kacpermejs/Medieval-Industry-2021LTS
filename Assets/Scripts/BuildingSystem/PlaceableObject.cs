@@ -10,7 +10,7 @@ namespace Assets.Scripts.BuildingSystem
     {
         [Header("Make sure number of cells bound is equal to number of indecies")]
         [SerializeField] private BoundsInt _bounds;
-        [Header("-2 is main object tile, -1 is empty, the rest corresponds to Tiles ")]
+        [Header("-1 is empty, the rest corresponds to Tiles ")]
         [SerializeField] private List<int> _componentTilesIndecies;
         [SerializeField] private TileBase[] _tiles;
 
@@ -25,7 +25,6 @@ namespace Assets.Scripts.BuildingSystem
         [SerializeField] private bool _canWalkThrough = false;
         [SerializeField] private bool _canBuildUpon = false;
         [SerializeField] private float _walkingSpeedFactor = 1;
-        [SerializeField] private bool _isGroundFeature = false;
         [SerializeField] private IMapElement.DestinationMapLayer _layer;
         [SerializeField] private bool _useStandardRules;
 
@@ -34,7 +33,6 @@ namespace Assets.Scripts.BuildingSystem
         public bool CanWalkThrough => _canWalkThrough;
         public bool CanBuildUpon => _canBuildUpon;
         public float WalkingSpeedFactor => _walkingSpeedFactor;
-        public bool IsGroundFeature => _isGroundFeature;
         public bool UseStandardRules => _useStandardRules;
         public Sprite Icon
         {
@@ -49,12 +47,50 @@ namespace Assets.Scripts.BuildingSystem
 
         public void Place(Tilemap tilemap, Vector3Int position)
         {
-            throw new NotImplementedException();
+            BoundsInt area = new BoundsInt();
+
+            area.size = Bounds.size;
+            area.position = position - new Vector3Int(area.size.x / 2, area.size.y / 2, 0);
+
+            var worldGameobjectPosition = tilemap.layoutGrid.CellToLocal(position + new Vector3Int(0,0,1));
+
+            Instantiate(this.gameObject, worldGameobjectPosition, Quaternion.identity);
+
+            int size = area.size.x * area.size.y * area.size.z;
+
+            if (ComponentTilesIndecies.Count != size)
+                throw new Exception("Arrays don't match in size");
+
+            TileBase[] arr = new TileBase[size];
+            int index;
+
+            for (int i = 0; i < size; i++)
+            {
+
+                index = ComponentTilesIndecies[i];
+                /*if (index == -2)
+                {
+                    arr[i] = this;
+                }
+                else*/
+                if (index == -1)
+                {
+                    arr[i] = null;
+                }
+                else
+                {
+                    if (Tiles[index] is IMapElement)
+                        arr[i] = Tiles[index];
+                    else
+                        throw new Exception("Not a IMapElement");
+                }
+            }
+            GameManager.Instance.TilemapColliders.SetTilesBlock(area, arr);
         }
 
         public bool CanBePlaced(Tilemap tilemap, BoundsInt area)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
 

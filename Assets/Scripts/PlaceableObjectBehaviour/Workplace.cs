@@ -3,10 +3,11 @@ using Assets.Scripts.AgentSystem.JobSystem;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Assets.Scripts.PlaceableObjectBehaviour
 {
-    public class Workplace : MonoBehaviour
+    public class Workplace : MonoBehaviour, IUICreator
     {
         [SerializeField] private int _workerCapacity = 1;
         [SerializeField] private List<Worker> _assignedWorkers;
@@ -21,12 +22,21 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
         public List<Command> WorkCycle { get => _workCycle; set => _workCycle = value; }
         public List<IWorkerAgentTask> WorkerTasks { get => _workerTasks;  }
 
+        public string title => "Workplace";
+
         public void AddWorker(Worker worker)
         {
             if( _assignedWorkers.Count < _workerCapacity && !_assignedWorkers.Contains(worker) )
             {
                 _assignedWorkers.Add(worker);
             }
+        }
+
+        public VisualElement CreateUIContent()
+        {
+            var label = new Label(title);
+
+            return label;
         }
 
         public Vector3Int GetResourcePosition()

@@ -20,9 +20,17 @@ PrefabInstance:
       value: Fisherman
       objectReference: {fileID: 0}
     - target: {fileID: 1122223695713706864, guid: 52b5f33d366a9a94b827bda30e70e400, type: 3}
+      propertyPath: _layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1122223695713706864, guid: 52b5f33d366a9a94b827bda30e70e400, type: 3}
       propertyPath: _sprite
       value: 
       objectReference: {fileID: 21300000, guid: 7f651cd96352fe8439930df5760027b7, type: 3}
+    - target: {fileID: 1122223695713706864, guid: 52b5f33d366a9a94b827bda30e70e400, type: 3}
+      propertyPath: _isGroundFeature
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1122223695713706864, guid: 52b5f33d366a9a94b827bda30e70e400, type: 3}
       propertyPath: _tileSprites.Array.size
       value: 4

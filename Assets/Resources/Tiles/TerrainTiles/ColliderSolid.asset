@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac4e69d551226a4458b1fccec72844d5, type: 3}
-  m_Name: LumberjackDemoTilee
+  m_Script: {fileID: 11500000, guid: 8ab43be4d5dac5843a0cd51627d9e9cb, type: 3}
+  m_Name: ColliderSolid
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 96a417978d675c44b81d93de2b0ad7e0, type: 3}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_Transform:
     e00: 1
     e01: 0
@@ -31,6 +31,12 @@ MonoBehaviour:
     e31: 0
     e32: 0
     e33: 1
-  m_InstancedGameObject: {fileID: 1067044254559880744, guid: 8ed4c21fe7b861e4e8418979cfb498f5, type: 3}
+  m_InstancedGameObject: {fileID: 0}
   m_Flags: 1
   m_ColliderType: 1
+  _walkable: 1
+  _canWalkThrough: 0
+  _canBuildUpon: 1
+  _walkingSpeedFactor: 1
+  _useStandardRules: 0
+  _layer: 0

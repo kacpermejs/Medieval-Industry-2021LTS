@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="Screen" style="align-items: center; justify-content: center; flex-grow: 1;">
+        <ui:VisualElement name="first" style="background-color: rgba(58, 58, 58, 255); width: 400px; height: 400px; align-items: center; justify-content: center; position: absolute;">
+            <ui:VisualElement name="second" style="background-color: rgba(190, 190, 190, 255); width: 200px; height: 200px; align-items: center; justify-content: center;">
+                <ui:VisualElement name="third" style="background-color: rgba(6, 255, 47, 255); width: 100px; height: 100px;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

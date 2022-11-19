@@ -6,5 +6,6 @@
         <ui:VisualElement name="MenuBar" style="justify-content: flex-end; flex-direction: row-reverse; align-items: auto; position: relative; bottom: auto; height: auto;">
             <ui:ListView focusable="true" name="BuildingListView" style="flex-direction: row; flex-grow: 0; justify-content: flex-start; flex-wrap: nowrap; align-items: flex-start;" />
         </ui:VisualElement>
+        <ui:VisualElement name="PopupContainer" picking-mode="Ignore" style="flex-grow: 1;" />
     </ui:VisualElement>
 </ui:UXML>

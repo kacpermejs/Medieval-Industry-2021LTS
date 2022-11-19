@@ -1,6 +1,8 @@
 using Assets.Scripts.CustomTiles;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
@@ -37,17 +39,22 @@ namespace Assets.Scripts.BuildingSystem
 
         public List<IMapElement> PlacableTiles { get => _placableTiles; }
 
-        public static BuildManager Instance { get; private set; }
+        private List<PlaceableObject> _buildings;
+        private List<PlaceableObject> _resources;
 
         #region Unity methods
+
+        public static BuildManager Instance { get; private set; }
 
         private void Awake()
         {
             Instance = this;
 
             // TODO: Optimize loading - loading all GameObjects wastes a lot of memory
-            LoadPlacableObjectTiles("Prefabs/BuildingPrefabs");
-            LoadPlacableObjectTiles("Prefabs/ResourcePrefabs");
+            /*LoadPlacableObjectTiles("Prefabs/BuildingPrefabs");
+            LoadPlacableObjectTiles("Prefabs/ResourcePrefabs");*/
+            LoadPlaceableObjectPrefabs("Prefabs/BuildingPrefabs");
+            LoadPlaceableObjectPrefabs("Prefabs/ResourcePrefabs");
             LoadRoadTiles();
 
             GameManager.OnGameStateChanged += GameManagerOnGameStateChanged;
@@ -97,13 +104,13 @@ namespace Assets.Scripts.BuildingSystem
                                 destTilemap = GameManager.Instance.TilemapGround;
                                 break;
                             case IMapElement.DestinationMapLayer.Surface:
-                                destTilemap = GameManager.Instance.TilemapSurface;
+                                destTilemap = GameManager.Instance.TilemapGround;
                                 break;
                             case IMapElement.DestinationMapLayer.Markers:
                                 destTilemap = GameManager.Instance.TilemapMarkers;
                                 break;
                             default:
-                                destTilemap = GameManager.Instance.TilemapSurface;
+                                destTilemap = GameManager.Instance.TilemapGround;
                                 break;
                         }
 
@@ -128,11 +135,20 @@ namespace Assets.Scripts.BuildingSystem
             {
                 if (!prefab.name.StartsWith("[base]"))
                 {
-                    PlaceableObjectTile temp = ScriptableObject.CreateInstance<PlaceableObjectTile>();
+                    /*PlaceableObjectTile temp = ScriptableObject.CreateInstance<PlaceableObjectTile>();
                     temp.gameObject = prefab;
-                    PlacableTiles.Add(temp);
+                    PlacableTiles.Add(temp);*/
+
                 }
             }
+        }
+
+        private void LoadPlaceableObjectPrefabs(string path)
+        {
+            Resources.LoadAll<PlaceableObject>(path)
+                .Where(obj => !obj.name.StartsWith("[base]"))
+                .ToList()
+                .ForEach(obj => PlacableTiles.Add(obj) );
         }
 
         private void LoadRoadTiles()
@@ -188,17 +204,17 @@ namespace Assets.Scripts.BuildingSystem
         private void Place(Tilemap tilemap, Vector3Int gridPoint, IMapElement tile, bool useCanBePlaced)
         {
             //add offset if tile is a ground block like the road
-            if (tile.Layer == IMapElement.DestinationMapLayer.Surface)
+            if (tile.Layer == IMapElement.DestinationMapLayer.Ground)
             {
-                gridPoint.z += 1;
+                gridPoint.z -= 1;
             }
             //Only tiles with game objects attached can take area bigger than 1x1x1
-            var area = new BoundsInt(gridPoint, Vector3Int.one);
+            var area = new BoundsInt(gridPoint, new Vector3Int(1,1,1));
 
-            if (tile is PlaceableObjectTile tile1)
+            if (tile is PlaceableObject obj)
             {
                 //set bound area size
-                area.size = tile1.PlaceableObject.Bounds.size;
+                area.size = obj.Bounds.size;
                 //set offset to place building from the center not from the corner
                 area.position -= new Vector3Int(area.size.x / 2, area.size.y / 2, 0);
             }
@@ -225,9 +241,10 @@ namespace Assets.Scripts.BuildingSystem
                 if
                 (
                     !(CheckIfAreaEmpty(area, GameManager.Instance.TilemapGround) &&
-                    CheckIfAreaEmpty(area, GameManager.Instance.TilemapSurface) &&
-                    CheckIfCanBeBuiltUpon(GameManager.Instance.TilemapGround, area2) &&
-                    CheckIfCanBeBuiltUpon(GameManager.Instance.TilemapSurface, area2))
+                    CheckIfAreaEmpty(area, GameManager.Instance.TilemapColliders) &&
+                    CheckIfCanBeBuiltUpon(GameManager.Instance.TilemapGround, area2) 
+                    //TODO: && IsPlacementArea(tile)
+                    )
                 )
                 {
                     return false;
@@ -275,6 +292,10 @@ namespace Assets.Scripts.BuildingSystem
                     {
                         return false;
                     }
+                }
+                else if (tile == null)
+                {
+                    return false;
                 }
                 // TODO: handle empty tile below
             }

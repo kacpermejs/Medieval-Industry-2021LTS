@@ -15,7 +15,8 @@ namespace Assets.Scripts.UI
         private const string TAB_LABEL_CLASS_NAME = "tab";
         private const string CONTENT_CONTAINER_NAME = "tabContentContainer";
         private const string TAB_CONTAINER_NAME = "tabs";
-
+        private const string TAB_SUFFIX = "Tab";
+        private const string TAB_CONTENT_SUFFIX = "Content";
         private Dictionary<string, VisualElement> _tabContentContainers = new Dictionary<string, VisualElement>();
         private Dictionary<string, Label> _tabLabelButtons = new Dictionary<string, Label>();
 
@@ -52,7 +53,7 @@ namespace Assets.Scripts.UI
             tempVE2.style.height = 150;
             AddTab("temp2", tempVE2, false);
 
-            Init();
+            //Init();
         }
 
         public void Init()
@@ -89,7 +90,7 @@ namespace Assets.Scripts.UI
             }
             else
             {
-                //_tabContentContainers[title].AddToClassList("unselectedTabContent");
+                _tabContentContainers[title].AddToClassList("unselectedTabContent");
             }
             
         }
@@ -97,7 +98,7 @@ namespace Assets.Scripts.UI
         private VisualElement CreateContentContainer(string title, VisualElement content)
         {
             var tabContentContainer = new VisualElement();
-            tabContentContainer.name = title + "Content";
+            tabContentContainer.name = title + TAB_CONTENT_SUFFIX;
             tabContentContainer.styleSheets.Add(this.styleSheets[0]);
             tabContentContainer.Add(content);
 
@@ -107,7 +108,8 @@ namespace Assets.Scripts.UI
 
         private static Label CreateTabLabelButton(string title)
         {
-            Label newLabelButton = new Label(title + "Tab");
+            Label newLabelButton = new Label();
+            newLabelButton.name = title + TAB_SUFFIX;
             newLabelButton.text = title;
             newLabelButton.AddToClassList(TAB_LABEL_CLASS_NAME);
 

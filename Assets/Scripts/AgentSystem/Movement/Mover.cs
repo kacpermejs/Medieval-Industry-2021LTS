@@ -16,7 +16,8 @@ namespace Assets.Scripts.AgentSystem.Movement
 
     public partial class Mover : AIBehaviourInvoker
     {
-
+        public const float Y_OFFSET = 0.22f;
+        public const float Z_OFFSET = 1;
         [SerializeField] private float _moveSpeed = 2f;
         [SerializeField] private bool _mouseMovement = true;
 
@@ -47,7 +48,7 @@ namespace Assets.Scripts.AgentSystem.Movement
         void Start()
         {
             MovePoint.parent = null;
-            GameManager.OnMapChanged += HandleMapChanges;
+            PathfindingManager.OnWalkableArrayChanged += HandleMapChanges;
         }
 
         // Update is called once per frame
@@ -122,7 +123,7 @@ namespace Assets.Scripts.AgentSystem.Movement
 
             _moveSpeed = temp;
             _commandQueue.Dequeue().OnExecutionEnded();
-            Debug.Log("Coroutine Ended");
+            //Debug.Log("Coroutine Ended");
             _busy = false;
 
         }
@@ -165,10 +166,10 @@ namespace Assets.Scripts.AgentSystem.Movement
                         
                         //set a new point to walk towards
                         var cellPos = PathfindingManager.ConvertToTilemapCoordinates(_resultPath[_pathIndex]);
-                        var newPos = GameManager.Instance.GridLayout.CellToWorld(cellPos);
+                        var newPos = GameManager.Instance.GridLayout.CellToWorld(cellPos) + new Vector3(0, Y_OFFSET, Z_OFFSET);
 
-                        var lowerTile = GameManager.Instance.TilemapGround.GetTile(cellPos);
-                        var upperTile = GameManager.Instance.TilemapSurface.GetTile(cellPos + new Vector3Int(0, 0, 1));
+                        var lowerTile = GameManager.Instance.TilemapGround.GetTile(cellPos + new Vector3Int(0, 0, -1));
+                        var upperTile = GameManager.Instance.TilemapGround.GetTile(cellPos);
 
                         if (lowerTile != null)
                         {
@@ -202,7 +203,7 @@ namespace Assets.Scripts.AgentSystem.Movement
         public bool SchedulePathfinding(Vector3Int targetPoint, bool comeNextTo = false)
         {
 
-            _startPoint = GameManager.Instance.GridLayout.LocalToCell(MovePoint.position);
+            _startPoint = GameManager.Instance.GridLayout.LocalToCell(MovePoint.position - new Vector3(0, Y_OFFSET, Z_OFFSET));
             
             _pathIndex = -1;
             _resultPath.Clear();

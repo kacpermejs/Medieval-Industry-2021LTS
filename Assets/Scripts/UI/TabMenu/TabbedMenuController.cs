@@ -43,11 +43,14 @@ namespace Assets.Scripts.UI
             Label clickedTab = evt.currentTarget as Label;
             if (!TabIsCurrentlySelected(clickedTab))
             {
-                GetAllTabs().Where(
-                    (tab) => tab != clickedTab && TabIsCurrentlySelected(tab)
-                ).ForEach(UnselectTab);
+                GetAllTabs().Where
+                            (
+                                (tab) => tab != clickedTab && TabIsCurrentlySelected(tab)
+                            )
+                            .ForEach(UnselectTab);
                 SelectTab(clickedTab);
             }
+            evt.StopPropagation();
         }
         //Method that returns a Boolean indicating whether a tab is currently selected
         private static bool TabIsCurrentlySelected(Label tab)
@@ -87,7 +90,8 @@ namespace Assets.Scripts.UI
         // Method that takes a tab as a parameter and returns the associated content element
         private VisualElement FindContent(Label tab)
         {
-            return root.Q(GenerateContentName(tab));
+            var name = GenerateContentName(tab);
+            return root.Q(name);
         }
     }
 

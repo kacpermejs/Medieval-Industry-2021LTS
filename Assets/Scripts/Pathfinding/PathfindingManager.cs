@@ -386,21 +386,34 @@ namespace Assets.Scripts.Pathfinding
                     bool value = false;
                     Vector3Int vec = ConvertToTilemapCoordinates(new int2(x, y));
 
-                    if (GameManager.Instance.TilemapGround.GetTile(vec) != null)
+                    if (GameManager.Instance.TilemapGround.GetTile(vec + new Vector3Int(0, 0, -1)) != null)
                     {
-                        if (((IMapElement)GameManager.Instance.TilemapGround.GetTile(vec)).Walkable)
+                        if (((IMapElement)GameManager.Instance.TilemapGround.GetTile(vec + new Vector3Int(0, 0, -1))).Walkable)
                         {
                             
-                            if (GameManager.Instance.TilemapSurface.GetTile(vec + new Vector3Int(0, 0, 1)) == null)
+                            if (GameManager.Instance.TilemapGround.GetTile(vec) == null)
                             {
                                 value = true;
                             }
-                            else if (((IMapElement)GameManager.Instance.TilemapSurface.GetTile(vec + new Vector3Int(0, 0, 1))).CanWalkThrough)
+                            else if (((IMapElement)GameManager.Instance.TilemapGround.GetTile(vec)).CanWalkThrough)
                             {
                                 value = true;
                             }
+                            if(GameManager.Instance.TilemapColliders.GetTile(vec) != null)
+                            {
+                                if (((IMapElement)GameManager.Instance.TilemapColliders.GetTile(vec)).CanWalkThrough)
+                                {
+                                    value = true;
+                                }
+                                else
+                                {
+                                    value = false;
+                                }
+                            }
+                            
                         }
                     }
+                    
 
 
                     _walkableArray[x + y * MAP_X_SIZE] = value;
@@ -409,6 +422,7 @@ namespace Assets.Scripts.Pathfinding
             }
             OnWalkableArrayChanged?.Invoke();
         }
+
 
         #endregion
 
