@@ -50,13 +50,12 @@ MonoBehaviour:
   _bounds:
     m_Position: {x: 0, y: 0, z: 0}
     m_Size: {x: 1, y: 1, z: 1}
-  _componentTilesIndecies: feffffff
+  _componentTilesIndecies: ffffffff
   _tiles: []
   _walkable: 0
   _canWalkThrough: 1
   _canBuildUpon: 0
   _walkingSpeedFactor: 1
-  _isGroundFeature: 0
   _layer: 1
   _useStandardRules: 1
 --- !u!114 &-8253246441348568645

@@ -1,21 +1,19 @@
 using Assets.Scripts.BuildingSystem;
 using Assets.Scripts.UI;
+using Assets.Scripts.Utills;
 using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class UIController : MonoBehaviour
+public class UIManager : SingletoneBase<UIManager>
 {
     public Button BTN_cancel;
     public Button BTN_house;
     
     VisualElement _root;
-    public static UIController Instance { get; private set; }
 
-    private void Awake()
-    {
-        Instance = this;
-    }
+    #region Unity Methods
+
     private void OnEnable()
     {
         _root = GetComponent<UIDocument>().rootVisualElement;
@@ -28,18 +26,9 @@ public class UIController : MonoBehaviour
         VisualTreeAsset buildingButtonTemplate = Resources.Load<VisualTreeAsset>("UI/UXML/ButtonTemplate");
 
         CreateBuildingListViewItems(buildingListView, buildingButtonTemplate);
-
-        ShowPopup();
     }
 
-    public void ShowPopup()
-    {
-        var popups = _root.Q("PopupContainer");
-
-        var popUp = new PopUpCustomControl();
-        popups.Add(popUp);
-
-    }
+    #endregion
 
     private void CreateBuildingListViewItems(ListView buildingListView, VisualTreeAsset buildingButtonTemplate)
     {

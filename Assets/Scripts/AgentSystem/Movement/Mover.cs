@@ -8,7 +8,7 @@ using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Utills;
+using Assets.Scripts.Utills;
 
 namespace Assets.Scripts.AgentSystem.Movement
 {

@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 
-public class ReadOnlyInspectorAttribute : PropertyAttribute
+namespace Assets.Scripts.Utills
 {
+    public class ReadOnlyInspectorAttribute : PropertyAttribute
+    {
 
+    }
 }
 

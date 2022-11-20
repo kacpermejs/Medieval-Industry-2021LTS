@@ -17,15 +17,16 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
 
             var tabs = GetComponents<IUICreator>();
 
+            bool selected = true;
             foreach (var tab in tabs)
             {
-                content.AddTab(tab.title, tab.CreateUIContent(), false);
+                content.AddTab(tab.title, tab.CreateUIContent(), selected);
                 tab.RegisterCallbacks();
+                selected = false;
             }
-
+            content.Init();
             //Attach content to pop-up window
-            //Debug.Log("open");
-            PopUpManager.Instance.OpenNewPopup(new Label("fhsdfyug"));
+            PopUpManager.OpenNewPopup(gameObject.name, content);
 
         }
         private void OnDestroy()

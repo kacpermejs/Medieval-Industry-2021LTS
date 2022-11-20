@@ -9,47 +9,46 @@ namespace Assets.Scripts.UI
     {
         public new class UxmlFactory : UxmlFactory<PopUpCustomControl> { }
 
-        private const string STYLESHEET_PATH = "UI/Styles/PopUpStylesheet";
-
-        private VisualElement _contentContainer;
-
-        
+        public string Header { get; set; }
         public event Action OnClose;
+
+        private const string STYLESHEET_PATH = "UI/Styles/PopUpStylesheet";
+        private VisualElement _contentContainer;        
 
         public PopUpCustomControl()
         {
             this.styleSheets.Add(Resources.Load<StyleSheet>(STYLESHEET_PATH));
             this.AddToClassList("windowContainer");
             this.pickingMode = PickingMode.Ignore;
-            
 
-            var window = new VisualElement();
+            hierarchy.Add(Resources.Load<VisualTreeAsset>("UI/UXML/PopUpTemplate").Instantiate());
 
-            window.AddToClassList("windowBackground");
-            window.name = "window";
-            
+            var window = this.Q("PopUpWindow");
 
+            var header = this.Q("WindowHeader");
 
-            var header = new VisualElement();
-            header.name = "header";
+            var headerLabel = header.Q<Label>("HeaderLabel");
+            var closeButton = header.Q("CloseButton");
 
-            var headerLabel = new Label("HeaderLabel");
-            header.Add(headerLabel);
+            closeButton.RegisterCallback<ClickEvent>(
+                (evt) =>
+                {
+                    Close();
+                });
 
-            _contentContainer = new VisualElement();
-            _contentContainer.name = "ContentContainer";
+            _contentContainer = this.Q("ContentArea");
 
             //Adding Dragging behaviour
             window.AddManipulator(new Dragger
             {
                 TargetElements =
                 {
+                    header,
                     headerLabel,
                 }
             });
 
             //Hierarhy population
-            hierarchy.Add(window);
 
             window.Add(header);
             window.Add(_contentContainer);
@@ -64,22 +63,11 @@ namespace Assets.Scripts.UI
             parent.Remove(this);
         }
 
-        public void SetContent(VisualElement content)
+        public void SetContent(string header, VisualElement content)
         {
+            Header = header;
             _contentContainer.Clear();
             _contentContainer.Add(content);
-        }
-
-        private static VisualElement CreateMenuTest()
-        {
-            var menu = new TabbedMenuCustomControl();
-            var label = new Label();
-            label.name = "abcd";
-            label.text = "abcd";
-            menu.AddTab("ABCD", label, false);
-            menu.Init();
-
-            return menu;
         }
 
     }

@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <ui:VisualElement name="Content" style="width: 200px; height: 200px; background-color: rgb(176, 108, 77);">
-        <ui:Button text="Add new worker" display-tooltip-when-elided="true" name="NewWorkerButton" style="font-size: 10px; background-color: rgb(108, 197, 84); border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; border-top-left-radius: 4px; border-bottom-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; margin-left: 8px; margin-right: 8px; margin-top: 8px; margin-bottom: 0;" />
-        <ui:ListView focusable="true" name="WorkerListView" style="background-color: rgb(137, 86, 63); margin-left: 8px; margin-right: 8px; margin-top: 8px; margin-bottom: 0; border-top-left-radius: 4px; border-bottom-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; padding-left: 4px; padding-right: 4px; padding-top: 4px; padding-bottom: 4px;" />
+    <ui:VisualElement name="Content" style="background-color: rgb(176, 108, 77);">
+        <ui:Button text="Add new worker" display-tooltip-when-elided="true" name="NewWorkerButton" />
+        <ui:ListView focusable="true" name="WorkerListView" style="background-color: rgb(137, 86, 63); margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; border-top-left-radius: 4px; border-bottom-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; padding-left: 4px; padding-right: 4px; padding-top: 4px; padding-bottom: 4px;" />
     </ui:VisualElement>
 </ui:UXML>

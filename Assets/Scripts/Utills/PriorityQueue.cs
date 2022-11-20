@@ -1,7 +1,6 @@
 ﻿#nullable enable
 
-// namespace System.Collections.Generic {
-namespace Utills
+namespace Assets.Scripts.Utills
 {
 
     // Licensed to the .NET Foundation under one or more agreements.

@@ -1,15 +1,15 @@
-using Assets.Scripts.CustomTiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
+using Assets.Scripts.CustomTiles;
+using Assets.Scripts.Utills;
 
 namespace Assets.Scripts.BuildingSystem
 {
-    public class BuildManager : MonoBehaviour
+    public class BuildManager : SingletoneBase<BuildManager>
     {
         public enum MarkerType
         {
@@ -44,11 +44,11 @@ namespace Assets.Scripts.BuildingSystem
 
         #region Unity methods
 
-        public static BuildManager Instance { get; private set; }
+        //public static BuildManager Instance { get; private set; }
 
         private void Awake()
         {
-            Instance = this;
+            //Instance = this;
 
             // TODO: Optimize loading - loading all GameObjects wastes a lot of memory
             /*LoadPlacableObjectTiles("Prefabs/BuildingPrefabs");
@@ -124,7 +124,6 @@ namespace Assets.Scripts.BuildingSystem
         }
 
         #endregion
-
 
         #region LoadingAssets
         private void LoadPlacableObjectTiles(string path)
@@ -224,6 +223,7 @@ namespace Assets.Scripts.BuildingSystem
             {
                 if (!CanBePlaced(tile, tilemap, area))
                 {
+                    Debug.Log("<color=red>Building cannot be placed!");
                     return;//TODO: do something if cannot be placed like play audio or sth
                 }
             }

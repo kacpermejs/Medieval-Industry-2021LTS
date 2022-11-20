@@ -1,3 +1,4 @@
+using Assets.Scripts.Utills;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,21 +6,13 @@ using UnityEngine.UIElements;
 
 namespace Assets.Scripts.UI
 {
-    public class PopUpManager : MonoBehaviour
+    public class PopUpManager : SingletoneBase<PopUpManager>
     {
         private List<PopUpCustomControl> _popUps = new List<PopUpCustomControl>();
         private VisualElement _root;
         private VisualElement _popupContainer;
 
-        /*TabbedMenuController _menuController;*/
-
-        public static PopUpManager Instance { get; private set; }
-
-        private void Awake()
-        {
-            Instance = this;
-        }
-
+        #region Unity Methods
 
         private void OnEnable()
         {
@@ -29,14 +22,18 @@ namespace Assets.Scripts.UI
 
         }
 
-        public void OpenNewPopup(VisualElement content)
+        #endregion
+
+        public static PopUpCustomControl OpenNewPopup(string header, VisualElement content)
         {
             var popUp = new PopUpCustomControl();
 
-            popUp.contentContainer.Add(content);
+            popUp.SetContent(header, content);
 
-            _popUps.Add(popUp);
-            _popupContainer.Add(popUp);
+            Instance._popUps.Add(popUp);
+            Instance._popupContainer.Add(popUp);
+
+            return popUp;
         }
 
 

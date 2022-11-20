@@ -2,6 +2,7 @@
 using Assets.Scripts.PlaceableObjectBehaviour;
 using System;
 using UnityEngine;
+using Assets.Scripts.Utills;
 
 namespace Assets.Scripts.AgentSystem.JobSystem
 {
@@ -16,10 +17,11 @@ namespace Assets.Scripts.AgentSystem.JobSystem
 
     public partial class Worker : AIBehaviourInvoker
     {
-        [field: SerializeField] public WorkerState WorkerState { get; private set; }
-        private WorkerState _previousWorkerState;
-        
         [SerializeField] private Workplace _workplace;
+        [field: SerializeField] public WorkerState WorkerState { get; private set; }
+        [SerializeField, ReadOnlyInspector] private int _currentInstructionIndex = 0;
+        [SerializeField, ReadOnlyInspector] private bool _commandExecuted = true;
+        private WorkerState _previousWorkerState;
         public Workplace Workplace
         {
             get => _workplace;
@@ -29,27 +31,11 @@ namespace Assets.Scripts.AgentSystem.JobSystem
                 WorkerAssignedHandler();
             }
         }
-
-
         private Command _command;
-
-        [SerializeField, ReadOnlyInspector] private int _currentInstructionIndex = 0;
-        [SerializeField, ReadOnlyInspector] private bool _commandExecuted = true;
-
         private StateBase _currentWorkerState;
-
         private IdleState _idleState = new IdleState();
         private WorkingState _workingState = new WorkingState();
         private WaitingState _waitingState = new WaitingState();
-
-
-        private void WorkerAssignedHandler()
-        {
-            if (true)
-            {
-                _currentWorkerState = _waitingState;
-            }
-        }
 
 
         #region UnityMethods
@@ -87,6 +73,36 @@ namespace Assets.Scripts.AgentSystem.JobSystem
             _currentWorkerState.UpdateState(this);
         }
 
+
+        #endregion
+
+        #region Handlers
+        private void WorkerAssignedHandler()
+        {
+            if (true)
+            {
+                _currentWorkerState = _waitingState;
+            }
+        }
+
+        private void ProcessingFinishedHandler(object sender, EventArgs e)
+        {
+            Debug.Log("Worker finished processing");
+        }
+
+        private void ProcessingStartedHandler(object sender, EventArgs e)
+        {
+            Debug.Log("Worker started processing");
+
+        }
+        
+        private void OnCommandFinished()
+        {
+            _currentInstructionIndex++;
+            _currentInstructionIndex = _currentInstructionIndex % Workplace.WorkCycle.Count;
+            _commandExecuted = true;
+            _command.ExecutionFinishedEvent.RemoveListener(OnCommandFinished);
+        }
 
         #endregion
 
@@ -145,24 +161,6 @@ namespace Assets.Scripts.AgentSystem.JobSystem
 
         }
 
-        private void ProcessingFinishedHandler(object sender, EventArgs e)
-        {
-            Debug.Log("Worker finished processing");
-        }
-
-        private void ProcessingStartedHandler(object sender, EventArgs e)
-        {
-            Debug.Log("Worker started processing");
-
-        }
         
-
-        private void OnCommandFinished()
-        {
-            _currentInstructionIndex++;
-            _currentInstructionIndex = _currentInstructionIndex % Workplace.WorkCycle.Count;
-            _commandExecuted = true;
-            _command.ExecutionFinishedEvent.RemoveListener(OnCommandFinished);
-        }
     }
 }

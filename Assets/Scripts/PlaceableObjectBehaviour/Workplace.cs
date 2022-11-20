@@ -56,7 +56,7 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
             _newWorkerButton.RegisterCallback<ClickEvent>(
                 (evt) =>
                 {
-                    AgentSelector.EnterAgentSelection();
+                    
                 }
             );
         }

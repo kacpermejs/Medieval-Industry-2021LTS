@@ -1,4 +1,3 @@
-
 using System;
 using UnityEngine;
 using Unity.Mathematics;
@@ -8,8 +7,7 @@ using Unity.Burst;
 using Assets.Scripts.BuildingSystem;
 using System.Collections;
 using System.Linq;
-using UnityEngine.Tilemaps;
-using Assets.Scripts.AgentSystem;
+using Assets.Scripts.Utills;
 
 namespace Assets.Scripts.Pathfinding
 {
@@ -274,10 +272,10 @@ namespace Assets.Scripts.Pathfinding
 
     }
 
-    public class PathfindingManager : MonoBehaviour
+    public class PathfindingManager : SingletoneBase<PathfindingManager>
     {
-        public static readonly int MAP_X_SIZE = 256;
-        public static readonly int MAP_Y_SIZE = 256;
+        public static readonly int MAP_X_SIZE = 512;
+        public static readonly int MAP_Y_SIZE = 512;
 
         private NativeArray<bool> _walkableArray;
 
@@ -295,13 +293,6 @@ namespace Assets.Scripts.Pathfinding
         #endregion
 
         #region UnityMethods
-
-        public static PathfindingManager Instance { get; private set; }
-
-        private void Awake()
-        {
-            Instance = this;
-        }
 
         private void Start()
         {

@@ -17,6 +17,50 @@ namespace Assets.Scripts.BuildingSystem
         public BoundsInt Bounds { get => _bounds; }
         public List<int> ComponentTilesIndecies { get => _componentTilesIndecies; set => _componentTilesIndecies = value; }
         public TileBase[] Tiles { get => _tiles; set => _tiles = value; }
+        
+        private Vector3Int _gridPosition;
+
+        #region Unity Methods
+        
+        private void Start()
+        {
+            
+            _gridPosition = GameManager.ConvertToGridPosition(transform.localPosition);
+
+            BoundsInt area = new BoundsInt();
+
+            area.size = Bounds.size;
+            area.position = _gridPosition - new Vector3Int(area.size.x / 2, area.size.y / 2, 0);
+
+
+            int size = area.size.x * area.size.y * area.size.z;
+
+            if (ComponentTilesIndecies.Count != size)
+                throw new Exception("Arrays don't match in size");
+
+            TileBase[] arr = new TileBase[size];
+            int index;
+
+            for (int i = 0; i < size; i++)
+            {
+
+                index = ComponentTilesIndecies[i];
+                if (index == -1)
+                {
+                    arr[i] = null;
+                }
+                else
+                {
+                    if (Tiles[index] is IMapElement)
+                        arr[i] = Tiles[index];
+                    else
+                        throw new Exception("Not a IMapElement");
+                }
+            }
+            GameManager.Instance.TilemapColliders.SetTilesBlock(area, arr);    
+        }
+
+        #endregion
 
         #region IMapElement Properties Implementation
         [Header("Fields for IMapElement interrface:")]
@@ -44,48 +88,15 @@ namespace Assets.Scripts.BuildingSystem
         }
         public IMapElement.DestinationMapLayer Layer => _layer;
 
+        #endregion 
+
+        #region IMapElement Methods
 
         public void Place(Tilemap tilemap, Vector3Int position)
         {
-            BoundsInt area = new BoundsInt();
-
-            area.size = Bounds.size;
-            area.position = position - new Vector3Int(area.size.x / 2, area.size.y / 2, 0);
-
-            var worldGameobjectPosition = tilemap.layoutGrid.CellToLocal(position + new Vector3Int(0,0,1));
+            var worldGameobjectPosition = tilemap.layoutGrid.CellToLocal(position);
 
             Instantiate(this.gameObject, worldGameobjectPosition, Quaternion.identity);
-
-            int size = area.size.x * area.size.y * area.size.z;
-
-            if (ComponentTilesIndecies.Count != size)
-                throw new Exception("Arrays don't match in size");
-
-            TileBase[] arr = new TileBase[size];
-            int index;
-
-            for (int i = 0; i < size; i++)
-            {
-
-                index = ComponentTilesIndecies[i];
-                /*if (index == -2)
-                {
-                    arr[i] = this;
-                }
-                else*/
-                if (index == -1)
-                {
-                    arr[i] = null;
-                }
-                else
-                {
-                    if (Tiles[index] is IMapElement)
-                        arr[i] = Tiles[index];
-                    else
-                        throw new Exception("Not a IMapElement");
-                }
-            }
-            GameManager.Instance.TilemapColliders.SetTilesBlock(area, arr);
         }
 
         public bool CanBePlaced(Tilemap tilemap, BoundsInt area)
