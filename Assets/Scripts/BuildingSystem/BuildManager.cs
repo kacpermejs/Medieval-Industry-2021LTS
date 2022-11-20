@@ -179,8 +179,8 @@ namespace Assets.Scripts.BuildingSystem
 
         private void DisplayBuildingMarkers()
         {
-            var area = new BoundsInt(new Vector3Int(-50, -50, 1), new Vector3Int(100, 100, 1));
-            GameManager.SetTilesBlock(area, _markerTiles[MarkerType.GreenTile], GameManager.Instance.TilemapMarkers);
+            /*var area = new BoundsInt(new Vector3Int(-50, -50, 1), new Vector3Int(100, 100, 1));
+            GameManager.SetTilesBlock(area, _markerTiles[MarkerType.GreenTile], GameManager.Instance.TilemapMarkers);*/
         }
 
         public void DisplayMarkers(BoundsInt area, MarkerType markerType)

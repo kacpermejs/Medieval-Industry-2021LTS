@@ -22,7 +22,7 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
         public List<IWorkerAgentTask> WorkerTasks { get => _workerTasks;  }
 
         #region UI Elements
-            private Button _newWorkerButton;
+            private Button _AddWorkerButton;
         #endregion
         
         public string title => "Workplace";
@@ -46,14 +46,14 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
 
             VisualElement content = Resources.Load<VisualTreeAsset>("UI/UXML/WorkplaceTabContent").Instantiate();
 
-            _newWorkerButton = content.Q<Button>("NewWorkerButton");
+            _AddWorkerButton = content.Q<Button>("NewWorkerButton");
 
             return content;
         }
 
         public void RegisterCallbacks()
         {
-            _newWorkerButton.RegisterCallback<ClickEvent>(
+            _AddWorkerButton.RegisterCallback<ClickEvent>(
                 (evt) =>
                 {
                     

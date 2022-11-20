@@ -19,7 +19,7 @@ namespace Assets.Scripts.AgentSystem.Movement
         public const float Y_OFFSET = 0.22f;
         public const float Z_OFFSET = 1;
         [SerializeField] private float _moveSpeed = 2f;
-        [SerializeField] private bool _mouseMovement = true;
+        [SerializeField] private bool _mouseMovement = false;
 
         [SerializeField] private Transform MovePoint;
 

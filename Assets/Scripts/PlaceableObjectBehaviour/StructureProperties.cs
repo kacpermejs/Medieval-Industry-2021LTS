@@ -9,24 +9,37 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
     [RequireComponent(typeof(PlaceableObject))]
     public class StructureProperties : MonoBehaviour
     {
+        private PopUpCustomControl _popUp;
+        private bool popUpStatus = false;
         
         private void OnMouseDown()//Request popup window
         {
-            //Build popup window content
-            var content = new TabbedMenuCustomControl();
-
-            var tabs = GetComponents<IUICreator>();
-
-            bool selected = true;
-            foreach (var tab in tabs)
+            if (_popUp == null || popUpStatus == false)
             {
-                content.AddTab(tab.title, tab.CreateUIContent(), selected);
-                tab.RegisterCallbacks();
-                selected = false;
+                //Build popup window content
+                var content = new TabbedMenuCustomControl();
+
+                var tabs = GetComponents<IUICreator>();
+
+                bool selected = true;
+                foreach (var tab in tabs)
+                {
+                    content.AddTab(tab.title, tab.CreateUIContent(), selected);
+                    tab.RegisterCallbacks();
+                    selected = false;
+                }
+                content.Init();
+                
+                //Attach content to pop-up window
+                var popUp = PopUpManager.OpenNewPopUp(gameObject.name, content);
+
+                if (popUp != null)
+                {
+                    popUp.OnClose += () => { popUpStatus = false; };
+                    popUpStatus = true;
+                    _popUp = popUp;
+                }
             }
-            content.Init();
-            //Attach content to pop-up window
-            PopUpManager.OpenNewPopup(gameObject.name, content);
 
         }
         private void OnDestroy()

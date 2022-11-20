@@ -1,3 +1,4 @@
+using Assets.Scripts.AgentSystem;
 using Assets.Scripts.BuildingSystem;
 using Assets.Scripts.UI;
 using Assets.Scripts.Utills;
@@ -8,7 +9,7 @@ using UnityEngine.UIElements;
 public class UIManager : SingletoneBase<UIManager>
 {
     public Button BTN_cancel;
-    public Button BTN_house;
+    public Button BTN_ok;
     
     VisualElement _root;
 
@@ -21,6 +22,10 @@ public class UIManager : SingletoneBase<UIManager>
         BTN_cancel = _root.Q<Button>("BTN_cancel");
 
         BTN_cancel.clicked += OnCancelClicked;
+
+        BTN_ok = _root.Q<Button>("BTN_ok");
+
+        BTN_ok.clicked += OnOkClicked;
 
         ListView buildingListView = _root.Q<ListView>("BuildingListView");
         VisualTreeAsset buildingButtonTemplate = Resources.Load<VisualTreeAsset>("UI/UXML/ButtonTemplate");
@@ -44,7 +49,7 @@ public class UIManager : SingletoneBase<UIManager>
             imageButton.clicked += () =>
             {
                 BuildManager.Instance.SetNewTileToBuild(index);
-                GameManager.Instance.UpdateGameState(GameState.BuildMode);
+                GameManager.Instance.SwitchState(GameState.BuildMode);
                 BTN_cancel.visible = true;
 
                 // TODO: I think there will be a memory leak if you don't unsubscribe - You go check it
@@ -59,6 +64,7 @@ public class UIManager : SingletoneBase<UIManager>
     private void OnDisable()
     {
         BTN_cancel.clicked -= OnCancelClicked;
+        BTN_ok.clicked -= OnOkClicked;
     }
     // Start is called before the first frame update
     void Start()
@@ -75,17 +81,39 @@ public class UIManager : SingletoneBase<UIManager>
             case GameState.BuildMode:
                 EscapeBuildMode();
                 break;
+            case GameState.WorkerAssignment:
+                AgentSelector.Cancel();
+                break;
             default:
                 break;
         }
 
     }
 
+    void OnOkClicked()
+    {
+        switch (GameManager.Instance.GameState)
+        {
+            case GameState.Default:
+                break;
+            case GameState.BuildMode:
+                break;
+            case GameState.WorkerAssignment:
+                AgentSelector.Cancel();
+                break;
+            default:
+                break;
+        }
+    }
+
     private void EscapeBuildMode()
     {
-        GameManager.Instance.UpdateGameState(GameState.Default);
+        GameManager.Instance.SwitchState(GameState.Default);
         BTN_cancel.visible = false;
+        BTN_ok.visible = false;
     }
+
+
 
 
 

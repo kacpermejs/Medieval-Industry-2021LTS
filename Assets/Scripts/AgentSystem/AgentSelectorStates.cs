@@ -1,37 +1,68 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.EventSystems;
+
 namespace Assets.Scripts.AgentSystem
 {
     public partial class AgentSelector
     {
-        public abstract class StateBase : IState<AgentSelector>
+        public static void Cancel()
         {
-            public abstract void EnterState(AgentSelector worker);
-
-            public abstract void UpdateState(AgentSelector worker);
+            
         }
 
-        public class StateActive : StateBase
+        public static void ConfirmSelectionCallBack()
         {
-            public override void EnterState(AgentSelector worker)
-            {
-                throw new System.NotImplementedException();
-            }
 
-            public override void UpdateState(AgentSelector worker)
+        }
+
+        internal static void NotifyAgentSelected(SelectableAgent agent)
+        {
+            if (Input.GetKeyDown(KeyCode.LeftControl))
             {
-                throw new System.NotImplementedException();
+                AgentSelector.ReplaceAll(agent);
+            }
+            else
+            {
+                AgentSelector.AddAnotherAgent(agent);
             }
         }
 
-        public class StateInactive : StateBase
+        public class State
         {
-            public override void EnterState(AgentSelector worker)
+            public abstract class Base : IState<AgentSelector>
             {
-                throw new System.NotImplementedException();
+                public abstract void EnterState(AgentSelector obj);
+
+                public abstract void UpdateState(AgentSelector obj);
             }
 
-            public override void UpdateState(AgentSelector worker)
+            public class WorkerSelection : Base
             {
-                throw new System.NotImplementedException();
+                public override void EnterState(AgentSelector obj)
+                {
+                
+                }
+
+                public override void UpdateState(AgentSelector obj)
+                {
+                
+                }
+            }
+
+            public class MovementSelection : Base
+            {
+
+                public override void EnterState(AgentSelector obj)
+                {
+                    
+                }
+
+                public override void UpdateState(AgentSelector obj)
+                {
+                    
+                }
             }
         }
     }

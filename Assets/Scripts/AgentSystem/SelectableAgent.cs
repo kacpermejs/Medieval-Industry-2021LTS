@@ -1,3 +1,4 @@
+using Assets.Scripts.AgentSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,14 @@ public class SelectableAgent : MonoBehaviour
 
     #region UnityMethods
 
+    private void OnMouseDown()
+    {
+        //Notify agent has been clicked
+        AgentSelector.NotifyAgentSelected(this);
+        Select();
+        
+    }
+
     private void Awake()
     {
         SelectionMarker = transform.Find("SelectionMarker");
@@ -15,7 +24,7 @@ public class SelectableAgent : MonoBehaviour
 
     private void OnEnable()
     {
-        Select();
+        //Select();
     }
 
     private void OnDisable()
@@ -27,8 +36,10 @@ public class SelectableAgent : MonoBehaviour
 
     public void Select()
     {
+        //visuals
         var mark = SelectionMarker.GetComponent<SpriteRenderer>();
         mark.enabled = true;
+        
     }
 
     public void Deselect()

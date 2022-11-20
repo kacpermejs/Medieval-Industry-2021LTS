@@ -24,7 +24,7 @@ namespace Assets.Scripts.UI
 
         #endregion
 
-        public static PopUpCustomControl OpenNewPopup(string header, VisualElement content)
+        public static PopUpCustomControl OpenNewPopUp(string header, VisualElement content)
         {
             var popUp = new PopUpCustomControl();
 

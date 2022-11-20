@@ -23,7 +23,7 @@ public enum GameState
 
 }
 
-public class GameManager : MonoBehaviour
+public partial class GameManager : MonoBehaviour
 {
     [SerializeField] private Grid _gridLayout;
     [SerializeField] private Tilemap _tilemapGround;
@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        UpdateGameState(GameState.Default);
+        SwitchState(GameState.Default);
     }
 
     // Update is called once per frame
@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
-    public void UpdateGameState(GameState newState)
+    public void SwitchState(GameState newState)
     {
         GameState = newState;
 

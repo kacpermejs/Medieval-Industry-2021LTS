@@ -22,6 +22,8 @@ namespace Assets.Scripts.AgentSystem.JobSystem
         [SerializeField, ReadOnlyInspector] private int _currentInstructionIndex = 0;
         [SerializeField, ReadOnlyInspector] private bool _commandExecuted = true;
         private WorkerState _previousWorkerState;
+
+        private StateBase _currentWorkerState;
         public Workplace Workplace
         {
             get => _workplace;
@@ -31,8 +33,10 @@ namespace Assets.Scripts.AgentSystem.JobSystem
                 WorkerAssignedHandler();
             }
         }
+
+        public StateBase CurrentWorkerState { get => _currentWorkerState; private set => _currentWorkerState = value; }
+
         private Command _command;
-        private StateBase _currentWorkerState;
         private IdleState _idleState = new IdleState();
         private WorkingState _workingState = new WorkingState();
         private WaitingState _waitingState = new WaitingState();
@@ -43,8 +47,8 @@ namespace Assets.Scripts.AgentSystem.JobSystem
 
         private void Start()
         {
-            _currentWorkerState = _idleState;
-            _currentWorkerState.EnterState(this);
+            CurrentWorkerState = _idleState;
+            CurrentWorkerState.EnterState(this);
         }
 
 
@@ -70,7 +74,7 @@ namespace Assets.Scripts.AgentSystem.JobSystem
             }
             _previousWorkerState = WorkerState;
 
-            _currentWorkerState.UpdateState(this);
+            CurrentWorkerState.UpdateState(this);
         }
 
 
@@ -81,7 +85,7 @@ namespace Assets.Scripts.AgentSystem.JobSystem
         {
             if (true)
             {
-                _currentWorkerState = _waitingState;
+                CurrentWorkerState = _waitingState;
             }
         }
 
@@ -108,9 +112,9 @@ namespace Assets.Scripts.AgentSystem.JobSystem
 
         public void SwitchState(StateBase state)
         {
-            _currentWorkerState = state;
-            _currentWorkerState.EnterState(this);
-            Debug.Log("State changed!");
+            CurrentWorkerState = state;
+            CurrentWorkerState.EnterState(this);
+            //Debug.Log("State changed!");
         }
 
         public void AddCommand(Command command)
