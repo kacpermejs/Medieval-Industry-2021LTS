@@ -3,28 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SelectableAgent : MonoBehaviour
+public class SelectionMarker : MonoBehaviour
 {
-    Transform SelectionMarker;
+    private GameObject Marker;
+
+    public bool IsSelected { get; private set; }
 
     #region UnityMethods
 
-    private void OnMouseDown()
+    /*private void OnMouseDown()
     {
-        //Notify agent has been clicked
-        AgentSelector.NotifyAgentSelected(this);
         Select();
-        
-    }
+    }*/
 
     private void Awake()
     {
-        SelectionMarker = transform.Find("SelectionMarker");
+        Marker = transform.Find("SelectionMarker").gameObject;
     }
 
     private void OnEnable()
     {
-        //Select();
+        Deselect();
     }
 
     private void OnDisable()
@@ -37,14 +36,14 @@ public class SelectableAgent : MonoBehaviour
     public void Select()
     {
         //visuals
-        var mark = SelectionMarker.GetComponent<SpriteRenderer>();
+        var mark = Marker.GetComponent<SpriteRenderer>();
         mark.enabled = true;
         
     }
 
     public void Deselect()
     {
-        var mark = SelectionMarker.GetComponent<SpriteRenderer>();
+        var mark = Marker.GetComponent<SpriteRenderer>();
         mark.enabled = false;
     }
 

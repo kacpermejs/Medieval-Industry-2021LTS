@@ -4,40 +4,78 @@ using System.Collections.Generic;
 using Assets.Scripts.AgentSystem;
 using Assets.Scripts.Utills;
 using Assets.Scripts.AgentSystem.Movement;
+using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.AgentSystem
 {
     public partial class AgentSelector : SingletoneBase<AgentSelector>
     {
-        private List<SelectableAgent> _agentList;
-        private State.Base _currentSelectorState;
-        private State.WorkerSelection _activeSelectionState = new();
-        private State.MovementSelection _noSelectionState = new();
+        private List<ISelect> _agentList;
 
-        public IReadOnlyCollection<SelectableAgent> AgentList => _agentList.AsReadOnly();
+        public IReadOnlyCollection<ISelect> AgentList => _agentList.AsReadOnly();
+
+        private bool _doSelect = false;
+
+        private Vector2 _startPosition;
+        private Camera _camera;
 
         public event Action OnSelectionChanged;
-        public event Action OnSelectionConfirmed;
-        public event Action OnSelectionCanceled;
 
-        public State.Base CurrentSelectorState { get => _currentSelectorState; private set => _currentSelectorState = value; }
-
-        #region Unity Methods
+        #region Unity methods
 
         private void Awake()
         {
-            GameManager.OnGameStateChanged += GameManagerOnGameStateChanged;
-            _agentList = new List<SelectableAgent>();
-        }
+            _camera = Camera.main;
 
-        private void Start()
-        {
-            SwitchState(_noSelectionState);
+            GameManager.OnGameStateChanged += GameManagerOnGameStateChanged;
+            _agentList = new List<ISelect>();
         }
 
         private void Update()
         {
-            CurrentSelectorState.UpdateState(this);
+            if (_doSelect)
+            {
+                if (!EventSystem.current.IsPointerOverGameObject())
+                {
+                    //Clear on right mouse button
+                    if (Input.GetMouseButtonDown(1))
+                    {
+                        Clear();
+                    }
+
+                    //Start selection area
+                    if (Input.GetMouseButtonDown(0))
+                    {
+
+                        if (!Input.GetKey(KeyCode.C))
+                        {
+                            Clear();
+                        }
+
+                        _startPosition = _camera.ScreenToWorldPoint(Input.mousePosition);
+                    }
+
+                    if (Input.GetMouseButtonUp(0))
+                    {
+                        Vector2 endPosition = _camera.ScreenToWorldPoint(Input.mousePosition);
+                        Collider2D[] colliders = Physics2D.OverlapAreaAll(_startPosition, endPosition);
+
+                        
+                        foreach (var unit in colliders)
+                        {
+                            if (unit.TryGetComponent<ISelect>(out var selectedUnit))
+                            {
+                                selectedUnit.Select();
+                                OnSelectionChanged?.Invoke();
+                                _agentList.Add(selectedUnit);
+                            }
+                        }
+                    }
+
+                }
+            }
+         
+
         }
 
         private void OnDestroy()
@@ -46,41 +84,46 @@ namespace Assets.Scripts.AgentSystem
         }
 
         #endregion
+
+        public static void Clear()
+        {
+            foreach (var agent in Instance._agentList)
+            {
+                agent.Deselect();
+            }
+            Instance._agentList.Clear();
+        }
+
         private void GameManagerOnGameStateChanged(GameState obj)
         {
             switch (obj)
             {
                 case GameState.Default:
-                    //Hands on commands
-                    foreach (var agent in _agentList)
-                    {
-                        //use mouse movement
-                    }
-                    break;
-                case GameState.BuildMode:
+                    _doSelect = true;
                     break;
                 case GameState.WorkerAssignment:
                     //selection needs confirmation
-
+                    _doSelect = true;
                     break;
                 default:
+                    _doSelect = false;
                     break;
             }
         }
 
-        public static void SwitchState(State.Base state)
+        /*public static void SwitchState(State.Base state)
         {
             Instance.CurrentSelectorState = state;
             Instance.CurrentSelectorState.EnterState(Instance);
             //Debug.Log("State changed!");
-        }
+        }*/
 
-        public static void AddAnotherAgent(SelectableAgent agent)
+        private static void Add(ISelect agent)
         {
             Instance._agentList.Add(agent);
         }
 
-        public static void ReplaceAll(SelectableAgent agent)
+        private static void ClearSelection()
         {
             foreach (var member in Instance._agentList)
             {
@@ -88,8 +131,6 @@ namespace Assets.Scripts.AgentSystem
             }
 
             Instance._agentList.Clear();
-
-            Instance._agentList.Add(agent);
 
         }
 

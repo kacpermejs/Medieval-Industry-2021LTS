@@ -82,7 +82,7 @@ public class UIManager : SingletoneBase<UIManager>
                 EscapeBuildMode();
                 break;
             case GameState.WorkerAssignment:
-                AgentSelector.Cancel();
+
                 break;
             default:
                 break;
@@ -99,7 +99,7 @@ public class UIManager : SingletoneBase<UIManager>
             case GameState.BuildMode:
                 break;
             case GameState.WorkerAssignment:
-                AgentSelector.Cancel();
+                
                 break;
             default:
                 break;

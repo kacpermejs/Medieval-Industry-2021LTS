@@ -42,6 +42,8 @@ namespace Assets.Scripts.BuildingSystem
         private List<PlaceableObject> _buildings;
         private List<PlaceableObject> _resources;
 
+        private Camera _camera;
+
         #region Unity methods
 
         //public static BuildManager Instance { get; private set; }
@@ -49,6 +51,8 @@ namespace Assets.Scripts.BuildingSystem
         private void Awake()
         {
             //Instance = this;
+
+            _camera = Camera.main;
 
             // TODO: Optimize loading - loading all GameObjects wastes a lot of memory
             /*LoadPlacableObjectTiles("Prefabs/BuildingPrefabs");
@@ -93,17 +97,14 @@ namespace Assets.Scripts.BuildingSystem
                     //Do not place any object if mouse is over a UI object
                     if (!EventSystem.current.IsPointerOverGameObject())
                     {
-                        Vector2 screenPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                        Vector2 screenPoint = _camera.ScreenToWorldPoint(Input.mousePosition);
 
                         Vector3Int gridPoint = GameManager.Instance.GridLayout.LocalToCell(screenPoint);
 
                         Tilemap destTilemap;
                         switch (_tileToPlace.Layer)
                         {
-                            case IMapElement.DestinationMapLayer.Ground:
-                                destTilemap = GameManager.Instance.TilemapGround;
-                                break;
-                            case IMapElement.DestinationMapLayer.Surface:
+                            case IMapElement.DestinationMapLayer.Map:
                                 destTilemap = GameManager.Instance.TilemapGround;
                                 break;
                             case IMapElement.DestinationMapLayer.Markers:
@@ -203,7 +204,7 @@ namespace Assets.Scripts.BuildingSystem
         private void Place(Tilemap tilemap, Vector3Int gridPoint, IMapElement tile, bool useCanBePlaced)
         {
             //add offset if tile is a ground block like the road
-            if (tile.Layer == IMapElement.DestinationMapLayer.Ground)
+            if (tile.Layer == IMapElement.DestinationMapLayer.Map)
             {
                 gridPoint.z -= 1;
             }

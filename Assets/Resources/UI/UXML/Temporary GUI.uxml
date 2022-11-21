@@ -1,6 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <ui:VisualElement name="Screen" picking-mode="Ignore" style="flex-grow: 1; justify-content: space-between; align-items: stretch; flex-direction: row;">
         <ui:VisualElement name="PopupButtonArea" picking-mode="Ignore" style="padding-top: 40px; align-items: center; justify-content: center; flex-direction: column; display: flex; visibility: visible; position: absolute; left: 0; top: 0; right: 0; height: 79px;">
+            <ui:Button text="Cancel" display-tooltip-when-elided="true" name="BTN_ok" style="display: flex; visibility: hidden;" />
             <ui:Button text="Cancel" display-tooltip-when-elided="true" name="BTN_cancel" style="display: flex; visibility: hidden;" />
         </ui:VisualElement>
         <ui:VisualElement name="MenuBar" style="justify-content: flex-end; flex-direction: row-reverse; align-items: auto; position: relative; bottom: auto; height: auto;">

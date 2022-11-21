@@ -11,7 +11,7 @@ using Assets.Scripts.Utills;
 
 namespace Assets.Scripts.Pathfinding
 {
-    [BurstCompile]
+    //[BurstCompile]
     public struct PathfindingJob : IJob
     {
         private const int DIAGONAL_COST = 14;
@@ -289,10 +289,15 @@ namespace Assets.Scripts.Pathfinding
         #region Events and Handlers
 
         public static event Action OnWalkableArrayChanged;
-        
+
         #endregion
 
         #region UnityMethods
+
+        private void Awake()
+        {
+            var x = Instance;
+        }
 
         private void Start()
         {

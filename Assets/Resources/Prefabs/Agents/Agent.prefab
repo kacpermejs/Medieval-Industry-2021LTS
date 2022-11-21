@@ -39,7 +39,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 901236511985923388}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -265,7 +265,7 @@ MonoBehaviour:
   InterruptCurrentActionCommand: {fileID: 0}
   ContinueInterruptedActionsCommand: {fileID: 0}
   _moveSpeed: 2
-  _mouseMovement: 1
+  _mouseMovement: 0
   MovePoint: {fileID: 573271921844499575}
   _busy: 0
 --- !u!114 &237511183706587706

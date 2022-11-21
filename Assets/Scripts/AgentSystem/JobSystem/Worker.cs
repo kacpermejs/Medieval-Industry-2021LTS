@@ -15,7 +15,7 @@ namespace Assets.Scripts.AgentSystem.JobSystem
         Waiting = 20,
     }
 
-    public partial class Worker : AIBehaviourInvoker
+    public partial class Worker : AIBehaviourInvoker, ISelect
     {
         [SerializeField] private Workplace _workplace;
         [field: SerializeField] public WorkerState WorkerState { get; private set; }
@@ -36,10 +36,14 @@ namespace Assets.Scripts.AgentSystem.JobSystem
 
         public StateBase CurrentWorkerState { get => _currentWorkerState; private set => _currentWorkerState = value; }
 
+        public bool IsSelected { get; private set; }
+
         private Command _command;
         private IdleState _idleState = new IdleState();
         private WorkingState _workingState = new WorkingState();
         private WaitingState _waitingState = new WaitingState();
+
+        private SelectionMarker _marker;
 
 
         #region UnityMethods
@@ -49,6 +53,7 @@ namespace Assets.Scripts.AgentSystem.JobSystem
         {
             CurrentWorkerState = _idleState;
             CurrentWorkerState.EnterState(this);
+            _marker = GetComponent<SelectionMarker>();
         }
 
 
@@ -152,7 +157,6 @@ namespace Assets.Scripts.AgentSystem.JobSystem
                 }
                 else
                 {
-
                     return;
                 }
 
@@ -161,10 +165,19 @@ namespace Assets.Scripts.AgentSystem.JobSystem
                 _command.Execute();
 
             }
+        }
 
+        public void Select()
+        {
+            IsSelected = true;
+            _marker.Select();
 
         }
 
-        
+        public void Deselect()
+        {
+            IsSelected = false;
+            _marker.Deselect();
+        }
     }
 }

@@ -9,15 +9,19 @@ using UnityEngine.Tilemaps;
 public enum GameState
 {
     /// <summary>
-    /// Free camera, clicking on building to open their properties popup windows
+    /// Clicking on building to open their properties popup windows, selecting units to command them
     /// </summary>
     Default,
+    /// <summary>
+    /// When units are selected you can make them do things
+    /// </summary>
+    UnitCommanding,
     /// <summary>
     /// Builder is enabled Clicking on the map will place selected building there
     /// </summary>
     BuildMode,
     /// <summary>
-    /// 
+    /// Selection checking for agent to be a compatible Worker
     /// </summary>
     WorkerAssignment,
 
