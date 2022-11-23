@@ -39,9 +39,9 @@ namespace Assets.Scripts.AgentSystem.JobSystem
         public bool IsSelected { get; private set; }
 
         private Command _command;
-        private IdleState _idleState = new IdleState();
-        private WorkingState _workingState = new WorkingState();
-        private WaitingState _waitingState = new WaitingState();
+        public IdleState _idleState = new IdleState();
+        public WorkingState _workingState = new WorkingState();
+        public WaitingState _waitingState = new WaitingState();
 
         private SelectionMarker _marker;
 
@@ -59,25 +59,25 @@ namespace Assets.Scripts.AgentSystem.JobSystem
 
         private void Update()
         {
-            if(WorkerState != _previousWorkerState)
-            {
+            //if(WorkerState != _previousWorkerState)
+            //{
                 
-                switch (WorkerState)
-                {
-                    case WorkerState.Idle:
-                        SwitchState(_idleState);
-                        break;
-                    case WorkerState.Working:
-                        SwitchState(_workingState);
-                        break;
-                    case WorkerState.Waiting:
-                        SwitchState(_waitingState);
-                        break;
-                    default:
-                        break;
-                }
-            }
-            _previousWorkerState = WorkerState;
+            //    switch (WorkerState)
+            //    {
+            //        case WorkerState.Idle:
+            //            SwitchState(_idleState);
+            //            break;
+            //        case WorkerState.Working:
+            //            SwitchState(_workingState);
+            //            break;
+            //        case WorkerState.Waiting:
+            //            SwitchState(_waitingState);
+            //            break;
+            //        default:
+            //            break;
+            //    }
+            //}
+            //_previousWorkerState = WorkerState;
 
             CurrentWorkerState.UpdateState(this);
         }

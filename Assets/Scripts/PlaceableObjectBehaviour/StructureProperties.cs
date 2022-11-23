@@ -2,7 +2,6 @@ using Assets.Scripts.BuildingSystem;
 using Assets.Scripts.UI;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Assets.Scripts.PlaceableObjectBehaviour
 {
@@ -44,23 +43,16 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
         }
         private void OnDestroy()
         {
-            var tabs = GetComponents<IUICreator>();
-
-            foreach (var tab in tabs)
+            if (_popUp != null)
             {
-                tab.UnregisterCallbacks();
-            }  
+                var tabs = GetComponents<IUICreator>();
+
+                foreach (var tab in tabs)
+                {
+                    tab.UnregisterCallbacks();
+                }  
+            }
         }
-    }
-
-    public interface IUICreator
-    {
-        string title { get; }
-        VisualElement CreateUIContent();
-
-        void RegisterCallbacks();
-
-        void UnregisterCallbacks();
     }
 }
 

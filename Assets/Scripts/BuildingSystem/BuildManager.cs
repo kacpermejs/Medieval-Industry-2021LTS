@@ -104,9 +104,6 @@ namespace Assets.Scripts.BuildingSystem
                         Tilemap destTilemap;
                         switch (_tileToPlace.Layer)
                         {
-                            case IMapElement.DestinationMapLayer.Map:
-                                destTilemap = GameManager.Instance.TilemapGround;
-                                break;
                             case IMapElement.DestinationMapLayer.Markers:
                                 destTilemap = GameManager.Instance.TilemapMarkers;
                                 break;
@@ -204,7 +201,7 @@ namespace Assets.Scripts.BuildingSystem
         private void Place(Tilemap tilemap, Vector3Int gridPoint, IMapElement tile, bool useCanBePlaced)
         {
             //add offset if tile is a ground block like the road
-            if (tile.Layer == IMapElement.DestinationMapLayer.Map)
+            if (tile.Layer == IMapElement.DestinationMapLayer.Ground)
             {
                 gridPoint.z -= 1;
             }

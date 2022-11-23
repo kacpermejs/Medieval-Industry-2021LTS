@@ -35,8 +35,9 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
             }
         }
 
-        public Vector3Int GetResourcePosition()
+        public Vector3Int GetTaskPosition()
         {
+
             return new Vector3Int(0, 0, 0);
         }
 
@@ -53,18 +54,30 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
 
         public void RegisterCallbacks()
         {
-            _AddWorkerButton.RegisterCallback<ClickEvent>(
-                (evt) =>
-                {
-                    
-                }
-            );
+            _AddWorkerButton.RegisterCallback<ClickEvent>(AddWorkersButtonHandler);
         }
-
         public void UnregisterCallbacks()
         {
-            
+            _AddWorkerButton.UnregisterCallback<ClickEvent>(AddWorkersButtonHandler);
         }
+
         #endregion
+
+        private void AddWorkersButtonHandler(ClickEvent evt)
+        {
+            foreach (var agent in AgentSelector.Instance.AgentList)
+            {
+                if (agent is Worker worker)
+                {
+                    if (!_assignedWorkers.Contains(worker))
+                    {
+                        _assignedWorkers.Add(worker);
+                        worker.Workplace = this;
+                        worker.SwitchState(new Worker.WorkingState());
+                    }
+                }
+            }
+        }
+
     }
 }

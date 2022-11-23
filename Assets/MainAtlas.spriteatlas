@@ -41,6 +41,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: a602b530a4d102a4d8fcb7d9f0fd0d9e, type: 3}
   - {fileID: 21300000, guid: 2328a440d0192ca4d9769cc758f997df, type: 3}
   - {fileID: 21300000, guid: cc859d50c44e78c43947e42ab7d980ae, type: 3}
+  - {fileID: 21300000, guid: b985606054c7c364d8de4706c3723522, type: 3}
   - {fileID: 21300000, guid: f050046031d2ce849a592e216d3a8d2f, type: 3}
   - {fileID: 21300000, guid: 151bfe6008ac78c489b229c11cd9a18f, type: 3}
   - {fileID: 21300000, guid: d46a6f601a43149469d21aa23c2d70bc, type: 3}
@@ -328,6 +329,7 @@ SpriteAtlas:
   - stone(3)
   - river_desert(5)
   - road(8)
+  - pixel_white
   - castle_tower_wood(3)
   - mill_wood
   - bow_animation(1)

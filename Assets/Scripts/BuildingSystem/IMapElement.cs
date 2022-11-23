@@ -15,7 +15,8 @@ namespace Assets.Scripts.BuildingSystem
         DestinationMapLayer Layer { get; }
         public enum DestinationMapLayer
         {
-            Map,
+            Surface,
+            Ground,
             Markers
         }
         void Place(Tilemap tilemap, Vector3Int position);

@@ -56,7 +56,7 @@ MonoBehaviour:
   _canWalkThrough: 1
   _canBuildUpon: 0
   _walkingSpeedFactor: 1
-  _layer: 1
+  _layer: 0
   _useStandardRules: 1
 --- !u!114 &-8253246441348568645
 MonoBehaviour:

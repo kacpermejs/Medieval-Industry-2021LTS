@@ -58,7 +58,7 @@ MonoBehaviour:
   _canWalkThrough: 0
   _canBuildUpon: 0
   _walkingSpeedFactor: 1
-  _layer: 1
+  _layer: 0
   _useStandardRules: 1
 --- !u!60 &6157987391324787916
 PolygonCollider2D:

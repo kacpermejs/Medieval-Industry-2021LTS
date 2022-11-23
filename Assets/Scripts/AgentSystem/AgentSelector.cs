@@ -10,6 +10,8 @@ namespace Assets.Scripts.AgentSystem
 {
     public partial class AgentSelector : SingletoneBase<AgentSelector>
     {
+        [SerializeField] private Transform _selectionTransform;
+        
         private List<ISelect> _agentList;
 
         public IReadOnlyCollection<ISelect> AgentList => _agentList.AsReadOnly();
@@ -43,28 +45,54 @@ namespace Assets.Scripts.AgentSystem
                         Clear();
                     }
 
+                    if (Input.GetMouseButton(0))//visuals
+                    {
+                        Vector2 currentPos = _camera.ScreenToWorldPoint(Input.mousePosition);
+
+                        Vector2 lowerLeft = new Vector2(
+                            Mathf.Min(_startPosition.x, currentPos.x),
+                            Mathf.Min(_startPosition.y, currentPos.y)
+                            );
+                        Vector2 upperRight = new Vector2(
+                            Mathf.Max(_startPosition.x, currentPos.x),
+                            Mathf.Max(_startPosition.y, currentPos.y)
+                            );
+
+                        _selectionTransform.position = lowerLeft;
+                        _selectionTransform.localScale = upperRight - lowerLeft;
+                    }
+
+                    
+
                     //Start selection area
                     if (Input.GetMouseButtonDown(0))
                     {
-
-                        if (!Input.GetKey(KeyCode.C))
-                        {
-                            Clear();
-                        }
+                        _selectionTransform.gameObject.SetActive(true);//visuals
+                        _selectionTransform.localScale = Vector3.zero;
 
                         _startPosition = _camera.ScreenToWorldPoint(Input.mousePosition);
+                        //keep selected when left ctrl pressed
+                        
                     }
 
                     if (Input.GetMouseButtonUp(0))
                     {
+                        _selectionTransform.gameObject.SetActive(false);//visuals
+
                         Vector2 endPosition = _camera.ScreenToWorldPoint(Input.mousePosition);
                         Collider2D[] colliders = Physics2D.OverlapAreaAll(_startPosition, endPosition);
 
-                        
+                        bool doClear = !Input.GetKey(KeyCode.LeftControl);
+
                         foreach (var unit in colliders)
                         {
                             if (unit.TryGetComponent<ISelect>(out var selectedUnit))
                             {
+                                if(doClear)
+                                {
+                                    Clear();
+                                    doClear = false;
+                                }
                                 selectedUnit.Select();
                                 OnSelectionChanged?.Invoke();
                                 _agentList.Add(selectedUnit);

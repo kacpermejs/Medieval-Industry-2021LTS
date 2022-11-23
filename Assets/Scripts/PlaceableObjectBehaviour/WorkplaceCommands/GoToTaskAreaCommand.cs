@@ -17,7 +17,7 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
             base.Execute();
             Mover mover = worker.GetComponent<Mover>();
 
-            Vector3Int resourceCellPos = workplace.GetResourcePosition();
+            Vector3Int resourceCellPos = workplace.GetTaskPosition();
 
             MoveCommand moveCommand = ScriptableObject.CreateInstance<MoveCommand>();
             moveCommand.CreateCommand(this, mover, resourceCellPos, comeNextTo: false);
