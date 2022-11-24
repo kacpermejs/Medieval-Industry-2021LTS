@@ -1,17 +1,18 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Assets.Scripts.AgentSystem.AgentBehaviour
 {
     public partial class Worker
     {
-        public abstract class StateBase : IState<Worker>
+        public abstract class WorkerStateBase : IState<Worker>
         {
             public abstract void EnterState(Worker worker);
             public abstract void UpdateState(Worker worker);
             
         }
 
-        public class WorkingState : StateBase
+        public class WorkingState : WorkerStateBase
         {
             public override void EnterState(Worker worker)
             {
@@ -22,13 +23,23 @@ namespace Assets.Scripts.AgentSystem.AgentBehaviour
             {
                 if (worker.Workplace != null)
                 {
-                    worker.FollowWorkplaceInstructions();
-
+                    if(worker.Workplace.WorkerTask != null)
+                    {
+                        worker.DoWorkplaceTask();
+                    }
+                    else
+                    {
+                        worker.SwitchState(new WaitingState());
+                    }
+                }
+                else
+                {
+                    worker.SwitchState(new IdleState());
                 }
             }
         }
 
-        public class WaitingState : StateBase
+        public class WaitingState : WorkerStateBase
         {
             public override void EnterState(Worker worker)
             {
@@ -41,7 +52,10 @@ namespace Assets.Scripts.AgentSystem.AgentBehaviour
             }
         }
 
-        public class IdleState : StateBase
+        /// <summary>
+        /// To be implemented, e.g. wandering about
+        /// </summary>
+        public class IdleState : WorkerStateBase
         {
             public override void EnterState(Worker worker)
             {
@@ -50,7 +64,14 @@ namespace Assets.Scripts.AgentSystem.AgentBehaviour
 
             public override void UpdateState(Worker worker)
             {
-                
+                if(worker.Workplace != null)
+                {
+                    worker.SwitchState(new WaitingState());
+                }
+                else
+                {
+                    //Wandering - now sannding still
+                }
             }
         }
     }

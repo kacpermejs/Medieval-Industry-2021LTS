@@ -23,7 +23,7 @@ namespace Assets.Scripts.AgentSystem.Movement
 
         [SerializeField] private Transform MovePoint;
 
-        private Command _command;
+        private MoverComandBase _command;
         private NativeList<int2> _resultPath;
 
 
@@ -61,11 +61,11 @@ namespace Assets.Scripts.AgentSystem.Movement
 
             if (!_busy && _command != null)
             {
-                _command.OnExecutionEnded();
                 _command = null;
             }
 
             // Schedule pathfinding by clicking the mouse on the map
+            // TODO: 
             if (_mouseMovement && GameManager.Instance.GameState == GameState.Default)
             {
                 if (Input.GetMouseButtonDown(0))
@@ -77,8 +77,7 @@ namespace Assets.Scripts.AgentSystem.Movement
 
                         Vector3Int endPoint = GameManager.Instance.GridLayout.LocalToCell(screenPoint);
 
-                        var manualMoveCommand = ScriptableObject.CreateInstance<MoveCommand>();
-                        manualMoveCommand.CreateCommand(this, this, endPoint, priority: -1);
+                        var manualMoveCommand = new MoveCommand(this, endPoint);
 
                         AddCommand(manualMoveCommand);
                         StartCoroutine(ExecuteCommand(true));
@@ -112,7 +111,7 @@ namespace Assets.Scripts.AgentSystem.Movement
 
         
 
-        public void AddCommand(Command command)
+        public void AddCommand(MoverComandBase command)
         {
             _command = command;
         }

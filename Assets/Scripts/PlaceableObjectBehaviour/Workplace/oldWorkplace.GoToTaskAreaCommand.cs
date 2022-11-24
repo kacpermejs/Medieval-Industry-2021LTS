@@ -6,9 +6,9 @@ using Assets.Scripts.AgentSystem.AgentBehaviour;
 
 namespace Assets.Scripts.PlaceableObjectBehaviour.Workplace
 {
-    public partial class Workplace
+    /*public partial class Workplace
     {
-        [CreateAssetMenu]
+        [System.Serializable]
         public class GoToTaskAreaCommand : WorkplaceCommandBase
         {
             public override void Execute()
@@ -18,7 +18,7 @@ namespace Assets.Scripts.PlaceableObjectBehaviour.Workplace
 
                 Vector3Int resourceCellPos = workplace.GetTaskPosition();
 
-                Mover.MoveCommand moveCommand = ScriptableObject.CreateInstance<Mover.MoveCommand>();
+                Mover.MoveCommand moveCommand = new Mover.MoveCommand();
                 moveCommand.CreateCommand(this, mover, resourceCellPos, comeNextTo: false);
                 moveCommand.ExecutionFinishedEvent.AddListener(OnExecutionEnded);
 
@@ -26,5 +26,5 @@ namespace Assets.Scripts.PlaceableObjectBehaviour.Workplace
 
             }
         }
-    }
+    }*/
 }

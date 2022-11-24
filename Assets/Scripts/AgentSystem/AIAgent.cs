@@ -4,38 +4,49 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using static Assets.Scripts.AgentSystem.AIAgent;
 
 namespace Assets.Scripts.AgentSystem
 {
-    public class AIAgent : MonoBehaviour
+    /// <summary>
+    /// This Component handles enabling different behaviour components of an AIAgent depending on encountered conditions
+    /// </summary>
+    public partial class AIAgent : MonoBehaviour, IFiniteStateMachine<AIStateBase>
     {
-        public abstract class State : IState<AIAgent>
+        private AIBehaviour[] _behaviours;
+        private AIBehaviour _activeBehaviour;
+
+        private AIStateBase _currentState;
+
+        public AIStateBase CurrentState => _currentState;
+
+        public void SwitchState(AIStateBase state)
         {
-            public void EnterState(AIAgent obj)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void UpdateState(AIAgent obj)
-            {
-                throw new NotImplementedException();
-            }
+            _currentState = state;
+            _currentState.EnterState(this);
         }
+
+        #region Unity Methods
+
+        private void Awake()
+        {
+            _behaviours = GetComponents<AIBehaviour>();
+        }
+
+        private void OnEnable()
+        {
+            foreach (var component in _behaviours)
+            {
+                component.enabled = false;
+            }
+
+        }
+
+        private void Update()
+        {
+            
+        }
+
+        #endregion
     }
-
-    public interface AIBehaviour
-    {
-        void Start();
-        void Update();
-    }
-
-    /*public abstract class AIBehaviourInvoker : MonoBehaviour
-    {
-        public Command AbandonCommand;
-
-        public Command InterruptCurrentActionCommand;
-
-        public Command ContinueInterruptedActionsCommand;
-
-    }*/
 }

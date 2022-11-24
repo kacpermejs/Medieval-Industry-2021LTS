@@ -6,9 +6,9 @@ using Assets.Scripts.AgentSystem.AgentBehaviour;
 
 namespace Assets.Scripts.PlaceableObjectBehaviour.Workplace
 {
-    public partial class Workplace
+    /*public partial class Workplace
     {
-        [CreateAssetMenu]
+        [System.Serializable]
         public class GoToWorkplaceCommand : WorkplaceCommandBase
         {
             public override void Execute()
@@ -18,7 +18,7 @@ namespace Assets.Scripts.PlaceableObjectBehaviour.Workplace
 
                 Vector3Int workplaceCellPos = GameManager.ConvertToGridPosition(workplace.transform.position);
 
-                var moveCommand = ScriptableObject.CreateInstance<Mover.MoveCommand>();
+                var moveCommand = new Mover.MoveCommand();
                 moveCommand.CreateCommand(this, mover, workplaceCellPos, comeNextTo: true);
                 moveCommand.ExecutionFinishedEvent.AddListener(OnExecutionEnded);
 
@@ -32,5 +32,5 @@ namespace Assets.Scripts.PlaceableObjectBehaviour.Workplace
 
             }
         }
-    }
+    }*/
 }

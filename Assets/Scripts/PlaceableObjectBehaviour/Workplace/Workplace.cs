@@ -4,6 +4,7 @@ using Assets.Scripts.JobSystem;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UIElements;
 
 namespace Assets.Scripts.PlaceableObjectBehaviour.Workplace
@@ -11,16 +12,16 @@ namespace Assets.Scripts.PlaceableObjectBehaviour.Workplace
     public partial class Workplace : MonoBehaviour, IUICreator
     {
         [SerializeField] private int _workerCapacity = 1;
-        [SerializeField] private List<Worker> _assignedWorkers;
+        [SerializeField] private List<Worker> _assignedWorkers = new List<Worker>();
 
-        [SerializeField] private List<Command> _workCycle;
+        //[SerializeField] private List<UnityAction> _workCycle;
 
-        [SerializeField] private List<IWorkerAgentTask> _workerTasks;
+        [SerializeField] private IWorkerAgentTask _workerTask;
 
         [field:SerializeField]
         public bool IsOpen { get; private set; }
-        public List<Command> WorkCycle { get => _workCycle; set => _workCycle = value; }
-        public List<IWorkerAgentTask> WorkerTasks { get => _workerTasks;  }
+        //public List<UnityAction> WorkCycle { get => _workCycle; set => _workCycle = value; }
+        public IWorkerAgentTask WorkerTask { get => _workerTask; }
 
         #region UI Elements
             private Button _AddWorkerButton;
@@ -28,18 +29,20 @@ namespace Assets.Scripts.PlaceableObjectBehaviour.Workplace
         
         public string title => "Workplace";
 
-        public void AddWorker(Worker worker)
+
+
+        public bool AddWorker(Worker worker)
         {
             if( _assignedWorkers.Count < _workerCapacity && !_assignedWorkers.Contains(worker) )
             {
                 _assignedWorkers.Add(worker);
+                worker.Workplace = this;
+                return true;
             }
-        }
-
-        public Vector3Int GetTaskPosition()
-        {
-
-            return new Vector3Int(0, 0, 0);
+            else
+            {
+                return false;
+            }
         }
 
         #region IUICreator methods
@@ -70,12 +73,7 @@ namespace Assets.Scripts.PlaceableObjectBehaviour.Workplace
             {
                 if (agent is Worker worker)
                 {
-                    if (!_assignedWorkers.Contains(worker))
-                    {
-                        _assignedWorkers.Add(worker);
-                        worker.Workplace = this;
-                        worker.SwitchState(new Worker.WorkingState());
-                    }
+                    AddWorker(worker);
                 }
             }
         }

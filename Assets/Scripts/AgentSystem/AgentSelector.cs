@@ -12,9 +12,9 @@ namespace Assets.Scripts.AgentSystem
     {
         [SerializeField] private Transform _selectionTransform;
         
-        private List<ISelect> _agentList;
+        private List<ISelectableAgent> _agentList;
 
-        public IReadOnlyCollection<ISelect> AgentList => _agentList.AsReadOnly();
+        public IReadOnlyCollection<ISelectableAgent> AgentList => _agentList.AsReadOnly();
 
         private bool _doSelect = false;
 
@@ -30,7 +30,7 @@ namespace Assets.Scripts.AgentSystem
             _camera = Camera.main;
 
             GameManager.OnGameStateChanged += GameManagerOnGameStateChanged;
-            _agentList = new List<ISelect>();
+            _agentList = new List<ISelectableAgent>();
         }
 
         private void Update()
@@ -73,7 +73,7 @@ namespace Assets.Scripts.AgentSystem
 
                         foreach (var unit in colliders)
                         {
-                            if (unit.TryGetComponent<ISelect>(out var selectedUnit))
+                            if (unit.TryGetComponent<ISelectableAgent>(out var selectedUnit))
                             {
                                 if(doClear)
                                 {

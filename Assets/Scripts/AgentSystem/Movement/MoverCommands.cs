@@ -7,30 +7,23 @@ namespace Assets.Scripts.AgentSystem.Movement
 {
     public partial class Mover
     {
-        class MoverComandBase : Command
+        public abstract class MoverComandBase : ICommand
         {
-
+            public Mover Mover;
+            public abstract void Execute();
         }
 
         /// <summary>
         /// Agent will follow the path starting the next frame from execution (not including the waiting queue)
         /// </summary>
-        [CreateAssetMenu]
-        public class MoveCommand : Command
+        public class MoveCommand : MoverComandBase
         {
-            [HideInInspector]
-            public Mover Mover;
-            [HideInInspector]
             public Vector3Int Destination;
             public bool ComeNextTo = false;
             public float SlowDownFactor = 1f;
 
-            public void CreateCommand(object sender, Mover mover, Vector3Int destination, int priority = 20, bool comeNextTo = false, float slowDownFactor = 1f)
+            public MoveCommand(Mover mover, Vector3Int destination, bool comeNextTo = false, float slowDownFactor = 1f)
             {
-                //base class parameters
-                Sender = sender;
-                Priority = priority;
-
                 Mover = mover;
 
                 Destination = destination;
@@ -40,18 +33,13 @@ namespace Assets.Scripts.AgentSystem.Movement
 
             public override void Execute()
             {
-                base.Execute();
                 //Agent will follow the path starting the next frame from execution (not including the waiting queue)
                 Mover.SchedulePathfinding(Destination, ComeNextTo);
             }
         }
 
-        [CreateAssetMenu]
-        public class HoldCommand : Command
+        public class HoldCommand : MoverComandBase
         {
-            [HideInInspector]
-            public Mover Mover;
-
             public int Seconds;
             public override void Execute()
             {
