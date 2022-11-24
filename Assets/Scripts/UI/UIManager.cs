@@ -76,13 +76,8 @@ public class UIManager : SingletoneBase<UIManager>
     {
         switch (GameManager.Instance.GameState)
         {
-            case GameState.Default:
-                break;
             case GameState.BuildMode:
                 EscapeBuildMode();
-                break;
-            case GameState.WorkerAssignment:
-
                 break;
             default:
                 break;
@@ -94,12 +89,7 @@ public class UIManager : SingletoneBase<UIManager>
     {
         switch (GameManager.Instance.GameState)
         {
-            case GameState.Default:
-                break;
             case GameState.BuildMode:
-                break;
-            case GameState.WorkerAssignment:
-                
                 break;
             default:
                 break;

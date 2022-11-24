@@ -1,13 +1,14 @@
 ﻿using Assets.Scripts.AgentSystem;
-using Assets.Scripts.AgentSystem.JobSystem;
+using Assets.Scripts.AgentSystem.AgentBehaviour;
+using Assets.Scripts.JobSystem;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Assets.Scripts.PlaceableObjectBehaviour
+namespace Assets.Scripts.PlaceableObjectBehaviour.Workplace
 {
-    public class Workplace : MonoBehaviour, IUICreator
+    public partial class Workplace : MonoBehaviour, IUICreator
     {
         [SerializeField] private int _workerCapacity = 1;
         [SerializeField] private List<Worker> _assignedWorkers;

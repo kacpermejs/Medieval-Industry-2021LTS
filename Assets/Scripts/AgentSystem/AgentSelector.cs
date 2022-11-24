@@ -42,27 +42,13 @@ namespace Assets.Scripts.AgentSystem
                     //Clear on right mouse button
                     if (Input.GetMouseButtonDown(1))
                     {
-                        Clear();
+                        ClearAgentList();
                     }
 
                     if (Input.GetMouseButton(0))//visuals
                     {
-                        Vector2 currentPos = _camera.ScreenToWorldPoint(Input.mousePosition);
-
-                        Vector2 lowerLeft = new Vector2(
-                            Mathf.Min(_startPosition.x, currentPos.x),
-                            Mathf.Min(_startPosition.y, currentPos.y)
-                            );
-                        Vector2 upperRight = new Vector2(
-                            Mathf.Max(_startPosition.x, currentPos.x),
-                            Mathf.Max(_startPosition.y, currentPos.y)
-                            );
-
-                        _selectionTransform.position = lowerLeft;
-                        _selectionTransform.localScale = upperRight - lowerLeft;
+                        ResizeSelectionArea();
                     }
-
-                    
 
                     //Start selection area
                     if (Input.GetMouseButtonDown(0))
@@ -82,6 +68,7 @@ namespace Assets.Scripts.AgentSystem
                         Vector2 endPosition = _camera.ScreenToWorldPoint(Input.mousePosition);
                         Collider2D[] colliders = Physics2D.OverlapAreaAll(_startPosition, endPosition);
 
+                        //keep selected units if left ctrl is pressed
                         bool doClear = !Input.GetKey(KeyCode.LeftControl);
 
                         foreach (var unit in colliders)
@@ -90,12 +77,12 @@ namespace Assets.Scripts.AgentSystem
                             {
                                 if(doClear)
                                 {
-                                    Clear();
+                                    ClearAgentList();
                                     doClear = false;
                                 }
                                 selectedUnit.Select();
-                                OnSelectionChanged?.Invoke();
                                 _agentList.Add(selectedUnit);
+                                OnSelectionChanged?.Invoke();//this will not fire when there was 0 units selected
                             }
                         }
                     }
@@ -106,6 +93,23 @@ namespace Assets.Scripts.AgentSystem
 
         }
 
+        private void ResizeSelectionArea()
+        {
+            Vector2 currentPos = _camera.ScreenToWorldPoint(Input.mousePosition);
+
+            Vector2 lowerLeft = new Vector2(
+                Mathf.Min(_startPosition.x, currentPos.x),
+                Mathf.Min(_startPosition.y, currentPos.y)
+                );
+            Vector2 upperRight = new Vector2(
+                Mathf.Max(_startPosition.x, currentPos.x),
+                Mathf.Max(_startPosition.y, currentPos.y)
+                );
+
+            _selectionTransform.position = lowerLeft;
+            _selectionTransform.localScale = upperRight - lowerLeft;
+        }
+
         private void OnDestroy()
         {
             GameManager.OnGameStateChanged -= GameManagerOnGameStateChanged;
@@ -113,7 +117,7 @@ namespace Assets.Scripts.AgentSystem
 
         #endregion
 
-        public static void Clear()
+        public static void ClearAgentList()
         {
             foreach (var agent in Instance._agentList)
             {
@@ -129,8 +133,7 @@ namespace Assets.Scripts.AgentSystem
                 case GameState.Default:
                     _doSelect = true;
                     break;
-                case GameState.WorkerAssignment:
-                    //selection needs confirmation
+                case GameState.UnitCommanding:
                     _doSelect = true;
                     break;
                 default:
@@ -139,28 +142,6 @@ namespace Assets.Scripts.AgentSystem
             }
         }
 
-        /*public static void SwitchState(State.Base state)
-        {
-            Instance.CurrentSelectorState = state;
-            Instance.CurrentSelectorState.EnterState(Instance);
-            //Debug.Log("State changed!");
-        }*/
-
-        private static void Add(ISelect agent)
-        {
-            Instance._agentList.Add(agent);
-        }
-
-        private static void ClearSelection()
-        {
-            foreach (var member in Instance._agentList)
-            {
-                member.Deselect();
-            }
-
-            Instance._agentList.Clear();
-
-        }
 
 
     }

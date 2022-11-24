@@ -14,7 +14,7 @@ namespace Assets.Scripts.AgentSystem.Movement
 {
 
 
-    public partial class Mover : AIBehaviourInvoker
+    public partial class Mover : MonoBehaviour
     {
         public const float Y_OFFSET = 0.22f;
         public const float Z_OFFSET = 1;
@@ -23,7 +23,7 @@ namespace Assets.Scripts.AgentSystem.Movement
 
         [SerializeField] private Transform MovePoint;
 
-        private Queue<Command> _commandQueue = new Queue<Command>();
+        private Command _command;
         private NativeList<int2> _resultPath;
 
 
@@ -56,33 +56,15 @@ namespace Assets.Scripts.AgentSystem.Movement
         {
             //Move towards Waypoint position
             transform.position = Vector3.MoveTowards(transform.position, MovePoint.position, _moveSpeed * Time.deltaTime);
+            FollowThePath();
 
-            if (_jobHandle.IsCompleted)
+
+            if (!_busy && _command != null)
             {
-                _jobHandle.Complete();
+                _command.OnExecutionEnded();
+                _command = null;
             }
 
-            if (!_busy)
-            {
-                if (_commandQueue.Count > 0)
-                {
-                    ExecuteCommand();
-                    _busy = true;
-                }
-            }
-            if (_commandQueue.Count > 0)
-            {
-                if (_commandQueue.Peek() is MoveCommand)
-                {
-                    //Alter the Waypoint if it has been reached
-                    FollowThePath();
-                }
-                else if (_commandQueue.Peek() is HoldCommand)
-                {
-                    //Nothing to do
-                    //Command is served by coroutine
-                }
-            }
             // Schedule pathfinding by clicking the mouse on the map
             if (_mouseMovement && GameManager.Instance.GameState == GameState.Default)
             {
@@ -99,13 +81,16 @@ namespace Assets.Scripts.AgentSystem.Movement
                         manualMoveCommand.CreateCommand(this, this, endPoint, priority: -1);
 
                         AddCommand(manualMoveCommand);
+                        StartCoroutine(ExecuteCommand(true));
 
                     }
                 }
             }
-
-
-
+            
+            if (!_busy && _command != null)
+            {
+                StartCoroutine(ExecuteCommand(false));
+            }
         }
         private void OnDestroy()
         {
@@ -122,22 +107,24 @@ namespace Assets.Scripts.AgentSystem.Movement
             yield return new WaitForSeconds(seconds);
 
             _moveSpeed = temp;
-            _commandQueue.Dequeue().OnExecutionEnded();
-            //Debug.Log("Coroutine Ended");
             _busy = false;
-
         }
 
         
 
         public void AddCommand(Command command)
         {
-            _commandQueue.Enqueue(command);
+            _command = command;
         }
 
-        private void ExecuteCommand()
+        private IEnumerator ExecuteCommand(bool force)
         {
-            _commandQueue.Peek().Execute();
+            yield return new WaitForEndOfFrame();
+            if(!_busy || force)
+            {
+                _command.Execute();
+                _busy = true;
+            }
         }
 
         private void FollowThePath()
@@ -157,7 +144,6 @@ namespace Assets.Scripts.AgentSystem.Movement
                     }
                     else if (_resultPath.Length <= 0)
                     {
-                        _commandQueue.Dequeue().OnExecutionEnded();
                         _busy = false;
                         return;
                     }
@@ -221,21 +207,18 @@ namespace Assets.Scripts.AgentSystem.Movement
             //if agent is walking
             if(_busy)
             {
-                Command currentCommand;
-                if(_commandQueue.TryPeek(out currentCommand))
+                if(_command is MoveCommand)
                 {
-                    if (currentCommand is MoveCommand)
-                    {
-                        //Set to default
-                        _pathIndex = -1;
-                        _resultPath.Clear();
-                        //Execute again
-                        currentCommand.Execute();
-                    }
+                    
+                    //Set to default
+                    _pathIndex = -1;
+                    _resultPath.Clear();
+                    //Execute again
+                    StartCoroutine(ExecuteCommand(true)); //Recalculate path
+                    
                 }
 
             }
-            //Recalculate path
         }
 
         

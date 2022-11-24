@@ -19,11 +19,7 @@ public enum GameState
     /// <summary>
     /// Builder is enabled Clicking on the map will place selected building there
     /// </summary>
-    BuildMode,
-    /// <summary>
-    /// Selection checking for agent to be a compatible Worker
-    /// </summary>
-    WorkerAssignment,
+    BuildMode
 
 }
 

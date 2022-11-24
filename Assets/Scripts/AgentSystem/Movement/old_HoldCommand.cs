@@ -4,24 +4,7 @@ using UnityEngine;
 namespace Assets.Scripts.AgentSystem.Movement
 {
 
-    [CreateAssetMenu]
-    public class HoldCommand : Command
-    {
-        [HideInInspector]
-        public Mover Mover;
-        
-        public int Seconds;
-
-        public override void Execute()
-        {
-            Mover.StartCoroutine(Mover.HoldForSeconds(Seconds));
-        }
-
-        public override void OnExecutionEnded()
-        {
-            base.OnExecutionEnded();
-        }
-    }
+    
         
     
 }

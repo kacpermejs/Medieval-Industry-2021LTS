@@ -3,8 +3,10 @@ using Assets.Scripts.PlaceableObjectBehaviour;
 using System;
 using UnityEngine;
 using Assets.Scripts.Utills;
+using Assets.Scripts.PlaceableObjectBehaviour.Workplace;
+using static Assets.Scripts.PlaceableObjectBehaviour.Workplace.Workplace;
 
-namespace Assets.Scripts.AgentSystem.JobSystem
+namespace Assets.Scripts.AgentSystem.AgentBehaviour
 {
     public enum WorkerState
     {
@@ -15,7 +17,7 @@ namespace Assets.Scripts.AgentSystem.JobSystem
         Waiting = 20,
     }
 
-    public partial class Worker : AIBehaviourInvoker, ISelect
+    public partial class Worker : MonoBehaviour, ISelect
     {
         [SerializeField] private Workplace _workplace;
         [field: SerializeField] public WorkerState WorkerState { get; private set; }

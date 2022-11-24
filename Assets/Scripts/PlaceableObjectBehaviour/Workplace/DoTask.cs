@@ -1,12 +1,14 @@
 ﻿using Assets.Scripts.AgentSystem;
-using Assets.Scripts.AgentSystem.JobSystem;
+using Assets.Scripts.JobSystem;
 using Assets.Scripts.AgentSystem.Movement;
 using UnityEngine;
+using Assets.Scripts.AgentSystem.AgentBehaviour;
 
-namespace Assets.Scripts.PlaceableObjectBehaviour
+namespace Assets.Scripts.PlaceableObjectBehaviour.Workplace
 {
+
     [CreateAssetMenu]
-    public class DoWorkplaceProcessingCommand : Command
+    public class DoTask : Command
     {
         [HideInInspector]
         public Workplace workplace;
@@ -22,7 +24,7 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
 
             Vector3Int workplaceCellPos = GameManager.ConvertToGridPosition(workplace.transform.position);
 
-            HoldCommand holdCommand = ScriptableObject.CreateInstance<HoldCommand>();
+            var holdCommand = ScriptableObject.CreateInstance<Mover.HoldCommand>();
             holdCommand.Sender = this;
             holdCommand.Mover = mover;
             holdCommand.Seconds = Seconds;

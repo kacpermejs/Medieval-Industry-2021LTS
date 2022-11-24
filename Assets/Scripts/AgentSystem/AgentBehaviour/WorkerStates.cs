@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts.AgentSystem.JobSystem
+namespace Assets.Scripts.AgentSystem.AgentBehaviour
 {
     public partial class Worker
     {

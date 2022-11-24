@@ -9,8 +9,9 @@ using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
 using System;
+using Assets.Scripts.AgentSystem.AgentBehaviour;
 
-namespace Assets.Scripts.AgentSystem.JobSystem
+namespace Assets.Scripts.JobSystem
 {
     public interface IWorkerAgentTask
     {

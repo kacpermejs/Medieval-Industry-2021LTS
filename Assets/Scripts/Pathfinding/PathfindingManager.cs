@@ -274,8 +274,8 @@ namespace Assets.Scripts.Pathfinding
 
     public class PathfindingManager : SingletoneBase<PathfindingManager>
     {
-        public static readonly int MAP_X_SIZE = 512;
-        public static readonly int MAP_Y_SIZE = 512;
+        public static readonly int MAP_X_SIZE = 256;
+        public static readonly int MAP_Y_SIZE = 256;
 
         private NativeArray<bool> _walkableArray;
 
@@ -304,11 +304,16 @@ namespace Assets.Scripts.Pathfinding
             _walkableArray = new NativeArray<bool>(MAP_X_SIZE * MAP_Y_SIZE, Allocator.Persistent);
             ZeroPointOffset = new Vector3Int(-MAP_X_SIZE / 2, -MAP_Y_SIZE / 2);
 
-            GameManager.OnMapChanged += UpdateWalkableArray;
+            GameManager.OnMapChanged += MapChangedHandler;
 
             
             //TODO: This is temporary solution to make sure that update happens after the map has been loaded
-            StartCoroutine(UpdateWalkableArrayNextFrame());
+            StartCoroutine(UpdateWalkableArrayLate());
+        }
+
+        private void MapChangedHandler()
+        {
+            StartCoroutine(UpdateWalkableArrayLate());
         }
 
         private void OnDestroy()
@@ -365,10 +370,13 @@ namespace Assets.Scripts.Pathfinding
         /// Coroutine used to update a native array of walkable tiles one frame after its called
         /// </summary>
         /// <returns></returns>
-        private IEnumerator UpdateWalkableArrayNextFrame()
+        private IEnumerator UpdateWalkableArrayLate()
         {
             yield return null;
-            UpdateWalkableArray();
+            UpdateWalkableArray();// TODO: Change to a job with pathfinding depending on it
+            yield return null;
+            OnWalkableArrayChanged?.Invoke();
+
         }
 
         private void UpdateWalkableArray()
@@ -416,7 +424,7 @@ namespace Assets.Scripts.Pathfinding
 
                 }
             }
-            OnWalkableArrayChanged?.Invoke();
+            
         }
 
 

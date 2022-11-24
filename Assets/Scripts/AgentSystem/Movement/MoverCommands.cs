@@ -5,43 +5,58 @@ using UnityEngine.Events;
 
 namespace Assets.Scripts.AgentSystem.Movement
 {
-
-    /// <summary>
-    /// Agent will follow the path starting the next frame from execution (not including the waiting queue)
-    /// </summary>
-    [CreateAssetMenu]
-    public class MoveCommand : Command
+    public partial class Mover
     {
-        [HideInInspector]
-        public Mover Mover;
-        [HideInInspector]
-        public Vector3Int Destination;
-        public bool ComeNextTo = false;
-        public float SlowDownFactor = 1f;
-
-        public void CreateCommand(object sender, Mover mover, Vector3Int destination, int priority = 20, bool comeNextTo = false, float slowDownFactor = 1f)
+        class MoverComandBase : Command
         {
-            //base class parameters
-            Sender = sender;
-            Priority = priority;
 
-            Mover = mover;
-
-            Destination = destination;
-            ComeNextTo = comeNextTo;
-            SlowDownFactor = slowDownFactor;
         }
 
-        public override void Execute()
+        /// <summary>
+        /// Agent will follow the path starting the next frame from execution (not including the waiting queue)
+        /// </summary>
+        [CreateAssetMenu]
+        public class MoveCommand : Command
         {
-            base.Execute();
-            //Agent will follow the path starting the next frame from execution (not including the waiting queue)
-            Mover.SchedulePathfinding(Destination, ComeNextTo);
+            [HideInInspector]
+            public Mover Mover;
+            [HideInInspector]
+            public Vector3Int Destination;
+            public bool ComeNextTo = false;
+            public float SlowDownFactor = 1f;
+
+            public void CreateCommand(object sender, Mover mover, Vector3Int destination, int priority = 20, bool comeNextTo = false, float slowDownFactor = 1f)
+            {
+                //base class parameters
+                Sender = sender;
+                Priority = priority;
+
+                Mover = mover;
+
+                Destination = destination;
+                ComeNextTo = comeNextTo;
+                SlowDownFactor = slowDownFactor;
+            }
+
+            public override void Execute()
+            {
+                base.Execute();
+                //Agent will follow the path starting the next frame from execution (not including the waiting queue)
+                Mover.SchedulePathfinding(Destination, ComeNextTo);
+            }
         }
 
-        public override void OnExecutionEnded()
+        [CreateAssetMenu]
+        public class HoldCommand : Command
         {
-            base.OnExecutionEnded();
+            [HideInInspector]
+            public Mover Mover;
+
+            public int Seconds;
+            public override void Execute()
+            {
+                Mover.StartCoroutine(Mover.HoldForSeconds(Seconds));
+            }
         }
     }
 

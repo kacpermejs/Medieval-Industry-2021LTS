@@ -9,21 +9,27 @@ namespace Assets.Scripts.AgentSystem
 {
     public class AIAgent : MonoBehaviour
     {
-        public void AbandonAllActions()
+        public abstract class State : IState<AIAgent>
         {
-            var AIBehaviourComponents = GetComponents<AIBehaviourInvoker>();
-
-            foreach (var component in AIBehaviourComponents)
+            public void EnterState(AIAgent obj)
             {
-                if (component.AbandonCommand != null)
-                {
-                    component.AbandonCommand.Execute();
-                }
+                throw new NotImplementedException();
+            }
+
+            public void UpdateState(AIAgent obj)
+            {
+                throw new NotImplementedException();
             }
         }
     }
 
-    public abstract class AIBehaviourInvoker : MonoBehaviour
+    public interface AIBehaviour
+    {
+        void Start();
+        void Update();
+    }
+
+    /*public abstract class AIBehaviourInvoker : MonoBehaviour
     {
         public Command AbandonCommand;
 
@@ -31,5 +37,5 @@ namespace Assets.Scripts.AgentSystem
 
         public Command ContinueInterruptedActionsCommand;
 
-    }
+    }*/
 }
