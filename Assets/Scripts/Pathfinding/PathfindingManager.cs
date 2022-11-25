@@ -311,9 +311,9 @@ namespace Assets.Scripts.Pathfinding
             StartCoroutine(UpdateWalkableArrayLate());
         }
 
-        private void MapChangedHandler()
+        private void MapChangedHandler(BoundsInt area)
         {
-            StartCoroutine(UpdateWalkableArrayLate());
+            StartCoroutine(UpdateWalkableArrayLate(area));
         }
 
         private void OnDestroy()
@@ -370,21 +370,36 @@ namespace Assets.Scripts.Pathfinding
         /// Coroutine used to update a native array of walkable tiles one frame after its called
         /// </summary>
         /// <returns></returns>
-        private IEnumerator UpdateWalkableArrayLate()
+        private IEnumerator UpdateWalkableArrayLate(BoundsInt? area = null)
         {
             yield return null;
-            UpdateWalkableArray();// TODO: Change to a job with pathfinding depending on it
+            UpdateWalkableArray(area);// TODO: Change to a job with pathfinding depending on it
             yield return null;
             OnWalkableArrayChanged?.Invoke();
-
         }
 
-        private void UpdateWalkableArray()
+        private void UpdateWalkableArray(BoundsInt? area = null)
         {
-
-            for (int x = 0; x < MAP_X_SIZE; x++)
+            int minX, minY, maxX, maxY;
+            if (area != null)
             {
-                for (int y = 0; y < MAP_Y_SIZE; y++)
+                minX = ConvertToArrayCoordinates(area.Value.min).x;
+                minY = ConvertToArrayCoordinates(area.Value.min).y;
+                maxX = ConvertToArrayCoordinates(area.Value.max).x;
+                maxY = ConvertToArrayCoordinates(area.Value.max).y;
+            }
+            else
+            {
+                minX = 0;
+                minY = 0;
+                maxX = MAP_X_SIZE;
+                maxY = MAP_Y_SIZE;
+            }
+
+
+            for (int x = minX; x < maxX; x++)
+            {
+                for (int y = minY; y < maxY; y++)
                 {
 
                     bool value = false;

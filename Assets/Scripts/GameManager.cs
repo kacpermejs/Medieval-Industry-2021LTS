@@ -32,7 +32,7 @@ public partial class GameManager : MonoBehaviour
     [SerializeField] private Tilemap _tilemapColliders;
     [SerializeField] private Tilemap _tilemapMarkers;
 
-    public static event Action OnMapChanged;
+    public static event Action<BoundsInt> OnMapChanged;
 
     public Grid GridLayout { get => _gridLayout; }
     public Tilemap TilemapGround { get => _tilemapGround; }
@@ -106,9 +106,9 @@ public partial class GameManager : MonoBehaviour
         return Instance.GridLayout.LocalToCell(pos);
     }
 
-    public static void NotifyMapChanged()
+    public static void NotifyMapChanged(BoundsInt area)
     {
-        OnMapChanged?.Invoke();
+        OnMapChanged?.Invoke(area);
     }
 
     #region Tilemap utility extension

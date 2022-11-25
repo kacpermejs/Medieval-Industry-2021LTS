@@ -124,21 +124,6 @@ namespace Assets.Scripts.BuildingSystem
         #endregion
 
         #region LoadingAssets
-        private void LoadPlacableObjectTiles(string path)
-        {
-            GameObject[] prefabs = Resources.LoadAll<GameObject>(path);
-
-            foreach (GameObject prefab in prefabs)
-            {
-                if (!prefab.name.StartsWith("[base]"))
-                {
-                    /*PlaceableObjectTile temp = ScriptableObject.CreateInstance<PlaceableObjectTile>();
-                    temp.gameObject = prefab;
-                    PlacableTiles.Add(temp);*/
-
-                }
-            }
-        }
 
         private void LoadPlaceableObjectPrefabs(string path)
         {
@@ -227,7 +212,8 @@ namespace Assets.Scripts.BuildingSystem
             }
             tile.Place(tilemap, gridPoint);
 
-            GameManager.NotifyMapChanged();
+            //GameManager.NotifyMapChanged();
+            GameManager.NotifyMapChanged(area);
         }
 
         private bool CanBePlaced(IMapElement tile, Tilemap tilemap, BoundsInt area)
@@ -295,11 +281,11 @@ namespace Assets.Scripts.BuildingSystem
                 {
                     return false;
                 }
-                // TODO: handle empty tile below
             }
 
             return true;
         }
+
 
         public static bool CheckIfCanBeBuiltUpon(Tilemap tilemap, Vector3Int blockPosition)
         {
