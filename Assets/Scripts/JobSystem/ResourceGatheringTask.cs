@@ -40,7 +40,7 @@ namespace Assets.Scripts.JobSystem
         {
             var resource = Resource.FindClosestAvaliableResource(
                 _assignedWorker.transform.position,
-                1,
+                _targetPrefab.Id,
                 10,
                 condition: (r) => !r.IsDepleted
                 );

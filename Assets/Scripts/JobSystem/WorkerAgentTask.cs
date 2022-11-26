@@ -29,8 +29,8 @@ namespace Assets.Scripts.JobSystem
         {
             if(!_busy)
             {
-                NextAction?.Invoke();
                 _busy = true;
+                NextAction?.Invoke();
             }
         }
 

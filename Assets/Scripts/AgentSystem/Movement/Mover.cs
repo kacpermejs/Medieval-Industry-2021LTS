@@ -59,11 +59,10 @@ namespace Assets.Scripts.AgentSystem.Movement
             FollowThePath();
 
 
-            if (!_busy && _command != null)
+            /*if (!_busy && _command != null)
             {
-                _command.ExecutionEnded();
                 _command = null;
-            }
+            }*/
 
             // Schedule pathfinding by clicking the mouse on the map
             // TODO: 
@@ -86,11 +85,11 @@ namespace Assets.Scripts.AgentSystem.Movement
                     }
                 }
             }
-            
             if (!_busy && _command != null)
             {
                 StartCoroutine(ExecuteCommand(false));
             }
+            
         }
         private void OnDestroy()
         {
@@ -119,11 +118,11 @@ namespace Assets.Scripts.AgentSystem.Movement
 
         private IEnumerator ExecuteCommand(bool force)
         {
-            yield return new WaitForEndOfFrame();
             if(!_busy || force)
             {
-                _command.Execute();
                 _busy = true;
+                yield return new WaitForEndOfFrame();
+                _command.Execute();
             }
         }
 
@@ -176,6 +175,8 @@ namespace Assets.Scripts.AgentSystem.Movement
                         if (_pathIndex < 0) //path completed
                         {
                             _resultPath.Clear();
+                            _command.ExecutionEnded();
+                            _command = null;
                         }
 
                     }

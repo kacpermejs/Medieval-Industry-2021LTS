@@ -10,6 +10,7 @@ namespace Assets.Scripts.AgentSystem.Movement
         public abstract class MoverComandBase : ICommand
         {
             public Mover Mover;
+            
             public event Action OnExecutionEnded;
             public abstract void Execute();
 

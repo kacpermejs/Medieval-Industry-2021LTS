@@ -13,17 +13,17 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
         [SerializeField] private Item _item;
         [SerializeField] private int _itemAmount;
         [SerializeField] private bool _renewable;
-        [SerializeField] private int _Id;
 
 
-        public UnityEvent OnDepleted = new UnityEvent();
-        public UnityEvent OnRenewed = new UnityEvent();
 
-        public int Id { get; }
+        [field: SerializeField]
+        public int Id { get; private set; }
         public Item Item { get => _item; }
         public int ItemAmount { get => _itemAmount; }
         public bool IsDepleted { get => _itemAmount > 0; }
 
+        public UnityEvent OnDepleted = new UnityEvent();
+        public UnityEvent OnRenewed = new UnityEvent();
 
         public void Renew(int amount)
         {
@@ -79,8 +79,6 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
             int iterations = 1,
             Func<Resource, bool> condition = null)
         {
-            Resource targetResource = null;
-
             List<Resource> foundResources = new List<Resource>();
 
             //central point area
@@ -112,7 +110,7 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
                 if (foundResources.Count > 0)
                 {
                     int distance = int.MaxValue;
-                    Resource choice;
+                    Resource choice = null;
                     foreach (var item in foundResources)
                     {
                         int newDistance = CalculateDistance(startingPoint, item);
@@ -122,11 +120,12 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
                             distance = newDistance;
                         }
                     }
+                    return choice;
                 }
 
             }
 
-            return targetResource;
+            return null;
         }
 
         private static int CalculateDistance(Vector3 startingPoint, Resource item)
