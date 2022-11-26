@@ -71,6 +71,7 @@ namespace Assets.Scripts.JobSystem
 
         public void GatherResource()
         {
+            _resourceToGather.Consume(1);
             ActionPerformed();
         }
 

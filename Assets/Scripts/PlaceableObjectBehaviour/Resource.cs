@@ -20,7 +20,7 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
         public int Id { get; private set; }
         public Item Item { get => _item; }
         public int ItemAmount { get => _itemAmount; }
-        public bool IsDepleted { get => _itemAmount > 0; }
+        public bool IsDepleted { get => _itemAmount <= 0; }
 
         public UnityEvent OnDepleted = new UnityEvent();
         public UnityEvent OnRenewed = new UnityEvent();
@@ -43,6 +43,10 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
             else
             {
                 _itemAmount = 0;
+            }
+
+            if(_itemAmount <= 0)
+            {
                 OnDepleted?.Invoke();
             }
         }
@@ -64,7 +68,7 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
                 if (unit.TryGetComponent<Resource>(out var selectedResource))
                 {
                     if (selectedResource.Id == targetId &&
-                        condition != null ? condition.Invoke(selectedResource) : true)
+                        (condition != null ? condition.Invoke(selectedResource) : true))
                     {
                         foundResources.Add(selectedResource);
                     }

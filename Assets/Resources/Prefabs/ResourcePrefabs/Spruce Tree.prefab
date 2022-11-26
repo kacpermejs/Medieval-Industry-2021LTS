@@ -21,7 +21,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8253246441348568645, guid: 408581c0fb97f76458cb476115c531e5, type: 3}
       propertyPath: _itemAmount
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8253246441348568645, guid: 408581c0fb97f76458cb476115c531e5, type: 3}
       propertyPath: <Id>k__BackingField
