@@ -20,12 +20,12 @@ namespace Assets.Scripts.AgentSystem.AgentBehaviour
 
     public partial class Worker : AIBehaviour, ISelectableAgent, IFiniteStateMachine<WorkerStateBase>
     {
-        [SerializeField] private Workplace _workplace;
         [field: SerializeField] public WorkerState WorkerState { get; private set; }
         //[SerializeField, ReadOnlyInspector] private int _currentInstructionIndex = 0;
         //[SerializeField, ReadOnlyInspector] private bool _commandExecuted = true;
 
-        public Workplace Workplace { get; set; }
+        [field: SerializeField]
+        public Workplace Workplace { get; private set; }
 
 
         public bool IsSelected { get; private set; }
@@ -38,9 +38,8 @@ namespace Assets.Scripts.AgentSystem.AgentBehaviour
 
         #region UnityMethods
 
-        public override void OnEnable()
+        public void OnEnable()
         {
-            base.OnEnable();
             CurrentState = new IdleState();
             CurrentState.EnterState(this);
         }
@@ -55,11 +54,6 @@ namespace Assets.Scripts.AgentSystem.AgentBehaviour
             CurrentState.UpdateState(this);
         }
 
-        public override void OnDisable()
-        {
-            base.OnDisable();
-        }
-
         #endregion
 
         public void SwitchState(WorkerStateBase state)
@@ -68,9 +62,15 @@ namespace Assets.Scripts.AgentSystem.AgentBehaviour
             CurrentState.EnterState(this);
         }
 
+
         private void DoWorkplaceTask()
         {
-            
+            this.Workplace.WorkerTask.PerformAction();
+        }
+
+        public void AssignWorkplace(Workplace workplace)
+        {
+            Workplace = workplace;
         }
 
         #region ISelectableAgent

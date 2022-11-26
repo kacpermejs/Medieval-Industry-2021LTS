@@ -11,40 +11,25 @@ namespace Assets.Scripts.AgentSystem
     /// <summary>
     /// This Component handles enabling different behaviour components of an AIAgent depending on encountered conditions
     /// </summary>
-    public partial class AIAgent : MonoBehaviour, IFiniteStateMachine<AIStateBase>
+    public partial class AIAgent : MonoBehaviour
     {
-        private AIBehaviour[] _behaviours;
-        private AIBehaviour _activeBehaviour;
-
-        private AIStateBase _currentState;
-
-        public AIStateBase CurrentState => _currentState;
-
-        public void SwitchState(AIStateBase state)
-        {
-            _currentState = state;
-            _currentState.EnterState(this);
-        }
+        private AIBehaviour[] _stateComponents;
 
         #region Unity Methods
 
         private void Awake()
         {
-            _behaviours = GetComponents<AIBehaviour>();
+            _stateComponents = GetComponents<AIBehaviour>();
         }
 
         private void OnEnable()
         {
-            foreach (var component in _behaviours)
+            foreach (var component in _stateComponents)
             {
                 component.enabled = false;
             }
-
-        }
-
-        private void Update()
-        {
-            
+            //pick starting behaviour
+            _stateComponents[0].enabled = true;
         }
 
         #endregion

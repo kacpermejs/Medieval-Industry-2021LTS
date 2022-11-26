@@ -61,6 +61,7 @@ namespace Assets.Scripts.AgentSystem.Movement
 
             if (!_busy && _command != null)
             {
+                _command.ExecutionEnded();
                 _command = null;
             }
 

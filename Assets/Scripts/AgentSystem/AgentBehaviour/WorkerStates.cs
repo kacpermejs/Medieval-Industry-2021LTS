@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.PlaceableObjectBehaviour.Workplace;
+using System;
 using UnityEngine;
 
 namespace Assets.Scripts.AgentSystem.AgentBehaviour
@@ -48,7 +49,10 @@ namespace Assets.Scripts.AgentSystem.AgentBehaviour
 
             public override void UpdateState(Worker worker)
             {
-                
+                if(worker.Workplace.WorkerTask != null)
+                {
+                    worker.SwitchState(new WorkingState());
+                }
             }
         }
 

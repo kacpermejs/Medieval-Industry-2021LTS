@@ -106,6 +106,11 @@ public partial class GameManager : MonoBehaviour
         return Instance.GridLayout.LocalToCell(pos);
     }
 
+    public static Vector3 ConvertToLocalWorldPosition(Vector3Int pos)
+    {
+        return Instance.GridLayout.CellToLocal(pos);
+    }
+
     public static void NotifyMapChanged(BoundsInt area)
     {
         OnMapChanged?.Invoke(area);

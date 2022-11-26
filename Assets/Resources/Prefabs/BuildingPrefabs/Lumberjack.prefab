@@ -222,6 +222,19 @@ MonoBehaviour:
       m_Calls: []
   _recipes:
   - {fileID: 11400000, guid: 47413b3e1ad8f7c4389de9088b039f6e, type: 2}
+--- !u!114 &-3679616847738568765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1067044254559880744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1ea2c7aee643f4429eb49a8c009b636, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetPrefab: {fileID: 1320731155307158916, guid: 744a2d29f59011b43a58ff2f97ba44ec, type: 3}
 --- !u!114 &3781437239544452723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,6 +259,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5c5b0b1b3267fa49b42819368df70b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _workerCapacity: 1
-  _assignedWorkers: []
+  _assignedWorker: {fileID: 0}
+  _workerTask: {fileID: -3679616847738568765}
   <IsOpen>k__BackingField: 1

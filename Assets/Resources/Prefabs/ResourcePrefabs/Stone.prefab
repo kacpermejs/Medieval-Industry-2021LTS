@@ -19,6 +19,14 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: -0.01
       objectReference: {fileID: 0}
+    - target: {fileID: -8253246441348568645, guid: 408581c0fb97f76458cb476115c531e5, type: 3}
+      propertyPath: _Id
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8253246441348568645, guid: 408581c0fb97f76458cb476115c531e5, type: 3}
+      propertyPath: _renewable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -5566920275832771978, guid: 408581c0fb97f76458cb476115c531e5, type: 3}
       propertyPath: _canWalkThrough
       value: 0

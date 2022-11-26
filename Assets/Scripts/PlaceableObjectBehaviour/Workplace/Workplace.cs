@@ -11,38 +11,27 @@ namespace Assets.Scripts.PlaceableObjectBehaviour.Workplace
 {
     public partial class Workplace : MonoBehaviour, IUICreator
     {
-        [SerializeField] private int _workerCapacity = 1;
-        [SerializeField] private List<Worker> _assignedWorkers = new List<Worker>();
+        [SerializeField] private Worker _assignedWorker;
 
-        //[SerializeField] private List<UnityAction> _workCycle;
-
-        [SerializeField] private IWorkerAgentTask _workerTask;
+        [SerializeField] private WorkerAgentTask _workerTask;
 
         [field:SerializeField]
         public bool IsOpen { get; private set; }
-        //public List<UnityAction> WorkCycle { get => _workCycle; set => _workCycle = value; }
-        public IWorkerAgentTask WorkerTask { get => _workerTask; }
+        public WorkerAgentTask WorkerTask { get => _workerTask; }
 
         #region UI Elements
             private Button _AddWorkerButton;
-        #endregion
         
         public string title => "Workplace";
 
+        #endregion
 
-
-        public bool AddWorker(Worker worker)
+        public void AddWorker(Worker worker)
         {
-            if( _assignedWorkers.Count < _workerCapacity && !_assignedWorkers.Contains(worker) )
-            {
-                _assignedWorkers.Add(worker);
-                worker.Workplace = this;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            _assignedWorker = worker;
+            worker.AssignWorkplace(this);
+            _workerTask.AssignWorker(worker);
+            
         }
 
         #region IUICreator methods
