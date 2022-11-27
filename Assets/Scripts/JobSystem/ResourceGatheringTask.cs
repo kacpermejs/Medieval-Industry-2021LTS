@@ -47,7 +47,7 @@ namespace Assets.Scripts.JobSystem
             if(resource != null)
             {
                 _resourceToGather = resource;
-                _resourceToGather.transform.localScale += new Vector3(1,1);
+                //_resourceToGather.transform.localScale += new Vector3(1,1);
                 ActionPerformed();
             }
             else

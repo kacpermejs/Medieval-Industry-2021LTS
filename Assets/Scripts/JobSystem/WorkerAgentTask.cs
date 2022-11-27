@@ -43,7 +43,7 @@ namespace Assets.Scripts.JobSystem
 
         public void Repeat()
         {
-            _instructionID = 0;
+            _instructionID = -1;
             ActionPerformed();
         }
 

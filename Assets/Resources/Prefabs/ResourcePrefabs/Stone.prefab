@@ -35,6 +35,10 @@ PrefabInstance:
       propertyPath: _canWalkThrough
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5566920275832771978, guid: 408581c0fb97f76458cb476115c531e5, type: 3}
+      propertyPath: _tiles.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: bfbdbed21c54c5d4787345499e90b00e, type: 2}
     - target: {fileID: 2904641661563187323, guid: 408581c0fb97f76458cb476115c531e5, type: 3}
       propertyPath: m_Sprite
       value: 

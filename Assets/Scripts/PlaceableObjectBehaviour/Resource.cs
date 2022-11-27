@@ -56,7 +56,7 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
             Vector2 pivotPoint,
             float SearchingRadius,
             ref List<Resource> foundResources,
-            Func<Resource, bool> condition)
+            Func<Resource, bool> condition = null)
         {
             var pointA = new Vector3( pivotPoint.x - SearchingRadius, pivotPoint.y - SearchingRadius);
             var pointB = new Vector3( pivotPoint.x + SearchingRadius, pivotPoint.y + SearchingRadius);
@@ -67,8 +67,8 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
             {
                 if (unit.TryGetComponent<Resource>(out var selectedResource))
                 {
-                    if (selectedResource.Id == targetId &&
-                        (condition != null ? condition.Invoke(selectedResource) : true))
+                    bool conditionResult = (condition == null ) ? true : condition(selectedResource);
+                    if (selectedResource.Id == targetId && conditionResult)
                     {
                         foundResources.Add(selectedResource);
                     }
@@ -91,7 +91,7 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
                 new Vector2(startingPoint.x, startingPoint.y),
                 radius,
                 ref foundResources,
-                condition == null ? condition : (r) => { return true; });
+                condition);
 
             for (int i = 1; i <= iterations; i++)
             {

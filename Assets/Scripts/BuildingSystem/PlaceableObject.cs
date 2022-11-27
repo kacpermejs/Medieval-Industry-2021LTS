@@ -10,7 +10,6 @@ namespace Assets.Scripts.BuildingSystem
     {
         [Header("Make sure number of cells bound is equal to number of indecies")]
         [SerializeField] private BoundsInt _bounds;
-        [Header("-1 is empty, the rest corresponds to Tiles ")]
         [SerializeField] private List<int> _componentTilesIndecies;
         [SerializeField] private TileBase[] _tiles;
 
@@ -58,6 +57,30 @@ namespace Assets.Scripts.BuildingSystem
                 }
             }
             GameManager.Instance.TilemapColliders.SetTilesBlock(area, arr);    
+        }
+
+        private void OnDestroy()
+        {
+            _gridPosition = GameManager.ConvertToGridPosition(transform.localPosition);
+
+            BoundsInt area = new BoundsInt();
+
+            area.size = Bounds.size;
+            area.position = _gridPosition - new Vector3Int(area.size.x / 2, area.size.y / 2, 0);
+
+
+            int size = area.size.x * area.size.y * area.size.z;
+
+            if (ComponentTilesIndecies.Count != size)
+                throw new Exception("Arrays don't match in size");
+
+            TileBase[] arr = new TileBase[size];
+
+            for (int i = 0; i < size; i++)
+            {
+                arr[i] = null;
+            }
+            GameManager.Instance.TilemapColliders.SetTilesBlock(area, arr);
         }
 
         #endregion
