@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts.AgentSystem
+namespace Assets.Scripts.AgentSystem.AgentBehaviour
 {
     public abstract class AIBehaviour : MonoBehaviour
     {

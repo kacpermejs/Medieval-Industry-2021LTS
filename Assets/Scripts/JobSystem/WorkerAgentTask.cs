@@ -16,8 +16,6 @@ namespace Assets.Scripts.JobSystem
 
         private bool _busy = false;
 
-        public UnityAction NextAction { get => _instructions[_instructionID]; }
-
         public event Action OnActionPerformed;
 
         public virtual void AssignWorker(Worker worker)
@@ -30,8 +28,14 @@ namespace Assets.Scripts.JobSystem
             if(!_busy)
             {
                 _busy = true;
-                NextAction?.Invoke();
+                _instructions[_instructionID]?.Invoke();
             }
+        }
+
+        public void Repeat()
+        {
+            _instructionID = -1;
+            ActionPerformed();
         }
 
         protected void ActionPerformed()
@@ -39,12 +43,6 @@ namespace Assets.Scripts.JobSystem
             OnActionPerformed?.Invoke();
             _instructionID++;
             _busy = false;
-        }
-
-        public void Repeat()
-        {
-            _instructionID = -1;
-            ActionPerformed();
         }
 
     }

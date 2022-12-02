@@ -23,26 +23,20 @@ namespace Assets.Scripts.TerrainGeneration
                 .ToDictionary(elem => elem.Name);
 
 
-            for (int x = -128; x < 128; x++)
+            for (int x = -127; x < 127; x++)
             {
-                for (int y = -128; y < 128; y++)
+                for (int y = -127; y < 127; y++)
                 {
-                    var position = new Vector3Int(x, y, 0);
+                    var position = new Vector3Int(x, y, -1);
                     //leave editor placed tiles in place
                     if (!GameManager.Instance.TilemapGround.HasTile(position))
                     {
-                        //GameManager.Instance.TilemapGround.SetTile(position, _tiles["Grass"] as TileBase);
+                        GameManager.Instance.TilemapGround.SetTile(position, _tiles["Grass"] as TileBase);
                     }
 
 
                 }
             }
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
         }
     }
 }

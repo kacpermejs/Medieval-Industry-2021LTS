@@ -4,37 +4,23 @@ using System;
 using UnityEngine;
 using Assets.Scripts.Utills;
 using Assets.Scripts.PlaceableObjectBehaviour.Workplace;
-using static Assets.Scripts.PlaceableObjectBehaviour.Workplace.Workplace;
-using static Assets.Scripts.AgentSystem.AgentBehaviour.Worker;
+using Assets.Scripts.JobSystem;
 
 namespace Assets.Scripts.AgentSystem.AgentBehaviour
 {
-    public enum WorkerState
+
+    public partial class Worker : AIBehaviour, ISelectableAgent, IFiniteStateMachine<Worker.WorkerStateBase>
     {
-        Idle = 0,
-
-        Working = 10,
-
-        Waiting = 20,
-    }
-
-    public partial class Worker : AIBehaviour, ISelectableAgent, IFiniteStateMachine<WorkerStateBase>
-    {
-        [field: SerializeField] public WorkerState WorkerState { get; private set; }
-        //[SerializeField, ReadOnlyInspector] private int _currentInstructionIndex = 0;
-        //[SerializeField, ReadOnlyInspector] private bool _commandExecuted = true;
-
-        [field: SerializeField]
-        public Workplace Workplace { get; private set; }
-
-
-        public bool IsSelected { get; private set; }
-
         private SelectionMarker _marker;
 
+        [field: SerializeField, ReadOnlyInspector]
+        public Workplace Workplace { get; private set; }
+
+        [field: SerializeField, ReadOnlyInspector]
+        public bool IsSelected { get; private set; }
+
+        [field: SerializeField, ReadOnlyInspector]
         public WorkerStateBase CurrentState { get; private set; }
-
-
 
         #region UnityMethods
 
@@ -56,22 +42,19 @@ namespace Assets.Scripts.AgentSystem.AgentBehaviour
 
         #endregion
 
+        #region Public methods
         public void SwitchState(WorkerStateBase state)
         {
             CurrentState = state;
             CurrentState.EnterState(this);
         }
 
-
-        private void DoWorkplaceTask()
-        {
-            this.Workplace.WorkerTask.PerformAction();
-        }
-
         public void AssignWorkplace(Workplace workplace)
         {
             Workplace = workplace;
         }
+
+        #endregion
 
         #region ISelectableAgent
 

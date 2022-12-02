@@ -25934,8 +25934,8 @@ Tilemap:
   - first: {x: -1, y: -2, z: -1}
     second:
       serializedVersion: 2
-      m_TileIndex: 8
-      m_TileSpriteIndex: 11
+      m_TileIndex: 7
+      m_TileSpriteIndex: 10
       m_TileMatrixIndex: 0
       m_TileColorIndex: 3
       m_TileObjectToInstantiateIndex: 65535
@@ -25944,8 +25944,8 @@ Tilemap:
   - first: {x: 0, y: -2, z: -1}
     second:
       serializedVersion: 2
-      m_TileIndex: 8
-      m_TileSpriteIndex: 11
+      m_TileIndex: 7
+      m_TileSpriteIndex: 10
       m_TileMatrixIndex: 0
       m_TileColorIndex: 3
       m_TileObjectToInstantiateIndex: 65535
@@ -26724,8 +26724,8 @@ Tilemap:
   - first: {x: 4, y: -1, z: -1}
     second:
       serializedVersion: 2
-      m_TileIndex: 8
-      m_TileSpriteIndex: 11
+      m_TileIndex: 7
+      m_TileSpriteIndex: 10
       m_TileMatrixIndex: 0
       m_TileColorIndex: 3
       m_TileObjectToInstantiateIndex: 65535
@@ -27464,8 +27464,8 @@ Tilemap:
   - first: {x: 4, y: 0, z: -1}
     second:
       serializedVersion: 2
-      m_TileIndex: 8
-      m_TileSpriteIndex: 11
+      m_TileIndex: 7
+      m_TileSpriteIndex: 10
       m_TileMatrixIndex: 0
       m_TileColorIndex: 3
       m_TileObjectToInstantiateIndex: 65535
@@ -44297,9 +44297,9 @@ Tilemap:
     m_Data: {fileID: 0}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 242
+  - m_RefCount: 246
     m_Data: {fileID: 11400000, guid: 6334b4a6aa7959e4782167bc1b02709e, type: 2}
-  - m_RefCount: 3575
+  - m_RefCount: 3571
     m_Data: {fileID: 11400000, guid: 58c874502236caf4589a96d3525097ec, type: 2}
   m_TileSpriteArray:
   - m_RefCount: 0
@@ -44322,9 +44322,9 @@ Tilemap:
     m_Data: {fileID: 0}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 242
+  - m_RefCount: 246
     m_Data: {fileID: 21300000, guid: a0caf4d98f7be804eba3efe8e0abb574, type: 3}
-  - m_RefCount: 3575
+  - m_RefCount: 3571
     m_Data: {fileID: 21300000, guid: b3579ee017fa43248a1239cfafe431b7, type: 3}
   m_TileMatrixArray:
   - m_RefCount: 3817
@@ -46633,7 +46633,7 @@ TilemapRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1222379989}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1

@@ -28,13 +28,19 @@ namespace Assets.Scripts.AgentSystem.Movement
             public Vector3Int Destination;
             public bool ComeNextTo = false;
             public float SlowDownFactor = 1f;
+            public bool DoInterrupt = false; //TODO
 
-            public MoveCommand(Mover mover, Vector3Int destination, bool comeNextTo = false, float slowDownFactor = 1f)
+            public MoveCommand(Mover mover, Vector3Int destination, bool comeNextTo = false, bool doInterrupt = false, float slowDownFactor = 1f)
             {
+                //base class
                 Mover = mover;
 
+                //mandatory
                 Destination = destination;
                 ComeNextTo = comeNextTo;
+
+                //optional
+                DoInterrupt = doInterrupt;
                 SlowDownFactor = slowDownFactor;
             }
 
