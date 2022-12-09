@@ -1,23 +1,20 @@
 ﻿using Assets.Scripts.AgentSystem;
 using Assets.Scripts.AgentSystem.AgentBehaviour;
 using Assets.Scripts.JobSystem;
+using Assets.Scripts.UI;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 
-namespace Assets.Scripts.PlaceableObjectBehaviour.Workplace
+namespace Assets.Scripts.PlaceableObjectBehaviour
 {
-    public partial class Workplace : MonoBehaviour, IUICreator
+    public partial class Workplace : BuildingBehaviour, IUICreator
     {
-        [SerializeField] private Worker _assignedWorker;
+        [field: SerializeField] public Worker AssignedWorker { get; private set; }
 
-        [SerializeField] private WorkerAgentTask _workerTask;
-
-        [field:SerializeField]
-        public bool IsOpen { get; private set; }
-        public WorkerAgentTask WorkerTask { get => _workerTask; }
+        [field: SerializeField] public WorkerTaskBase WorkerTask { get; private set; }
 
         #region UI Elements
             private Button _AddWorkerButton;
@@ -28,9 +25,9 @@ namespace Assets.Scripts.PlaceableObjectBehaviour.Workplace
 
         public void AddWorker(Worker worker)
         {
-            _assignedWorker = worker;
+            AssignedWorker = worker;
             worker.AssignWorkplace(this);
-            _workerTask.AssignWorker(worker);
+            WorkerTask.AssignWorker(worker);
             
         }
 

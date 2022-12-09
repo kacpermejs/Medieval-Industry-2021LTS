@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5355046075828829919}
   - component: {fileID: -5566920275832771978}
   - component: {fileID: -8253246441348568645}
-  - component: {fileID: -9193120417019580590}
+  - component: {fileID: 1367171003203625335}
   m_Layer: 0
   m_Name: '[base]Resource'
   m_TagString: Untagged
@@ -47,12 +47,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5992f418ad0a3443a24cdd05efdd330, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tiles:
+  - {fileID: 11400000, guid: dfd5bc8272b5c9545a777efa6e07735d, type: 2}
+  _componentTilesIndecies: 00000000
   _bounds:
     m_Position: {x: 0, y: 0, z: 0}
     m_Size: {x: 1, y: 1, z: 1}
-  _componentTilesIndecies: 00000000
-  _tiles:
-  - {fileID: 11400000, guid: dfd5bc8272b5c9545a777efa6e07735d, type: 2}
   _walkable: 0
   _canWalkThrough: 1
   _canBuildUpon: 0
@@ -107,7 +107,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!61 &-9193120417019580590
+--- !u!61 &1367171003203625335
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -120,7 +120,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.46}
+  m_Offset: {x: 0, y: 0.55}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -131,7 +131,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.31, y: 0.59}
+  m_Size: {x: 0.23, y: 0.64}
   m_EdgeRadius: 0
 --- !u!1 &8347377707170766140
 GameObject:

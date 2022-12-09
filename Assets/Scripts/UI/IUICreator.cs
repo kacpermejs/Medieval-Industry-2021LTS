@@ -1,6 +1,6 @@
 ﻿using UnityEngine.UIElements;
 
-namespace Assets.Scripts.PlaceableObjectBehaviour
+namespace Assets.Scripts.UI
 {
     public interface IUICreator
     {

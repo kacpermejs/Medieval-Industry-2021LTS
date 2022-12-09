@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98b9acfb857afb04791b4c678fb94892, type: 3}
-  m_Name: SpruceWood
+  m_Name: SprucePlank
   m_EditorClassIdentifier: 
-  _input: []
-  _inputAmount: 0
-  _output: {fileID: 11400000, guid: 3e986dc937f8962439169ef637c53144, type: 2}
-  _outputAmount: 1
-  _timeNeeded: 5
+  <Input>k__BackingField:
+  - {fileID: 11400000, guid: 3e986dc937f8962439169ef637c53144, type: 2}
+  <InputAmounts>k__BackingField: 01000000
+  <Output>k__BackingField: {fileID: 11400000, guid: 22de742d67360fc43893bcf6095d0c81, type: 2}
+  <OutputAmount>k__BackingField: 4
+  <TimeNeeded>k__BackingField: 5

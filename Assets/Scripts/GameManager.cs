@@ -1,7 +1,10 @@
 using Assets.Scripts.BuildingSystem;
+using Assets.Scripts.PlaceableObjectBehaviour;
 using Assets.Scripts.Utills;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -27,8 +30,6 @@ public partial class GameManager : MonoBehaviour
 {
     [SerializeField] private Grid _gridLayout;
     [SerializeField] private Tilemap _tilemapGround;
-    //[SerializeField] private Tilemap _tilemapResources;
-    [SerializeField] private Tilemap _tilemapSurface;
     [SerializeField] private Tilemap _tilemapColliders;
     [SerializeField] private Tilemap _tilemapMarkers;
 
@@ -36,12 +37,10 @@ public partial class GameManager : MonoBehaviour
 
     public Grid GridLayout { get => _gridLayout; }
     public Tilemap TilemapGround { get => _tilemapGround; }
-    //public Tilemap TilemapSurface { get => _tilemapSurface; }
-    //public Tilemap TilemapResources { get => _tilemapResources; }
     public Tilemap TilemapMarkers { get => _tilemapMarkers; }
     public Tilemap TilemapColliders { get => _tilemapColliders; }
 
-    private List<PlaceableObject> _objects;
+    public List<Storage> StorageBuildings;
 
     public GameState GameState { get; private set; }
 
@@ -61,6 +60,7 @@ public partial class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        StorageBuildings = FindObjectsOfType<Storage>().ToList();
         SwitchState(GameState.Default);
     }
 

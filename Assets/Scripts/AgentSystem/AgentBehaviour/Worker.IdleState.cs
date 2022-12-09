@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.PlaceableObjectBehaviour.Workplace;
-using System;
+﻿using System;
 using UnityEngine;
 
 namespace Assets.Scripts.AgentSystem.AgentBehaviour

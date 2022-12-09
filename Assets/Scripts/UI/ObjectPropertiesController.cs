@@ -3,15 +3,14 @@ using Assets.Scripts.UI;
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace Assets.Scripts.PlaceableObjectBehaviour
+namespace Assets.Scripts.UI
 {
-    [RequireComponent(typeof(PlaceableObject))]
-    public class StructureProperties : MonoBehaviour
+    public class ObjectPropertiesController : MonoBehaviour
     {
         private PopUpCustomControl _popUp;
         private bool popUpStatus = false;
-        
-        private void OnMouseDown()//Request popup window
+
+        public void OpenPopup()
         {
             if (_popUp == null || popUpStatus == false)
             {
@@ -28,7 +27,7 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
                     selected = false;
                 }
                 content.Init();
-                
+
                 //Attach content to pop-up window
                 var popUp = PopUpManager.OpenNewPopUp(gameObject.name, content);
 
@@ -39,8 +38,8 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
                     _popUp = popUp;
                 }
             }
-
         }
+
         private void OnDestroy()
         {
             if (_popUp != null)

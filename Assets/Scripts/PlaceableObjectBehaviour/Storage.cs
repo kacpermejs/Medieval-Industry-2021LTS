@@ -1,11 +1,22 @@
-using UnityEngine;
+using Assets.Scripts.ItemSystem;
+using Assets.Scripts.UI;
+using System.Collections.Generic;
 using UnityEngine.UIElements;
 
 namespace Assets.Scripts.PlaceableObjectBehaviour
 {
-    public class Storage : MonoBehaviour, IUICreator
+
+    public class Storage : BuildingBehaviour, IUICreator
     {
         public string title => "Storage";
+
+        private List<Item> _items;
+
+        public bool CanStoreItem(Item item, int quantity)
+        {
+            //TODO
+            return true;
+        }
 
         public VisualElement CreateUIContent()
         {

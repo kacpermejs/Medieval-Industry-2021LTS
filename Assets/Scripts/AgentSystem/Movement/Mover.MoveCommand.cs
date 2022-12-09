@@ -1,25 +1,9 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.Analytics;
-using UnityEngine.Events;
+﻿using UnityEngine;
 
 namespace Assets.Scripts.AgentSystem.Movement
 {
     public partial class Mover
     {
-        public abstract class MoverComandBase : ICommand
-        {
-            public Mover Mover;
-            
-            public event Action OnExecutionEnded;
-            public abstract void Execute();
-
-            internal void ExecutionEnded()
-            {
-                OnExecutionEnded?.Invoke();
-            }
-        }
-
         /// <summary>
         /// Agent will follow the path starting the next frame from execution (not including the waiting queue)
         /// </summary>
@@ -29,15 +13,15 @@ namespace Assets.Scripts.AgentSystem.Movement
             public bool ComeNextTo = false;
             public float SlowDownFactor = 1f;
             public bool DoInterrupt = false; //TODO
+            private int Distance;
 
-            public MoveCommand(Mover mover, Vector3Int destination, bool comeNextTo = false, bool doInterrupt = false, float slowDownFactor = 1f)
+            public MoveCommand(Mover mover, Vector3Int destination, bool doInterrupt = false, float slowDownFactor = 1f)
             {
                 //base class
                 Mover = mover;
 
                 //mandatory
                 Destination = destination;
-                ComeNextTo = comeNextTo;
 
                 //optional
                 DoInterrupt = doInterrupt;
@@ -47,16 +31,7 @@ namespace Assets.Scripts.AgentSystem.Movement
             public override void Execute()
             {
                 //Agent will follow the path starting the next frame from execution (not including the waiting queue)
-                Mover.SchedulePathfinding(Destination, ComeNextTo);
-            }
-        }
-
-        public class HoldCommand : MoverComandBase
-        {
-            public int Seconds;
-            public override void Execute()
-            {
-                Mover.StartCoroutine(Mover.HoldForSeconds(Seconds));
+                Mover.SchedulePathfinding(Destination);
             }
         }
     }

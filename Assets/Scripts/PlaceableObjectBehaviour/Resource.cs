@@ -76,6 +76,29 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
             }
         }
 
+        public static void FindResourcesInsideCollider2DNonAlloc(
+            int targetId,
+            Collider2D collider,
+            ref List<Resource> foundResources,
+            Func<Resource, bool> condition = null)
+        {
+            List<Collider2D> colliders = new();
+            ContactFilter2D filter = new ContactFilter2D();
+            collider.OverlapCollider(filter, colliders);
+
+            foreach (var unit in colliders)
+            {
+                if (unit.TryGetComponent<Resource>(out var selectedResource))
+                {
+                    bool conditionResult = (condition == null) ? true : condition(selectedResource);
+                    if (selectedResource.Id == targetId && conditionResult)
+                    {
+                        foundResources.Add(selectedResource);
+                    }
+                }
+            }
+        }
+
         public static Resource FindClosestAvaliableResource(
             Vector3 startingPoint,
             int targetId,

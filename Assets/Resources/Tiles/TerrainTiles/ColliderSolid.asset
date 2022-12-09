@@ -37,6 +37,6 @@ MonoBehaviour:
   _walkable: 1
   _canWalkThrough: 0
   _canBuildUpon: 1
-  _walkingSpeedFactor: 1
+  _walkingSpeedFactor: 0
   _useStandardRules: 0
   _layer: 0

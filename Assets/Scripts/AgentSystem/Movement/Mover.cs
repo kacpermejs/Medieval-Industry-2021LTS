@@ -55,7 +55,13 @@ namespace Assets.Scripts.AgentSystem.Movement
         void Update()
         {
             //Move towards Waypoint position
-            transform.position = Vector3.MoveTowards(transform.position, MovePoint.position, _moveSpeed * Time.deltaTime);
+            var vec = GameManager.Instance.TilemapGround.layoutGrid.LocalToCell(transform.position + new Vector3(0f,Y_OFFSET, 0f));
+            var tileBelow = GameManager.Instance.TilemapGround.GetTile(vec + new Vector3Int(0, 0, -1));
+            float factor = ((IMapElement)tileBelow).WalkingSpeedFactor;
+
+            
+
+            transform.position = Vector3.MoveTowards(transform.position, MovePoint.position, _moveSpeed * factor * Time.deltaTime);
             FollowThePath();
 
 
@@ -63,9 +69,7 @@ namespace Assets.Scripts.AgentSystem.Movement
             {
                 _command = null;
             }*/
-
-            // Schedule pathfinding by clicking the mouse on the map
-            // TODO: 
+ 
             if (_mouseMovement && GameManager.Instance.GameState == GameState.Default)
             {
                 if (Input.GetMouseButtonDown(0))
@@ -75,7 +79,7 @@ namespace Assets.Scripts.AgentSystem.Movement
                     {
                         Vector2 screenPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-                        Vector3Int endPoint = GameManager.Instance.GridLayout.LocalToCell(screenPoint);
+                        Vector3Int endPoint = GameManager.ConvertToGridPosition(screenPoint);
 
                         var manualMoveCommand = new MoveCommand(this, endPoint);
 
@@ -113,6 +117,7 @@ namespace Assets.Scripts.AgentSystem.Movement
 
         public void AddCommand(MoverComandBase command)
         {
+            _command?.ExecutionEnded();
             _command = command;
         }
 
@@ -187,7 +192,7 @@ namespace Assets.Scripts.AgentSystem.Movement
             
         }
         
-        public bool SchedulePathfinding(Vector3Int targetPoint, bool comeNextTo = false)
+        public bool SchedulePathfinding(Vector3Int targetPoint)
         {
 
             _startPoint = GameManager.Instance.GridLayout.LocalToCell(MovePoint.position - new Vector3(0, Y_OFFSET, Z_OFFSET));
@@ -195,7 +200,7 @@ namespace Assets.Scripts.AgentSystem.Movement
             _pathIndex = -1;
             _resultPath.Clear();
 
-            PathfindingJob job = PathfindingManager.CreatePathfindingJob(_startPoint, targetPoint, comeNextTo, _resultPath);
+            PathfindingJob job = PathfindingManager.CreatePathfindingJob(_startPoint, targetPoint, _resultPath);
             
             _jobHandle = job.Schedule();
 

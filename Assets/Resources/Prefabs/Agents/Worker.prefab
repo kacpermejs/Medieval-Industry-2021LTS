@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -3508533369386524880, guid: 7762e7e37737b7b4e8d1014b77e16ae4, type: 3}
+      propertyPath: _moveSpeed
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 7459743790821869680, guid: 7762e7e37737b7b4e8d1014b77e16ae4, type: 3}
       propertyPath: m_Name
       value: Worker
@@ -74,11 +78,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ed265e5fa526354382db8c032fa91cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AbandonCommand: {fileID: 0}
-  InterruptCurrentActionCommand: {fileID: 0}
-  ContinueInterruptedActionsCommand: {fileID: 0}
-  _workerState: 0
-  _workplace: {fileID: 0}
-  MoveCommand: {fileID: 11400000, guid: ba6aa489487144940b9b81e9c6e54ae6, type: 2}
-  HoldCommand: {fileID: 11400000, guid: 45679828d9906974d92d9c1c7987f769, type: 2}
-  _commandQueued: 0
+  <Workplace>k__BackingField: {fileID: 0}
+  <IsSelected>k__BackingField: 0

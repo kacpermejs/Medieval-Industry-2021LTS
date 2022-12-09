@@ -5,12 +5,8 @@ namespace Assets.Scripts.ItemSystem
     [CreateAssetMenu(fileName = "New Item", menuName = "ScriptableObjects/Item")]
     public class Item : ScriptableObject
     {
-        [SerializeField] private int _id;
-        [SerializeField] private string _name;
-        [SerializeField] private Sprite _sprite;
-
-        public int Id { get => _id; }
-        public string Name { get => _name; }
-        public Sprite Sprite { get => _sprite; }
+        [field: SerializeField] public int Id { get; private set; }
+        [field: SerializeField] public string Name { get; private set; }
+        [field: SerializeField] public Sprite Sprite { get; private set; }
     }
 }

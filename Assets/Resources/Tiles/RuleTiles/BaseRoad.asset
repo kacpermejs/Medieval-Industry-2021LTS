@@ -274,7 +274,7 @@ MonoBehaviour:
   _walkable: 1
   _canWalkThrough: 0
   _canBuildUpon: 1
-  _walkingSpeedFactor: 2
+  _walkingSpeedFactor: 1
   _layer: 1
   _useStandardRules: 0
   _canReplace: []

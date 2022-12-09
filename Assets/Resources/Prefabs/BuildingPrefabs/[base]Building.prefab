@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 4900680611582008890}
   - component: {fileID: 1122223695713706864}
   - component: {fileID: 6157987391324787916}
-  - component: {fileID: 7832384502244247884}
+  - component: {fileID: -8686549073697638936}
+  - component: {fileID: 4684571898103379666}
   m_Layer: 0
   m_Name: '[base]Building'
   m_TagString: Untagged
@@ -47,13 +48,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5992f418ad0a3443a24cdd05efdd330, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bounds:
-    m_Position: {x: 0, y: 0, z: 0}
-    m_Size: {x: 1, y: 1, z: 1}
-  _componentTilesIndecies: 00000000
   _tiles:
   - {fileID: 11400000, guid: bfbdbed21c54c5d4787345499e90b00e, type: 2}
   - {fileID: 11400000, guid: dfd5bc8272b5c9545a777efa6e07735d, type: 2}
+  _componentTilesIndecies: 00000000
+  _bounds:
+    m_Position: {x: 0, y: 0, z: 0}
+    m_Size: {x: 1, y: 1, z: 1}
   _walkable: 0
   _canWalkThrough: 0
   _canBuildUpon: 0
@@ -91,7 +92,7 @@ PolygonCollider2D:
       - {x: -0.00024264073, y: -0.3683586}
       - {x: 0.2793459, y: -0.21532677}
       - {x: 0.27770334, y: -0.012627862}
---- !u!114 &7832384502244247884
+--- !u!114 &-8686549073697638936
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -103,6 +104,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d732b97f2b309f4fa8fbe8ad76f94e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4684571898103379666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1001565152999996604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2cc0dfd512a4f7459b0c90ca0fedfba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MouseDown:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: -8686549073697638936}
+        m_TargetAssemblyTypeName: Assets.Scripts.UI.ObjectPropertiesController, Assembly-CSharp
+        m_MethodName: OpenPopup
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6347945910334078769
 GameObject:
   m_ObjectHideFlags: 0

@@ -39,6 +39,18 @@ PrefabInstance:
       propertyPath: _tiles.Array.data[0]
       value: 
       objectReference: {fileID: 11400000, guid: bfbdbed21c54c5d4787345499e90b00e, type: 2}
+    - target: {fileID: 1367171003203625335, guid: 408581c0fb97f76458cb476115c531e5, type: 3}
+      propertyPath: m_Size.x
+      value: 0.43
+      objectReference: {fileID: 0}
+    - target: {fileID: 1367171003203625335, guid: 408581c0fb97f76458cb476115c531e5, type: 3}
+      propertyPath: m_Size.y
+      value: 0.43
+      objectReference: {fileID: 0}
+    - target: {fileID: 1367171003203625335, guid: 408581c0fb97f76458cb476115c531e5, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.36
+      objectReference: {fileID: 0}
     - target: {fileID: 2904641661563187323, guid: 408581c0fb97f76458cb476115c531e5, type: 3}
       propertyPath: m_Sprite
       value: 
