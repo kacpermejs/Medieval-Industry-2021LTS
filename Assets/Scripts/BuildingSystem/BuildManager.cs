@@ -168,7 +168,7 @@ namespace Assets.Scripts.BuildingSystem
 
         public void DisplayMarkers(BoundsInt area, MarkerType markerType)
         {
-            GameManager.SetTilesBlock(area, _markerTiles[markerType], GameManager.Instance.TilemapMarkers);
+            TilemapUtills.SetTilesBlock(area, _markerTiles[markerType], GameManager.Instance.TilemapMarkers);
         }
 
         public void ClearAllMarkers()
@@ -190,6 +190,7 @@ namespace Assets.Scripts.BuildingSystem
             {
                 gridPoint.z -= 1;
             }
+
             //Only tiles with game objects attached can take area bigger than 1x1x1
             var area = new BoundsInt(gridPoint, new Vector3Int(1,1,1));
 
@@ -226,8 +227,7 @@ namespace Assets.Scripts.BuildingSystem
                 (
                     !(CheckIfAreaEmpty(area, GameManager.Instance.TilemapGround) &&
                     CheckIfAreaEmpty(area, GameManager.Instance.TilemapColliders) &&
-                    CheckIfCanBeBuiltUpon(GameManager.Instance.TilemapGround, area2) 
-                    //TODO: && IsPlacementArea(tile)
+                    CheckIfCanBeBuiltUpon(GameManager.Instance.TilemapGround, area2)
                     )
                 )
                 {
@@ -244,7 +244,7 @@ namespace Assets.Scripts.BuildingSystem
 
         public static bool CheckIfAreaEmpty(BoundsInt area, Tilemap tilemap)
         {
-            var tiles = GameManager.GetTilesBlock(area, tilemap);
+            var tiles = TilemapUtills.GetTilesBlock(area, tilemap);
             foreach (var tile in tiles)
             {
                 if (tile != null)
@@ -267,7 +267,7 @@ namespace Assets.Scripts.BuildingSystem
 
         public static bool CheckIfCanBeBuiltUpon(Tilemap tilemap, BoundsInt area2)
         {
-            var tiles = GameManager.GetTilesBlock(area2, tilemap);
+            var tiles = TilemapUtills.GetTilesBlock(area2, tilemap);
             foreach (var tile in tiles)
             {
                 if (tile is IMapElement element)

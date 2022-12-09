@@ -23,7 +23,7 @@ namespace Assets.Scripts.Pathfinding
         NorthWest = 0b0000001,
     }
 
-    //[BurstCompile]
+    [BurstCompile]
     public struct PathfindingJob : IJob
     {
         private const int DIAGONAL_COST = 20;
@@ -38,6 +38,11 @@ namespace Assets.Scripts.Pathfinding
         public NativeArray<int> WalkableArray;
 
         public NativeList<int2> Path;
+
+        //these are from normal implementation
+        //private NativeList<int> _openList;
+        //private NativeList<int> _closedList;
+
 
         public struct Node
         {
@@ -60,13 +65,30 @@ namespace Assets.Scripts.Pathfinding
                 FCost = GCost + HCost;
             }
         }
+        
+        public struct Node2
+        {
+            public int2 position;
+
+            public int GCost;
+            public int HCost;
+            public int FCost => GCost + HCost;
+
+            public bool WasVisited;
+
+            public int2 CameFrom;
+
+            public bool IsWalkable;
+        }
 
         public void Execute()
         {
-            AStar2(Start, End);
+            AStarLazy();
         }
 
-        private void AStar(int2 start, int2 end)
+        #region OLD
+        /*
+        private void AStar_old(int2 start, int2 end)
         {
             NativeArray<Node> nodeArray = CreateGraph(end);
             NativeArray<int2> neighbourOffsetArray = new NativeArray<int2>(4, Allocator.Temp);
@@ -77,27 +99,27 @@ namespace Assets.Scripts.Pathfinding
             neighbourOffsetArray[3] = new int2(0, -1); // Down
 
 
-            int endIndex = CalculateIndex(end.x, end.y, AreaSize.x);
+            int endIndex = CalculateIndex(end.x, end.y);
 
             if (WalkableArray[endIndex] > 0 ) // || closestAvaliable == true)
             {
 
 
-                Node startNode = nodeArray[CalculateIndex(start.x, start.y, AreaSize.x)];
+                Node startNode = nodeArray[CalculateIndex(start.x, start.y)];
                 startNode.GCost = 0;
                 startNode.UpdateFCost();
                 nodeArray[startNode.index] = startNode;
 
-                NativeList<int> openList = new NativeList<int>(Allocator.Temp);
-                NativeList<int> closedList = new NativeList<int>(Allocator.Temp);
+                _openList = new NativeList<int>(Allocator.Temp);
+                _closedList = new NativeList<int>(Allocator.Temp);
                 
 
-                openList.Add(startNode.index);
+                _openList.Add(startNode.index);
 
                 int currentNodeIndex;
-                while (openList.Length > 0)
+                while (_openList.Length > 0)
                 {
-                    currentNodeIndex = GetLowestFCostNodeIndex(openList, nodeArray);
+                    currentNodeIndex = GetLowestFCostNodeIndex(_openList, nodeArray);
 
                     Node currentNode = nodeArray[currentNodeIndex];
 
@@ -106,16 +128,16 @@ namespace Assets.Scripts.Pathfinding
                         break;
                     }
 
-                    for (int i = 0; i < openList.Length; i++)
+                    for (int i = 0; i < _openList.Length; i++)
                     {
-                        if (openList[i] == currentNodeIndex)
+                        if (_openList[i] == currentNodeIndex)
                         {
-                            openList.RemoveAtSwapBack(i);
+                            _openList.RemoveAtSwapBack(i);
                             break;
                         }
                     }
 
-                    closedList.Add(currentNodeIndex);
+                    _closedList.Add(currentNodeIndex);
 
                     for (int i = 0; i < neighbourOffsetArray.Length; i++)
                     {
@@ -127,9 +149,9 @@ namespace Assets.Scripts.Pathfinding
                             continue;
                         }
 
-                        int neighbourNodeIndex = CalculateIndex(neighbourPosition.x, neighbourPosition.y, AreaSize.x);
+                        int neighbourNodeIndex = CalculateIndex(neighbourPosition.x, neighbourPosition.y);
 
-                        if (closedList.Contains(neighbourNodeIndex))
+                        if (_closedList.Contains(neighbourNodeIndex))
                         {
                             continue;
                         }
@@ -150,15 +172,15 @@ namespace Assets.Scripts.Pathfinding
                             neighbourNode.UpdateFCost();
                             nodeArray[neighbourNodeIndex] = neighbourNode;
 
-                            if (!openList.Contains(neighbourNode.index))
+                            if (!_openList.Contains(neighbourNode.index))
                             {
-                                openList.Add(neighbourNode.index);
+                                _openList.Add(neighbourNode.index);
                             }
                         }
                     }
                 }
-                openList.Dispose();
-                closedList.Dispose();
+                _openList.Dispose();
+                _closedList.Dispose();
             }
 
             Node endNode = nodeArray[endIndex];
@@ -179,7 +201,7 @@ namespace Assets.Scripts.Pathfinding
             nodeArray.Dispose();
         }
 
-        private void AStar2(int2 start, int2 end)
+        private void AStar(int2 start, int2 end)
         {
             NativeArray<Node> nodeArray = CreateGraph(end);
             NativeArray<int2> neighbourOffsetArray = new NativeArray<int2>(4, Allocator.Temp);
@@ -190,28 +212,28 @@ namespace Assets.Scripts.Pathfinding
             neighbourOffsetArray[3] = new int2(0, -1); // Down
 
 
-            int endIndex = CalculateIndex(end.x, end.y, AreaSize.x);
+            int endIndex = CalculateIndex(end.x, end.y);
 
             bool exactLocation = true;
             if (WalkableArray[endIndex] <= 0 )
             {
                 exactLocation = false;
             }
-            Node startNode = nodeArray[CalculateIndex(start.x, start.y, AreaSize.x)];
+            Node startNode = nodeArray[CalculateIndex(start.x, start.y)];
             startNode.GCost = 0;
             startNode.UpdateFCost();
             nodeArray[startNode.index] = startNode;
 
-            NativeList<int> openList = new NativeList<int>(Allocator.Temp);
-            NativeList<int> closedList = new NativeList<int>(Allocator.Temp);
+            _openList = new NativeList<int>(Allocator.Temp);
+            _closedList = new NativeList<int>(Allocator.Temp);
 
 
-            openList.Add(startNode.index);
+            _openList.Add(startNode.index);
 
             int currentNodeIndex;
-            while (openList.Length > 0)
+            while (_openList.Length > 0)
             {
-                currentNodeIndex = GetLowestFCostNodeIndex(openList, nodeArray);
+                currentNodeIndex = GetLowestFCostNodeIndex(_openList, nodeArray);
 
                 Node currentNode = nodeArray[currentNodeIndex];
 
@@ -230,16 +252,16 @@ namespace Assets.Scripts.Pathfinding
                     }
                 }
 
-                for (int i = 0; i < openList.Length; i++)
+                for (int i = 0; i < _openList.Length; i++)
                 {
-                    if (openList[i] == currentNodeIndex)
+                    if (_openList[i] == currentNodeIndex)
                     {
-                        openList.RemoveAtSwapBack(i);
+                        _openList.RemoveAtSwapBack(i);
                         break;
                     }
                 }
 
-                closedList.Add(currentNodeIndex);
+                _closedList.Add(currentNodeIndex);
 
                 for (int i = 0; i < neighbourOffsetArray.Length; i++)
                 {
@@ -251,9 +273,9 @@ namespace Assets.Scripts.Pathfinding
                         continue;
                     }
 
-                    int neighbourNodeIndex = CalculateIndex(neighbourPosition.x, neighbourPosition.y, AreaSize.x);
+                    int neighbourNodeIndex = CalculateIndex(neighbourPosition.x, neighbourPosition.y);
 
-                    if (closedList.Contains(neighbourNodeIndex))
+                    if (_closedList.Contains(neighbourNodeIndex))
                     {
                         continue;
                     }
@@ -272,7 +294,7 @@ namespace Assets.Scripts.Pathfinding
 
                     float discount = edgeCost * modifier;
 
-                    //edgeCost -= (int)discount;
+                    edgeCost -= (int)discount;
 
                     //Debug.Log(modifier + " -> discount -> " + discount);
                         
@@ -286,15 +308,15 @@ namespace Assets.Scripts.Pathfinding
                         neighbourNode.UpdateFCost();
                         nodeArray[neighbourNodeIndex] = neighbourNode;
 
-                        if (!openList.Contains(neighbourNode.index))
+                        if (!_openList.Contains(neighbourNode.index))
                         {
-                            openList.Add(neighbourNode.index);
+                            _openList.Add(neighbourNode.index);
                         }
                     }
                 }
             }
-            openList.Dispose();
-            closedList.Dispose();
+            _openList.Dispose();
+            _closedList.Dispose();
             
 
             Node endNode = nodeArray[endIndex];
@@ -313,6 +335,190 @@ namespace Assets.Scripts.Pathfinding
 
             neighbourOffsetArray.Dispose();
             nodeArray.Dispose();
+        }
+        */
+        #endregion
+        private void AStarLazy()
+        {
+            bool foundPath = false;
+
+            NativeList<int2> openSet = new(Allocator.Temp);
+            NativeList<int2> closedSet = new(Allocator.Temp);
+
+            NativeHashMap<int2, Node2> allDiscoveredNodes = new(64, Allocator.Temp);
+
+            NativeArray<int2> neighbourOffsetArray = new NativeArray<int2>(4, Allocator.Temp);
+
+            neighbourOffsetArray[0] = new int2(-1, 0); // Left
+            neighbourOffsetArray[1] = new int2(+1, 0); // Right
+            neighbourOffsetArray[2] = new int2(0, +1); // Up
+            neighbourOffsetArray[3] = new int2(0, -1); // Down
+
+
+            int endIndex = CalculateIndex(End.x, End.y);
+            int2 endPosition = End;
+
+            bool exactLocation = true;
+            if (WalkableArray[endIndex] <= 0 )
+            {
+                exactLocation = false;
+            }
+
+            Node2 startNode = GetNodeLazy(Start, allDiscoveredNodes);
+
+            startNode.GCost = 0;            
+            
+            
+            openSet.Add(startNode.position);
+
+            int2 currentNodePosition;
+            while (openSet.Length > 0)
+            {
+                currentNodePosition = GetLowestFCostNodePosition(openSet, allDiscoveredNodes);
+
+                Node2 currentNode = GetNodeLazy(currentNodePosition, allDiscoveredNodes);
+
+                if (currentNodePosition.x == End.x && currentNodePosition.y == End.y)
+                {
+                    foundPath = true;
+                    break;
+                }
+                else if(!exactLocation)
+                {
+                    int xDiff = currentNode.position.x - End.x;
+                    int yDiff = currentNode.position.y - End.y;
+                    if( math.abs(xDiff) <= 1 && math.abs(yDiff) <= 1 )
+                    {
+                        endPosition = currentNodePosition;
+                        foundPath = true;
+                        break;
+                    }
+                }
+
+                for (int i = 0; i < openSet.Length; i++)
+                {
+                    if (openSet[i].x == currentNodePosition.x && openSet[i].y == currentNodePosition.y)
+                    {
+                        openSet.RemoveAtSwapBack(i);
+                        break;
+                    }
+                }
+
+                closedSet.Add(currentNodePosition);
+
+                for (int i = 0; i < neighbourOffsetArray.Length; i++)
+                {
+                    int2 neighbourOffset = neighbourOffsetArray[i];
+                    int2 neighbourPosition = new int2(currentNode.position.x + neighbourOffset.x, currentNode.position.y + neighbourOffset.y);
+
+                    if (!ValidatePosition(neighbourPosition, AreaSize))
+                    {
+                        continue;
+                    }
+
+                    if (closedSet.Contains(neighbourPosition))
+                    {
+                        continue;
+                    }
+
+                    Node2 neighbourNode = GetNodeLazy(neighbourPosition, allDiscoveredNodes);
+                    if (!neighbourNode.IsWalkable)
+                    {
+                        continue;
+                    }
+
+                    int edgeCost = CalculateHeuristicCost(currentNodePosition, neighbourPosition);
+
+                    int tentativeGCost = currentNode.GCost + edgeCost;
+                    if (tentativeGCost < neighbourNode.GCost)
+                    {
+                        neighbourNode.CameFrom = currentNodePosition;
+                        neighbourNode.GCost = tentativeGCost;
+                        allDiscoveredNodes[neighbourNode.position] = neighbourNode;
+
+                        if (!openSet.Contains(neighbourNode.position))
+                        {
+                            openSet.Add(neighbourNode.position);
+                        }
+                    }
+                }
+            }
+            
+
+            Node2 endNode = GetNodeLazy(endPosition, allDiscoveredNodes);
+            if ( !foundPath )
+            {
+                //no path 
+                Debug.Log("Didn't find a path!");
+                Path.Add(Start);
+            }
+            else
+            {
+                //found a path
+                CalculatePath(endNode, allDiscoveredNodes);
+            }
+
+
+            openSet.Dispose();
+            closedSet.Dispose();
+            allDiscoveredNodes.Dispose();
+            neighbourOffsetArray.Dispose();
+        }
+
+        private void CalculatePath(Node2 endNode, NativeHashMap<int2, Node2> allDiscoveredNodes)
+        {
+            
+            Path.Add(new int2(endNode.position.x, endNode.position.y));
+
+            Node2 currentNode = endNode;
+            while ( true )
+            {
+                if (currentNode.CameFrom.x == Start.x && currentNode.CameFrom.y == Start.y)
+                    break;
+
+                Node2 cameFromNode = allDiscoveredNodes[currentNode.CameFrom];
+                Path.Add(new int2(cameFromNode.position.x, cameFromNode.position.y));
+                currentNode = cameFromNode;
+            }
+            
+        }
+
+        private int2 GetLowestFCostNodePosition(NativeList<int2> openSet, NativeHashMap<int2, Node2> allDiscoveredNodes)
+        {
+            Node2 lowestCostNode = GetNodeLazy(openSet[0], allDiscoveredNodes);
+            for (int i = 0; i < openSet.Length; i++)
+            {
+                Node2 nodeToCheck = GetNodeLazy(openSet[i], allDiscoveredNodes);
+
+                if (nodeToCheck.FCost < lowestCostNode.FCost)
+                {
+                    lowestCostNode = nodeToCheck;
+                }
+            }
+            return lowestCostNode.position;
+        }
+
+        private Node2 GetNodeLazy(int2 pos, NativeHashMap<int2, Node2> allDiscoveredNodes)
+        {
+            Node2 node;
+            if(allDiscoveredNodes.ContainsKey(pos))
+            {
+                node = allDiscoveredNodes[pos];
+            }
+            else
+            {
+                node = new Node2();
+                node.position = pos;
+
+                node.GCost = int.MaxValue;
+                node.HCost = CalculateHeuristicCost(pos, End);
+
+                node.CameFrom = Start;
+
+                node.IsWalkable = WalkableArray[CalculateIndex(pos.x, pos.y)] > 0;
+            }
+
+            return node;
         }
 
         private static void CalculatePath(int2 startPos, NativeArray<Node> nodeArray, Node endNode, NativeList<int2> path)
@@ -355,9 +561,9 @@ namespace Assets.Scripts.Pathfinding
             return lowestCostNode.index;
         }
 
-        public static int CalculateIndex(int x, int y, int gridWidth) => x + y * gridWidth;
+        public int CalculateIndex(int x, int y) => x + y * AreaSize.x;
 
-        public static int CalculateIndex(int2 pos, int gridWidth) => pos.x + pos.y * gridWidth;
+        public int CalculateIndex(int2 pos) => pos.x + pos.y * AreaSize.x;
 
         //Manhattan Distance
         private static int CalculateHeuristicCost(int2 start, int2 end) => ((int)ManhattanDistance(start, end)) * STRAIGHT_COST;
@@ -381,7 +587,7 @@ namespace Assets.Scripts.Pathfinding
                     node.position.x = x;
                     node.position.y = y;
 
-                    node.index = CalculateIndex(x, y, AreaSize.x);
+                    node.index = CalculateIndex(x, y);
 
                     node.GCost = int.MaxValue;
                     node.HCost = CalculateHeuristicCost(new int2(x, y), end);

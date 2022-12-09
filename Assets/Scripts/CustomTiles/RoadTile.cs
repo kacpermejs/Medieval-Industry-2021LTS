@@ -1,4 +1,5 @@
 using Assets.Scripts.BuildingSystem;
+using Assets.Scripts.Utills;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -33,7 +34,7 @@ namespace Assets.Scripts.CustomTiles
 
         public bool CanBePlaced(Tilemap tilemap, BoundsInt area)
         {
-            var tiles = GameManager.GetTilesBlock(area, tilemap);
+            var tiles = TilemapUtills.GetTilesBlock(area, tilemap);
             foreach (var tile in tiles)
             {
                 foreach (var groundTile in _canReplace)

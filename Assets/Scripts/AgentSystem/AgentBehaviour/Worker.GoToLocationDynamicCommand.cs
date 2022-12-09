@@ -31,7 +31,6 @@ namespace Assets.Scripts.AgentSystem.AgentBehaviour
             {
 
                 Position = LocationProvider();
-                Debug.Log("World: " + LocationProvider() + "Grid: " + Position );
                 base.Execute();
 
             }
