@@ -57,11 +57,11 @@ namespace Assets.Scripts.AgentSystem.Movement
             //Move towards Waypoint position
             var vec = GameManager.Instance.TilemapGround.layoutGrid.LocalToCell(transform.position + new Vector3(0f,Y_OFFSET, 0f));
             var tileBelow = GameManager.Instance.TilemapGround.GetTile(vec + new Vector3Int(0, 0, -1));
-            float factor = ((IMapElement)tileBelow).WalkingSpeedFactor;
+            float slowDownfactor = ((IMapElement)tileBelow).WalkingSpeedFactor;
 
             
 
-            transform.position = Vector3.MoveTowards(transform.position, MovePoint.position, _moveSpeed * factor * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, MovePoint.position, (_moveSpeed * slowDownfactor) * Time.deltaTime);
             FollowThePath();
 
 

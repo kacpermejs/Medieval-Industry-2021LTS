@@ -13,7 +13,7 @@ namespace Assets.Scripts.Pathfinding
     {
         public static readonly int MAP_X_SIZE = 256;
         public static readonly int MAP_Y_SIZE = 256;
-
+        private const int BASE_COST = 150;
         private NativeArray<int> _walkableArray;
 
         
@@ -32,11 +32,6 @@ namespace Assets.Scripts.Pathfinding
         #endregion
 
         #region UnityMethods
-
-        private void Awake()
-        {
-            var x = Instance;
-        }
 
         private void Start()
         {
@@ -58,14 +53,14 @@ namespace Assets.Scripts.Pathfinding
 
         private void OnDestroy()
         {
-            WalkableArray.Dispose();
+            _walkableArray.Dispose();
         }
 
         #endregion
 
         #region PublicMethods
 
-        [BurstCompile]
+        //[BurstCompile]
         public static int CalculateIndex(int x, int y, int gridWidth) => x + y * gridWidth;
 
         [BurstCompile]
@@ -97,6 +92,7 @@ namespace Assets.Scripts.Pathfinding
 
             return new PathfindingJob
             {
+                BaseEdgeCost = BASE_COST,
                 Start = start,
                 End = end,
                 AreaSize = areaSize,
@@ -205,9 +201,11 @@ namespace Assets.Scripts.Pathfinding
                         }
                     }
                     
-                    int value = (canWalkThere ? (int)(((IMapElement)tileBelow).WalkingSpeedFactor * 100f) : 0);
+                    // Big slow down factor ( up to 1.0 ) => High cost
+                    // Low slow down factor ( down to 0.0 ) => Low cost
+                    int value = (canWalkThere ? (int)( 1 / ((IMapElement)tileBelow).WalkingSpeedFactor * BASE_COST) : -1); //cost of steping into the node
 
-                    _walkableArray[x + y * MAP_X_SIZE] = value;
+                    _walkableArray[CalculateIndex(x, y, MAP_X_SIZE)] = value;
 
                 }
             }

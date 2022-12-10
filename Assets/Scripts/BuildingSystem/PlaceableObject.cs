@@ -28,7 +28,7 @@ namespace Assets.Scripts.BuildingSystem
         [SerializeField] private bool _walkable = false;
         [SerializeField] private bool _canWalkThrough = false;
         [SerializeField] private bool _canBuildUpon = false;
-        [SerializeField] private float _walkingSpeedFactor = 1;
+        [SerializeField] private float _walkingSpeedFactor = 0.5f;
         [SerializeField] private IMapElement.DestinationMapLayer _layer;
         [SerializeField] private bool _useStandardRules;
 

@@ -11,7 +11,7 @@
 
             public override void UpdateState(Worker worker)
             {
-                if(worker.Workplace.WorkerTask != null)
+                if(worker.Workplace.WorkerTask != null && worker.Workplace.WorkerTask.CanPerformTask)
                 {
                     worker.SwitchState(new WorkingState());
                 }

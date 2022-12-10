@@ -1,4 +1,6 @@
-﻿namespace Assets.Scripts.AgentSystem.AgentBehaviour
+﻿using System;
+
+namespace Assets.Scripts.AgentSystem.AgentBehaviour
 {
     public partial class Worker
     {
@@ -6,11 +8,6 @@
         {
             public override void EnterState(Worker worker)
             {
-                if(worker.Task == null)
-                {
-                    worker.ResetCounter();
-                }
-
                 worker.AssignTask(worker.Workplace.WorkerTask);
             }
 
@@ -18,9 +15,9 @@
             {
                 if (worker.Workplace != null)
                 {
-                    if(worker.Workplace.WorkerTask != null && worker.Workplace.WorkerTask.CanPerformTask)
+                    
+                    if(worker.Workplace.WorkerTask != null && !worker.TaskCycleFinished())
                     {
-                        //worker.Workplace.WorkerTask.PerformAction();
                         worker.CommandUpdate();
                     }
                     else
@@ -33,6 +30,14 @@
                     worker.SwitchState(new IdleState());
                 }
             }
+        }
+
+        private bool TaskCycleFinished()
+        {
+            if (_currentCommandIndex >= Task.NumberOfInstructions)
+                return true;
+            else
+                return false;
         }
     }
     

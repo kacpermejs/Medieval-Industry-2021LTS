@@ -8,16 +8,19 @@ namespace Assets.Scripts.CustomTiles
     [CreateAssetMenu]
     public class RoadTile : IsometricRuleTile<RoadTile.Neighbor>, IMapElement
     {
-        #region IMapElement Properties Implementation
+        #region private fields
+        //IMapElement
         [SerializeField] private bool _walkable = true;
         [SerializeField] private bool _canWalkThrough = false;
         [SerializeField] private bool _canBuildUpon = true;
-        [SerializeField] private float _walkingSpeedFactor;
+        [SerializeField] private float _walkingSpeedFactor = 2f;
         [SerializeField] private IMapElement.DestinationMapLayer _layer;
         [SerializeField] private bool _useStandardRules = false;
-
+        //Road specific
         [SerializeField] private TileBase[] _canReplace;
+        #endregion
 
+        #region properties
         public string Name => name;
         public bool Walkable => _walkable;
         public bool CanWalkThrough => _canWalkThrough;
@@ -27,6 +30,10 @@ namespace Assets.Scripts.CustomTiles
         public Sprite Icon => m_DefaultSprite;
         public IMapElement.DestinationMapLayer Layer => _layer;
 
+        #endregion
+
+        #region public methods
+        //IMapElement
         public void Place(Tilemap tilemap, Vector3Int position)
         {
             tilemap.SetTile(position, this);
@@ -50,8 +57,7 @@ namespace Assets.Scripts.CustomTiles
             return true;
         }
 
-        #endregion
-
+        //RuleTile
         public class Neighbor : IsometricRuleTile.TilingRule.Neighbor
         {
             //public const int Null = 3;
@@ -66,6 +72,7 @@ namespace Assets.Scripts.CustomTiles
             }*/
             return base.RuleMatch(neighbor, tile);
         }
+        #endregion
 
     }
 }

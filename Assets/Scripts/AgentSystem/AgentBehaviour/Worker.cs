@@ -82,7 +82,12 @@ namespace Assets.Scripts.AgentSystem.AgentBehaviour
         }
 
         public void AssignWorkplace(Workplace workplace) => Workplace = workplace;
-        public void AssignTask(WorkerTaskBase task) => Task = task;
+        public void AssignTask(WorkerTaskBase task)
+        {
+            Task = task;
+            ResetCounter();
+        }
+
         public void ResetCounter() => _currentCommandIndex = 0;
 
         #endregion
@@ -107,13 +112,7 @@ namespace Assets.Scripts.AgentSystem.AgentBehaviour
 
         private void QueryNextCommand()
         {
-            if (_currentCommandIndex >= Task.NumberOfInstructions)
-            {
-                ResetCounter();
-            }
             _currentCommand = Task.QueryCommand(_currentCommandIndex, this);
-            
-            
         }
 
         private void CommandExecution()

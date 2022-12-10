@@ -12,7 +12,7 @@ namespace Assets.Scripts.CustomTiles
         [SerializeField] private bool _walkable = true;
         [SerializeField] private bool _canWalkThrough = false;
         [SerializeField] private bool _canBuildUpon = true;
-        [SerializeField] private float _walkingSpeedFactor = 1;
+        [SerializeField] private float _walkingSpeedFactor = 0.5f;
         [SerializeField] private bool _useStandardRules;
         [SerializeField] private IMapElement.DestinationMapLayer _layer = IMapElement.DestinationMapLayer.Ground;
 

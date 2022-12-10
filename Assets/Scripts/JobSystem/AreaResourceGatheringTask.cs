@@ -26,8 +26,8 @@ namespace Assets.Scripts.JobSystem
 
         [SerializeField, ReadOnlyInspector] private Queue<Resource> _resourcesToGather = new Queue<Resource>();
 
-        [SerializeField] private Storage _storage;
-        public Storage Storage => _storage;// GetSuitableStorage();
+        [SerializeField, ReadOnlyInspector] private Storage _storage;
+        public Storage Storage => GetSuitableStorage();
         public override bool CanPerformTask => _resourcesToGather.Count > 0;
 
         public event Action OnLocationChanged;
@@ -36,14 +36,15 @@ namespace Assets.Scripts.JobSystem
 
         private void Awake()
         {
-            _instructions.Add(new Worker.GoToLocationDynamicCommand( () => Storage.transform.position ));
             _instructions.Add(new Worker.GoToLocationDynamicCommand( () => QuerryResource().transform.position ));
+            _instructions.Add(new Worker.GoToLocationDynamicCommand( () => Storage.transform.position ));
 
         }
 
         private void OnEnable()
         {
             ResetSelection();
+            _storage = GetSuitableStorage();
         }
 
         #endregion
@@ -127,13 +128,12 @@ namespace Assets.Scripts.JobSystem
 
         private Storage GetSuitableStorage()
         {
-            return FindNearestStorage((e) => e.CanStoreItem(_targetPrefab.Item, 1));
+            if (_storage != null && _storage.CanStoreItem(_targetPrefab.Item, 1))
+                return _storage;
+            else
+                return _storage = FindNearestStorage((e) => e.CanStoreItem(_targetPrefab.Item, 1));
         }
 
-        private void TriggerWaitingState(Worker worker)
-        {
-            throw new NotImplementedException();
-        }
 
     }
 }
