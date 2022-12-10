@@ -36,8 +36,10 @@ namespace Assets.Scripts.JobSystem
 
         private void Awake()
         {
-            _instructions.Add(new Worker.GoToLocationDynamicCommand( () => QuerryResource().transform.position ));
-            _instructions.Add(new Worker.GoToLocationDynamicCommand( () => Storage.transform.position ));
+            _instructions.Add(new Worker.GathererSetAsTarget( () => QuerryResource().transform ));
+            _instructions.Add(new Worker.GoToGathererTarget() );
+            _instructions.Add(new Worker.GathererGatherResourceCommand());
+            _instructions.Add(new Worker.GoToLocationDynamicCommand( Storage.transform ));
 
         }
 
@@ -98,7 +100,6 @@ namespace Assets.Scripts.JobSystem
             resources.ForEach((elem) =>
             {
                 _resourcesToGather.Enqueue(elem);
-                //elem.transform.localScale += Vector3.one;
                 
             });
         }

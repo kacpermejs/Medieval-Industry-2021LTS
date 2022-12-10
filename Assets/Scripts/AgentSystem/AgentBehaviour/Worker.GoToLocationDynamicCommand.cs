@@ -14,23 +14,22 @@ namespace Assets.Scripts.AgentSystem.AgentBehaviour
     {
         public class GoToLocationDynamicCommand : GoToLocationCommand
         {
-            public Func<Vector3> LocationProvider;
+            public Transform TargetObjectTransform;
 
-            public GoToLocationDynamicCommand(Func<Vector3> provider, Worker worker = null)
+            public GoToLocationDynamicCommand(Transform transform, Worker worker = null)
             {
                 TargetWorker = worker;
-                LocationProvider = provider;
+                TargetObjectTransform = transform;
             }
 
             public override WorkerCommandBase Clone()
             {
-                return new GoToLocationDynamicCommand(LocationProvider, TargetWorker);
+                return new GoToLocationDynamicCommand(TargetObjectTransform, TargetWorker);
             }
 
             public override void Execute()
             {
-
-                Position = LocationProvider();
+                Position = TargetObjectTransform.position;
                 base.Execute();
 
             }

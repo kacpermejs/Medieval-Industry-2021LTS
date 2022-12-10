@@ -11,7 +11,7 @@ namespace Assets.Scripts.JobSystem
     {
 
         [field: SerializeField] protected List<Worker.WorkerCommandBase> _instructions = new List<Worker.WorkerCommandBase>();
-        [field: SerializeField] protected List<UnityAction> _actions = new ();
+        //[field: SerializeField] protected List<UnityAction> _actions = new ();
 
         //protected int _instructionID = 0;
         //private bool _busy = false;
@@ -21,17 +21,10 @@ namespace Assets.Scripts.JobSystem
 
         public int NumberOfInstructions => _instructions.Count;
 
-        //public UnityEvent<Worker> OnCycleEnded;
-
         public virtual void AssignWorker(Worker worker)
         {
             WorkerCount++;
         }
-
-        /*public virtual void CycleEnded(Worker worker)
-        {
-            OnCycleEnded?.Invoke(worker);
-        }*/
 
         public Worker.WorkerCommandBase QueryCommand(int index, Worker targetWorker)
         {
