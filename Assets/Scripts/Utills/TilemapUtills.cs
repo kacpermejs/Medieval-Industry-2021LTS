@@ -2,6 +2,8 @@
 
 using UnityEngine.Tilemaps;
 using UnityEngine;
+using Assets.Scripts.BuildingSystem;
+using System;
 
 namespace Assets.Scripts.Utills
 {
@@ -38,6 +40,75 @@ namespace Assets.Scripts.Utills
             {
                 arr[i] = tile;
             }
+        }
+
+        public static bool CheckIfAreaEmpty(BoundsInt area, Tilemap tilemap)
+        {
+            var tiles = TilemapUtills.GetTilesBlock(area, tilemap);
+            foreach (var tile in tiles)
+            {
+                if (tile != null)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public static bool CheckIfAreaEmpty(Vector3Int blockPosition, Tilemap tilemap)
+        {
+            var tile = tilemap.GetTile(blockPosition);
+            if (tile != null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public static bool CheckIfCanBeBuiltUpon(Tilemap tilemap, BoundsInt area2)
+        {
+            var tiles = TilemapUtills.GetTilesBlock(area2, tilemap);
+            foreach (var tile in tiles)
+            {
+                if (tile is IMapElement element)
+                {
+                    if (!element.CanBuildUpon)
+                    {
+                        return false;
+                    }
+                }
+                else if (tile == null)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+
+        public static bool CheckIfCanBeBuiltUpon(Tilemap tilemap, Vector3Int blockPosition)
+        {
+            var tile = tilemap.GetTile(blockPosition);
+            if (tile is IMapElement element)
+            {
+                if (!element.CanBuildUpon)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if (tile == null)
+                {
+                    return false;
+                }
+                else
+                    throw new Exception("Wrong tile class present in the tilemap");
+            }
+
+
+            return true;
         }
 
         #endregion

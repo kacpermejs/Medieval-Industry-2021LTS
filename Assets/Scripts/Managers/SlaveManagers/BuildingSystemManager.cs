@@ -6,10 +6,11 @@ using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
 using Assets.Scripts.CustomTiles;
 using Assets.Scripts.Utills;
+using Asstes.Scripts.Managers;
 
 namespace Assets.Scripts.BuildingSystem
 {
-    public class BuildManager : SingletoneBase<BuildManager>
+    public class BuildingSystemManager : SingletoneBase<BuildingSystemManager>, ISlaveManager
     {
         public enum MarkerType
         {
@@ -31,67 +32,39 @@ namespace Assets.Scripts.BuildingSystem
 
         private Dictionary<MarkerType, TileBase> _markerTiles = new Dictionary<MarkerType, TileBase>();
 
-        private bool _buildMode = false;
-
         private IMapElement _tileToPlace;
+
+        private Camera _camera;
 
         private List<IMapElement> _placableTiles = new List<IMapElement>();
 
         public List<IMapElement> PlacableTiles { get => _placableTiles; }
 
-        private List<PlaceableObject> _buildings;
-        private List<PlaceableObject> _resources;
+        public bool AlwaysActive => false;
 
-        private Camera _camera;
 
         #region Unity methods
 
-        //public static BuildManager Instance { get; private set; }
-
         private void Awake()
         {
-            //Instance = this;
-
+            //Caching camera cause it takes long to find it
             _camera = Camera.main;
 
-            // TODO: Optimize loading - loading all GameObjects wastes a lot of memory
-            /*LoadPlacableObjectTiles("Prefabs/BuildingPrefabs");
-            LoadPlacableObjectTiles("Prefabs/ResourcePrefabs");*/
             LoadPlaceableObjectPrefabs("Prefabs/BuildingPrefabs");
             LoadPlaceableObjectPrefabs("Prefabs/ResourcePrefabs");
             LoadRoadTiles();
-
-            GameManager.OnGameStateChanged += GameManagerOnGameStateChanged;
+            LoadMarkers();
         }
 
-        private void OnDestroy()
+        private void OnEnable()
         {
-            GameManager.OnGameStateChanged -= GameManagerOnGameStateChanged;
+            
         }
 
-        //void OnEnable()
-        //{
-
-        //}
-
-        // Start is called before the first frame update
-        void Start()
-        {
-            _markerTiles.Add(MarkerType.GreenBox, _greenBox);
-            _markerTiles.Add(MarkerType.RedBox, _redBox);
-            _markerTiles.Add(MarkerType.GreenTile, _greenTile);
-            _markerTiles.Add(MarkerType.RedTile, _redTile);
-            _markerTiles.Add(MarkerType.GreenDot, _greenDot);
-        }
-
-        // Update is called once per frame
         void Update()
         {
-            if (_buildMode && _tileToPlace != null)
+            if (_tileToPlace != null)
             {
-                //Need to cleanup markers after placement
-
-
                 if (Input.GetMouseButtonDown(0))
                 {
                     //Do not place any object if mouse is over a UI object
@@ -115,8 +88,6 @@ namespace Assets.Scripts.BuildingSystem
                         Debug.Log(gridPoint);
                         Place(destTilemap, gridPoint, _tileToPlace, true);
                     }
-
-
                 }
             }
         }
@@ -128,9 +99,9 @@ namespace Assets.Scripts.BuildingSystem
         private void LoadPlaceableObjectPrefabs(string path)
         {
             Resources.LoadAll<PlaceableObject>(path)
-                .Where(obj => !obj.name.StartsWith("[base]"))
-                .ToList()
-                .ForEach(obj => PlacableTiles.Add(obj) );
+                     .Where(obj => !obj.name.StartsWith("[base]"))
+                     .ToList()
+                     .ForEach(obj => PlacableTiles.Add(obj));
         }
 
         private void LoadRoadTiles()
@@ -138,22 +109,13 @@ namespace Assets.Scripts.BuildingSystem
             PlacableTiles.Add(_roadTile);
         }
 
-        #endregion
-
-        #region EventHandlers
-
-        private void GameManagerOnGameStateChanged(GameState state)
+        private void LoadMarkers()
         {
-            _buildMode = state == GameState.BuildMode;
-
-            if (state == GameState.Default)
-            {
-                ClearAllMarkers();
-            }
-            else if (state == GameState.BuildMode)
-            {
-                //DisplayBuildingMarkers();
-            }
+            _markerTiles.Add(MarkerType.GreenBox, _greenBox);
+            _markerTiles.Add(MarkerType.RedBox, _redBox);
+            _markerTiles.Add(MarkerType.GreenTile, _greenTile);
+            _markerTiles.Add(MarkerType.RedTile, _redTile);
+            _markerTiles.Add(MarkerType.GreenDot, _greenDot);
         }
 
         #endregion
@@ -202,7 +164,6 @@ namespace Assets.Scripts.BuildingSystem
                 area.position -= new Vector3Int(area.size.x / 2, area.size.y / 2, 0);
             }
 
-
             if (useCanBePlaced)
             {
                 if (!CanBePlaced(tile, tilemap, area))
@@ -223,13 +184,9 @@ namespace Assets.Scripts.BuildingSystem
             if (tile.UseStandardRules)
             {
                 BoundsInt area2 = new BoundsInt(area.position + new Vector3Int(0, 0, -1), new Vector3Int(area.size.x, area.size.y, 1));
-                if
-                (
-                    !(CheckIfAreaEmpty(area, GameManager.Instance.TilemapGround) &&
-                    CheckIfAreaEmpty(area, GameManager.Instance.TilemapColliders) &&
-                    CheckIfCanBeBuiltUpon(GameManager.Instance.TilemapGround, area2)
-                    )
-                )
+                if ( !(TilemapUtills.CheckIfAreaEmpty(area, GameManager.Instance.TilemapGround)
+                     && TilemapUtills.CheckIfAreaEmpty(area, GameManager.Instance.TilemapColliders)
+                     && TilemapUtills.CheckIfCanBeBuiltUpon(GameManager.Instance.TilemapGround, area2)) )
                 {
                     return false;
                 }
@@ -242,82 +199,19 @@ namespace Assets.Scripts.BuildingSystem
             return true;
         }
 
-        public static bool CheckIfAreaEmpty(BoundsInt area, Tilemap tilemap)
-        {
-            var tiles = TilemapUtills.GetTilesBlock(area, tilemap);
-            foreach (var tile in tiles)
-            {
-                if (tile != null)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        public static bool CheckIfAreaEmpty(Vector3Int blockPosition, Tilemap tilemap)
-        {
-            var tile = tilemap.GetTile(blockPosition);
-            if (tile != null)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public static bool CheckIfCanBeBuiltUpon(Tilemap tilemap, BoundsInt area2)
-        {
-            var tiles = TilemapUtills.GetTilesBlock(area2, tilemap);
-            foreach (var tile in tiles)
-            {
-                if (tile is IMapElement element)
-                {
-                    if (!element.CanBuildUpon)
-                    {
-                        return false;
-                    }
-                }
-                else if (tile == null)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-
-        public static bool CheckIfCanBeBuiltUpon(Tilemap tilemap, Vector3Int blockPosition)
-        {
-            var tile = tilemap.GetTile(blockPosition);
-            if (tile is IMapElement element)
-            {
-                if (!element.CanBuildUpon)
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                if (tile == null)
-                {
-                    return false;
-                }
-                else
-                    throw new Exception("Wrong tile class present in the tilemap");
-            }
-
-
-            return true;
-        }
-
         public void SetNewTileToBuild(int index)
         {
             _tileToPlace = _placableTiles[index];
         }
 
-        
+        public void Enable()
+        {
+            this.enabled = true;
+        }
 
-
+        public void Disable()
+        {
+            this.enabled = false;
+        }
     }
 }

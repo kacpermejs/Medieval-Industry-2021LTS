@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Assets.Scripts.AgentSystem.Movement;
+using Asstes.Scripts.Managers;
 
 namespace Assets.Scripts.AgentSystem.AgentBehaviour
 {

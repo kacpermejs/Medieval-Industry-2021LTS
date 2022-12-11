@@ -3,18 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SelectionMarker : MonoBehaviour
+public class SelectionMarkerController : MonoBehaviour
 {
     private GameObject Marker;
 
     public bool IsSelected { get; private set; }
 
     #region UnityMethods
-
-    /*private void OnMouseDown()
-    {
-        Select();
-    }*/
 
     private void Awake()
     {

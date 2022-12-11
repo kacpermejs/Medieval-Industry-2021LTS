@@ -9,6 +9,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Assets.Scripts.Utills;
+using Asstes.Scripts.Managers;
 
 namespace Assets.Scripts.AgentSystem.Movement
 {
@@ -70,7 +71,7 @@ namespace Assets.Scripts.AgentSystem.Movement
                 _command = null;
             }*/
  
-            if (_mouseMovement && GameManager.Instance.GameState == GameState.Default)
+            /*if (_mouseMovement)
             {
                 if (Input.GetMouseButtonDown(0))
                 {
@@ -88,7 +89,7 @@ namespace Assets.Scripts.AgentSystem.Movement
 
                     }
                 }
-            }
+            }*/
             if (!_busy && _command != null)
             {
                 StartCoroutine(ExecuteCommand(false));

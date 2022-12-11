@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Asstes.Scripts.Managers;
+using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -96,26 +98,29 @@ namespace Assets.Scripts.BuildingSystem
 
         private void OnDestroy()
         {
-            _gridPosition = GameManager.ConvertToGridPosition(transform.localPosition);
-
-            BoundsInt area = new BoundsInt();
-
-            area.size = Bounds.size;
-            area.position = _gridPosition - new Vector3Int(area.size.x / 2, area.size.y / 2, 0);
-
-
-            int size = area.size.x * area.size.y * area.size.z;
-
-            if (ComponentTilesIndecies.Count != size)
-                throw new Exception("Arrays don't match in size");
-
-            TileBase[] arr = new TileBase[size];
-
-            for (int i = 0; i < size; i++)
+            if (!GameManager.Instance.IsDestroyed())
             {
-                arr[i] = null;
+                _gridPosition = GameManager.ConvertToGridPosition(transform.localPosition);
+
+                BoundsInt area = new BoundsInt();
+
+                area.size = Bounds.size;
+                area.position = _gridPosition - new Vector3Int(area.size.x / 2, area.size.y / 2, 0);
+
+
+                int size = area.size.x * area.size.y * area.size.z;
+
+                if (ComponentTilesIndecies.Count != size)
+                    throw new Exception("Arrays don't match in size");
+
+                TileBase[] arr = new TileBase[size];
+
+                for (int i = 0; i < size; i++)
+                {
+                    arr[i] = null;
+                }
+                GameManager.Instance.TilemapColliders.SetTilesBlock(area, arr);
             }
-            GameManager.Instance.TilemapColliders.SetTilesBlock(area, arr);
         }
 
         #endregion

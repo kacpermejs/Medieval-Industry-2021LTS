@@ -1,12 +1,13 @@
 using Assets.Scripts.ItemSystem;
 using Assets.Scripts.UI;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Assets.Scripts.PlaceableObjectBehaviour
 {
 
-    public class Storage : BuildingBehaviour, IUICreator
+    public class Storage : MonoBehaviour, IUICreator
     {
         public string title => "Storage";
 

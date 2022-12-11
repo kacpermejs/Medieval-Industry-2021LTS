@@ -10,11 +10,11 @@ using Assets.Scripts.BuildingSystem;
 namespace Assets.Scripts.AgentSystem.AgentBehaviour
 {
 
-    public partial class Worker : AIBehaviour, ISelectableAgent, IFiniteStateMachine<Worker.WorkerStateBase>
+    public partial class Worker : AIBehaviour, ISelectableBehaviour, IFiniteStateMachine<Worker.WorkerStateBase>
     {
         #region PrivateFields
 
-        private SelectionMarker _marker;
+        private SelectionMarkerController _marker;
         private WorkerCommandBase _currentCommand;
 
         private int _currentCommandIndex = 0;
@@ -46,7 +46,7 @@ namespace Assets.Scripts.AgentSystem.AgentBehaviour
 
         private void Awake()
         {
-            _marker = GetComponent<SelectionMarker>();
+            _marker = GetComponent<SelectionMarkerController>();
         }
 
         private void Update()
@@ -59,6 +59,10 @@ namespace Assets.Scripts.AgentSystem.AgentBehaviour
         #region Public methods
 
         #region ISelectableAgent
+        public void OnSelect()
+        {
+            throw new System.NotImplementedException();
+        }
 
         public void Select()
         {

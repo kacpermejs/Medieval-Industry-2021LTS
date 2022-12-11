@@ -6,12 +6,8 @@ using UnityEngine.Events;
 
 namespace Assets.Scripts.PlaceableObjectBehaviour
 {
-    public abstract class WorkplaceTask
-    {
-        
-    }
 
-    public class Producer : BuildingBehaviour
+    public class Producer : MonoBehaviour
     {
 
         public UnityEvent OnProductionFinished = new UnityEvent();

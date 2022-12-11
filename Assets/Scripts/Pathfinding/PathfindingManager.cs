@@ -6,6 +6,7 @@ using Unity.Burst;
 using Assets.Scripts.BuildingSystem;
 using System.Collections;
 using Assets.Scripts.Utills;
+using Asstes.Scripts.Managers;
 
 namespace Assets.Scripts.Pathfinding
 {

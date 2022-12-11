@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.AgentSystem;
 using Assets.Scripts.AgentSystem.AgentBehaviour;
 using Assets.Scripts.JobSystem;
+using Assets.Scripts.Managers;
 using Assets.Scripts.UI;
 using System;
 using System.Collections.Generic;
@@ -10,15 +11,15 @@ using UnityEngine.UIElements;
 
 namespace Assets.Scripts.PlaceableObjectBehaviour
 {
-    public partial class Workplace : BuildingBehaviour, IUICreator
+    public partial class Workplace : MonoBehaviour, IUICreator
     {
         [field: SerializeField] public Worker AssignedWorker { get; private set; }
 
         [field: SerializeField] public WorkerTaskBase WorkerTask { get; private set; }
 
         #region UI Elements
-            private Button _AddWorkerButton;
-        
+        private Button _AddWorkerButton;
+
         public string title => "Workplace";
 
         #endregion
@@ -28,14 +29,15 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
             AssignedWorker = worker;
             worker.AssignWorkplace(this);
             WorkerTask.AssignWorker(worker);
-            
+
         }
 
         #region IUICreator methods
         public VisualElement CreateUIContent()
         {
 
-            VisualElement content = Resources.Load<VisualTreeAsset>("UI/UXML/WorkplaceTabContent").Instantiate();
+            VisualElement content = Resources.Load<VisualTreeAsset>("UI/UXML/WorkplaceTabContent")
+                                             .Instantiate();
 
             _AddWorkerButton = content.Q<Button>("NewWorkerButton");
 
@@ -55,11 +57,14 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
 
         private void AddWorkersButtonHandler(ClickEvent evt)
         {
-            foreach (var agent in AgentSelector.Instance.AgentList)
+            foreach (var agent in AgentSelectionManager.Instance.AgentList)
             {
-                if (agent is Worker worker)
+                if (agent is AIAgent agent2)
                 {
-                    AddWorker(worker);
+                    if (agent2.TryGetComponent<Worker>(out Worker worker))
+                    {
+                        AddWorker(worker);
+                    }
                 }
             }
         }

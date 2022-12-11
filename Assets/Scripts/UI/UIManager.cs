@@ -2,6 +2,7 @@ using Assets.Scripts.AgentSystem;
 using Assets.Scripts.BuildingSystem;
 using Assets.Scripts.UI;
 using Assets.Scripts.Utills;
+using Asstes.Scripts.Managers;
 using System;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -43,12 +44,12 @@ public class UIManager : SingletoneBase<UIManager>
             Label titleLabel = elem.Q<Label>("ItemTitle");
             Button imageButton = elem.Q<Button>("ItemButton");
 
-            titleLabel.text = BuildManager.Instance.PlacableTiles[index].Name;
+            titleLabel.text = BuildingSystemManager.Instance.PlacableTiles[index].Name;
 
-            imageButton.style.backgroundImage = new StyleBackground(BuildManager.Instance.PlacableTiles[index].Icon);
+            imageButton.style.backgroundImage = new StyleBackground(BuildingSystemManager.Instance.PlacableTiles[index].Icon);
             imageButton.clicked += () =>
             {
-                BuildManager.Instance.SetNewTileToBuild(index);
+                BuildingSystemManager.Instance.SetNewTileToBuild(index);
                 GameManager.Instance.SwitchState(GameState.BuildMode);
                 BTN_cancel.visible = true;
 
@@ -57,7 +58,7 @@ public class UIManager : SingletoneBase<UIManager>
         };
 
 
-        buildingListView.itemsSource = BuildManager.Instance.PlacableTiles; //TODO: awful, I know to much
+        buildingListView.itemsSource = BuildingSystemManager.Instance.PlacableTiles; //TODO: awful, I know to much
         buildingListView.fixedItemHeight = 100;
     }
 
@@ -65,11 +66,6 @@ public class UIManager : SingletoneBase<UIManager>
     {
         BTN_cancel.clicked -= OnCancelClicked;
         BTN_ok.clicked -= OnOkClicked;
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-
     }
 
     void OnCancelClicked()

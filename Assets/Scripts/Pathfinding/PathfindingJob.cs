@@ -52,9 +52,12 @@ namespace Assets.Scripts.Pathfinding
             NativeList<int2> openSet = new(Allocator.Temp);
             NativeHashSet<int2> closedSet = new(256, Allocator.Temp);
 
-            NativeHashMap<int2, Node2> allDiscoveredNodes = new(256, Allocator.Temp);
+            NativeHashMap<int2, Node2> allDiscoveredNodes =
+                new(256, Allocator.Temp);
 
-            NativeArray<int2> neighbourOffsetArray = new NativeArray<int2>(4, Allocator.Temp);
+            NativeArray<int2> neighbourOffsetArray =
+                new NativeArray<int2>(4, Allocator.Temp);
+
             neighbourOffsetArray[0] = new int2(-1, 0); // Left
             neighbourOffsetArray[1] = new int2(+1, 0); // Right
             neighbourOffsetArray[2] = new int2(0, +1); // Up
@@ -63,12 +66,9 @@ namespace Assets.Scripts.Pathfinding
             //determine if we pathfind to exact location or the neighbour cell
             bool exactLocation = true;
             if (WalkableArray[CalculateIndex(End)] == -1 )
-            {
                 exactLocation = false;
-            }
 
             Node2 startNode = GetNodeLazy(Start, allDiscoveredNodes);
-
             startNode.GCost = 0;
             
             openSet.Add(startNode.position);
@@ -76,10 +76,11 @@ namespace Assets.Scripts.Pathfinding
             int2 currentNodePosition;
             while (openSet.Length > 0)
             {
-                currentNodePosition = GetLowestFCostNodePosition(openSet, allDiscoveredNodes);//TODO: this is slow
+                //TODO: this is slow
+                currentNodePosition = GetLowestFCostNodePosition(openSet, allDiscoveredNodes);
 
-                Node2 currentNode = GetNodeLazy(currentNodePosition, allDiscoveredNodes);//here node should have been already addede to the hashmap
-
+                //here node should have been already added to the hashmap
+                Node2 currentNode = GetNodeLazy(currentNodePosition, allDiscoveredNodes);
                 //end conditions
                 if (currentNodePosition.Equals(endPosition))
                 {
@@ -115,23 +116,17 @@ namespace Assets.Scripts.Pathfinding
                 for (int i = 0; i < neighbourOffsetArray.Length; i++)
                 {
                     int2 neighbourOffset = neighbourOffsetArray[i];
-                    int2 neighbourPosition = new int2(currentNode.position.x + neighbourOffset.x, currentNode.position.y + neighbourOffset.y);
+                    int2 neighbourPosition = new int2(currentNode.position.x + neighbourOffset.x,
+                                                      currentNode.position.y + neighbourOffset.y);
 
                     if (!ValidatePosition(neighbourPosition))
-                    {
                         continue;
-                    }
-
                     if (closedSet.Contains(neighbourPosition)) //node already processed
-                    {
                         continue;
-                    }
 
                     Node2 neighbourNode = GetNodeLazy(neighbourPosition, allDiscoveredNodes);
                     if (!neighbourNode.IsWalkable)
-                    {
                         continue;
-                    }
 
                     //simplification - in this implementation graph edges are all the same
                     int edgeCost = WalkableArray[CalculateIndex(neighbourPosition)];
@@ -149,8 +144,7 @@ namespace Assets.Scripts.Pathfinding
                         }
                     }
                 }
-            }
-            
+            }            
             //path reconstruction
             Node2 endNode = GetNodeLazy(endPosition, allDiscoveredNodes);
             if ( !foundPath )
@@ -190,7 +184,8 @@ namespace Assets.Scripts.Pathfinding
             
         }
 
-        private int2 GetLowestFCostNodePosition(NativeList<int2> openSet, NativeHashMap<int2, Node2> allDiscoveredNodes)
+        private int2 GetLowestFCostNodePosition(NativeList<int2> openSet,
+                                                NativeHashMap<int2, Node2> allDiscoveredNodes)
         {
             Node2 lowestCostNode = GetNodeLazy(openSet[0], allDiscoveredNodes);
             for (int i = 0; i < openSet.Length; i++)
