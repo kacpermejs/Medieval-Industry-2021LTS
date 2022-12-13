@@ -2,15 +2,19 @@ using Assets.Scripts.AgentSystem;
 using Assets.Scripts.BuildingSystem;
 using Assets.Scripts.UI;
 using Assets.Scripts.Utills;
-using Asstes.Scripts.Managers;
+using Assets.Scripts.GameStates;
 using System;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Unity.VisualScripting;
 
 public class UIManager : SingletoneBase<UIManager>
 {
     public Button BTN_cancel;
     public Button BTN_ok;
+
+    public Action OnCancelClicked;
+    public Action OnOkClicked;
     
     VisualElement _root;
 
@@ -22,11 +26,11 @@ public class UIManager : SingletoneBase<UIManager>
 
         BTN_cancel = _root.Q<Button>("BTN_cancel");
 
-        BTN_cancel.clicked += OnCancelClicked;
+        BTN_cancel.clicked += CancelButtonHandler;
 
         BTN_ok = _root.Q<Button>("BTN_ok");
 
-        BTN_ok.clicked += OnOkClicked;
+        BTN_ok.clicked += OkButtonHandler;
 
         ListView buildingListView = _root.Q<ListView>("BuildingListView");
         VisualTreeAsset buildingButtonTemplate = Resources.Load<VisualTreeAsset>("UI/UXML/ButtonTemplate");
@@ -34,7 +38,25 @@ public class UIManager : SingletoneBase<UIManager>
         CreateBuildingListViewItems(buildingListView, buildingButtonTemplate);
     }
 
+    private void OnDisable()
+    {
+        BTN_cancel.clicked -= CancelButtonHandler;
+        BTN_ok.clicked -= OkButtonHandler;
+    }
+
+    private void OkButtonHandler()
+    {
+        OnOkClicked?.Invoke();
+    }
+
+    private void CancelButtonHandler()
+    {
+        OnCancelClicked?.Invoke();
+    }
+
     #endregion
+
+
 
     private void CreateBuildingListViewItems(ListView buildingListView, VisualTreeAsset buildingButtonTemplate)
     {
@@ -50,10 +72,8 @@ public class UIManager : SingletoneBase<UIManager>
             imageButton.clicked += () =>
             {
                 BuildingSystemManager.Instance.SetNewTileToBuild(index);
-                GameManager.Instance.SwitchState(GameState.BuildMode);
+                GameManager.Instance.SwitchState(new BuildingState());
                 BTN_cancel.visible = true;
-
-                // TODO: I think there will be a memory leak if you don't unsubscribe - You go check it
             };
         };
 
@@ -62,42 +82,11 @@ public class UIManager : SingletoneBase<UIManager>
         buildingListView.fixedItemHeight = 100;
     }
 
-    private void OnDisable()
-    {
-        BTN_cancel.clicked -= OnCancelClicked;
-        BTN_ok.clicked -= OnOkClicked;
-    }
+    
 
-    void OnCancelClicked()
-    {
-        switch (GameManager.Instance.GameState)
-        {
-            case GameState.BuildMode:
-                EscapeBuildMode();
-                break;
-            default:
-                break;
-        }
+    
 
-    }
-
-    void OnOkClicked()
-    {
-        switch (GameManager.Instance.GameState)
-        {
-            case GameState.BuildMode:
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void EscapeBuildMode()
-    {
-        GameManager.Instance.SwitchState(GameState.Default);
-        BTN_cancel.visible = false;
-        BTN_ok.visible = false;
-    }
+    
 
 
 

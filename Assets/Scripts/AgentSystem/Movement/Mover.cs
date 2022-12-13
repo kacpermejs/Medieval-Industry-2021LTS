@@ -9,7 +9,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Assets.Scripts.Utills;
-using Asstes.Scripts.Managers;
+using Assets.Scripts.GameStates;
 
 namespace Assets.Scripts.AgentSystem.Movement
 {
@@ -56,8 +56,8 @@ namespace Assets.Scripts.AgentSystem.Movement
         void Update()
         {
             //Move towards Waypoint position
-            var vec = GameManager.Instance.TilemapGround.layoutGrid.LocalToCell(transform.position + new Vector3(0f,Y_OFFSET, 0f));
-            var tileBelow = GameManager.Instance.TilemapGround.GetTile(vec + new Vector3Int(0, 0, -1));
+            var vec = MapManager.Instance.TilemapGround.layoutGrid.LocalToCell(transform.position + new Vector3(0f, Y_OFFSET, 0f));
+            var tileBelow = MapManager.Instance.TilemapGround.GetTile(vec + new Vector3Int(0, 0, -1));
             float slowDownfactor = ((IMapElement)tileBelow).WalkingSpeedFactor;
 
             
@@ -157,10 +157,10 @@ namespace Assets.Scripts.AgentSystem.Movement
                         
                         //set a new point to walk towards
                         var cellPos = PathfindingManager.ConvertToTilemapCoordinates(_resultPath[_pathIndex]);
-                        var newPos = GameManager.Instance.GridLayout.CellToWorld(cellPos) + new Vector3(0, Y_OFFSET, Z_OFFSET);
+                        var newPos = MapManager.Instance.GridLayout.CellToWorld(cellPos) + new Vector3(0, Y_OFFSET, Z_OFFSET);
 
-                        var lowerTile = GameManager.Instance.TilemapGround.GetTile(cellPos + new Vector3Int(0, 0, -1));
-                        var upperTile = GameManager.Instance.TilemapGround.GetTile(cellPos);
+                        var lowerTile = MapManager.Instance.TilemapGround.GetTile(cellPos + new Vector3Int(0, 0, -1));
+                        var upperTile = MapManager.Instance.TilemapGround.GetTile(cellPos);
 
                         if (lowerTile != null)
                         {
@@ -196,7 +196,7 @@ namespace Assets.Scripts.AgentSystem.Movement
         public bool SchedulePathfinding(Vector3Int targetPoint)
         {
 
-            _startPoint = GameManager.Instance.GridLayout.LocalToCell(MovePoint.position - new Vector3(0, Y_OFFSET, Z_OFFSET));
+            _startPoint = MapManager.Instance.GridLayout.LocalToCell(MovePoint.position - new Vector3(0, Y_OFFSET, Z_OFFSET));
             
             _pathIndex = -1;
             _resultPath.Clear();

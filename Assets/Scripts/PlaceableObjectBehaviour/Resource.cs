@@ -1,11 +1,12 @@
 using Assets.Scripts.ItemSystem;
-using Asstes.Scripts.Managers;
+using Assets.Scripts.GameStates;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using Assets.Scripts.BuildingSystem;
 
 namespace Assets.Scripts.PlaceableObjectBehaviour
 {
@@ -159,8 +160,8 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
         private static int CalculateDistance(Vector3 startingPoint, Resource item)
         {
             var resourceWorld = item.gameObject.transform.position;
-            var startGrid = GameManager.ConvertToGridPosition(startingPoint);
-            Vector3Int resourceGrid = GameManager.ConvertToGridPosition(resourceWorld);
+            var startGrid = MapManager.ConvertToGridPosition(startingPoint);
+            Vector3Int resourceGrid = MapManager.ConvertToGridPosition(resourceWorld);
 
             //manhattan distance
             var diff = startGrid - resourceGrid;

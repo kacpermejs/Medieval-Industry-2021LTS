@@ -1,9 +1,9 @@
-﻿using Asstes.Scripts.Managers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Assets.Scripts.GameStates;
 
 
 namespace Assets.Scripts.BuildingSystem
@@ -60,8 +60,8 @@ namespace Assets.Scripts.BuildingSystem
         
         private void Start()
         {
-            
-            _gridPosition = GameManager.ConvertToGridPosition(transform.localPosition);
+
+            _gridPosition = MapManager.ConvertToGridPosition(transform.localPosition);
 
             BoundsInt area = new BoundsInt();
 
@@ -93,14 +93,14 @@ namespace Assets.Scripts.BuildingSystem
                         throw new Exception("Not a IMapElement");
                 }
             }
-            GameManager.Instance.TilemapColliders.SetTilesBlock(area, arr);    
+            MapManager.Instance.TilemapColliders.SetTilesBlock(area, arr);    
         }
 
         private void OnDestroy()
         {
-            if (!GameManager.Instance.IsDestroyed())
+            if (GameManager.Instance != null && !GameManager.Instance.IsDestroyed())
             {
-                _gridPosition = GameManager.ConvertToGridPosition(transform.localPosition);
+                _gridPosition = MapManager.ConvertToGridPosition(transform.localPosition);
 
                 BoundsInt area = new BoundsInt();
 
@@ -119,7 +119,7 @@ namespace Assets.Scripts.BuildingSystem
                 {
                     arr[i] = null;
                 }
-                GameManager.Instance.TilemapColliders.SetTilesBlock(area, arr);
+                MapManager.Instance.TilemapColliders.SetTilesBlock(area, arr);
             }
         }
 

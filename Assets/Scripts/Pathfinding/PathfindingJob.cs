@@ -51,47 +51,37 @@ namespace Assets.Scripts.Pathfinding
 
             NativeList<int2> openSet = new(Allocator.Temp);
             NativeHashSet<int2> closedSet = new(256, Allocator.Temp);
+            NativeHashMap<int2, Node2> allDiscoveredNodes = new(256, Allocator.Temp);
 
-            NativeHashMap<int2, Node2> allDiscoveredNodes =
-                new(256, Allocator.Temp);
-
-            NativeArray<int2> neighbourOffsetArray =
-                new NativeArray<int2>(4, Allocator.Temp);
-
-            neighbourOffsetArray[0] = new int2(-1, 0); // Left
-            neighbourOffsetArray[1] = new int2(+1, 0); // Right
-            neighbourOffsetArray[2] = new int2(0, +1); // Up
-            neighbourOffsetArray[3] = new int2(0, -1); // Down
+            NativeArray<int2> neighbourOffsetArray = CreateOffsetArray();//only straight across, no diagonals
 
             //determine if we pathfind to exact location or the neighbour cell
             bool exactLocation = true;
-            if (WalkableArray[CalculateIndex(End)] == -1 )
+            if (IsBlocked(End))
                 exactLocation = false;
 
             Node2 startNode = GetNodeLazy(Start, allDiscoveredNodes);
             startNode.GCost = 0;
-            
+
             openSet.Add(startNode.position);
 
             int2 currentNodePosition;
             while (openSet.Length > 0)
             {
-                //TODO: this is slow
                 currentNodePosition = GetLowestFCostNodePosition(openSet, allDiscoveredNodes);
 
                 //here node should have been already added to the hashmap
                 Node2 currentNode = GetNodeLazy(currentNodePosition, allDiscoveredNodes);
+
                 //end conditions
                 if (currentNodePosition.Equals(endPosition))
                 {
                     foundPath = true;
                     break;
                 }
-                else if(!exactLocation)
+                else if (!exactLocation)
                 {
-                    int xDiff = currentNode.position.x - End.x;
-                    int yDiff = currentNode.position.y - End.y;
-                    if( math.abs(xDiff) <= 1 && math.abs(yDiff) <= 1 )
+                    if (IsOneCellAway(currentNode))
                     {
                         endPosition = currentNodePosition;
                         foundPath = true;
@@ -102,7 +92,7 @@ namespace Assets.Scripts.Pathfinding
                 //Remove processed node from open set...
                 for (int i = 0; i < openSet.Length; i++)
                 {
-                    if ( openSet[i].Equals(currentNodePosition) )
+                    if (openSet[i].Equals(currentNodePosition))
                     {
                         openSet.RemoveAtSwapBack(i);
                         break;
@@ -144,10 +134,22 @@ namespace Assets.Scripts.Pathfinding
                         }
                     }
                 }
-            }            
+            }
+
+            ReconstructPath(foundPath, endPosition, allDiscoveredNodes);
+
+            //cleanup
+            openSet.Dispose();
+            closedSet.Dispose();
+            allDiscoveredNodes.Dispose();
+            neighbourOffsetArray.Dispose();
+        }
+
+        private void ReconstructPath(bool foundPath, int2 endPosition, NativeHashMap<int2, Node2> allDiscoveredNodes)
+        {
             //path reconstruction
             Node2 endNode = GetNodeLazy(endPosition, allDiscoveredNodes);
-            if ( !foundPath )
+            if (!foundPath)
             {
                 //no path 
                 Debug.Log("Didn't find a path!");
@@ -158,12 +160,29 @@ namespace Assets.Scripts.Pathfinding
                 //found a path
                 CalculatePath(endNode, allDiscoveredNodes);
             }
+        }
 
-            //cleanup
-            openSet.Dispose();
-            closedSet.Dispose();
-            allDiscoveredNodes.Dispose();
-            neighbourOffsetArray.Dispose();
+        private bool IsBlocked(int2 pos)
+        {
+            return WalkableArray[CalculateIndex(pos)] == -1;
+        }
+
+        private bool IsOneCellAway(Node2 currentNode)
+        {
+            int xDiff = currentNode.position.x - End.x;
+            int yDiff = currentNode.position.y - End.y;
+            return math.abs(xDiff) <= 1 && math.abs(yDiff) <= 1;
+        }
+
+        private static NativeArray<int2> CreateOffsetArray()
+        {
+            NativeArray<int2> neighbourOffsetArray = new NativeArray<int2>(4, Allocator.Temp);
+
+            neighbourOffsetArray[0] = new int2(-1, 0); // Left
+            neighbourOffsetArray[1] = new int2(+1, 0); // Right
+            neighbourOffsetArray[2] = new int2(0, +1); // Up
+            neighbourOffsetArray[3] = new int2(0, -1); // Down
+            return neighbourOffsetArray;
         }
 
         private void CalculatePath(Node2 endNode, NativeHashMap<int2, Node2> allDiscoveredNodes)
@@ -203,7 +222,7 @@ namespace Assets.Scripts.Pathfinding
         private Node2 GetNodeLazy(int2 pos, NativeHashMap<int2, Node2> allDiscoveredNodes)
         {
             Node2 node;
-            if(allDiscoveredNodes.ContainsKey(pos))
+            if(allDiscoveredNodes.TryGetValue(pos, out node))
             {
                 node = allDiscoveredNodes[pos];
             }
@@ -228,9 +247,9 @@ namespace Assets.Scripts.Pathfinding
             return position.x < AreaSize.x && position.y < AreaSize.y && position.x > 0 && position.y > 0;
         }
 
-        public int CalculateIndex(int x, int y) => x + y * AreaSize.x;
+        private int CalculateIndex(int x, int y) => x + y * AreaSize.x;
 
-        public int CalculateIndex(int2 pos) => pos.x + pos.y * AreaSize.x;
+        private int CalculateIndex(int2 pos) => pos.x + pos.y * AreaSize.x;
 
         //Manhattan Distance
         private int CalculateHeuristicCost(int2 start, int2 end)

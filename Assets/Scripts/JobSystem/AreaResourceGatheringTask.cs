@@ -14,7 +14,7 @@ using UnityEngine.Events;
 using Assets.Scripts.ItemSystem;
 using System.Linq;
 using Assets.Scripts.Utills;
-using Asstes.Scripts.Managers;
+using Assets.Scripts.GameStates;
 
 namespace Assets.Scripts.JobSystem
 {

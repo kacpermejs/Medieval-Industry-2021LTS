@@ -10,7 +10,7 @@ using Assets.Scripts.BuildingSystem;
 namespace Assets.Scripts.AgentSystem.AgentBehaviour
 {
 
-    public partial class Worker : AIBehaviour, ISelectableBehaviour, IFiniteStateMachine<Worker.WorkerStateBase>
+    public partial class Worker : AIBehaviour, IFiniteStateMachine<Worker.WorkerStateBase>
     {
         #region PrivateFields
 
@@ -57,27 +57,6 @@ namespace Assets.Scripts.AgentSystem.AgentBehaviour
         #endregion
 
         #region Public methods
-
-        #region ISelectableAgent
-        public void OnSelect()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void Select()
-        {
-            IsSelected = true;
-            _marker.Select();
-
-        }
-
-        public void Deselect()
-        {
-            IsSelected = false;
-            _marker.Deselect();
-        }
-
-        #endregion
 
         public void SwitchState(WorkerStateBase state)
         {

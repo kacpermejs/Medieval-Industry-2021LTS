@@ -5,11 +5,11 @@ using Assets.Scripts.AgentSystem;
 using Assets.Scripts.Utills;
 using Assets.Scripts.AgentSystem.Movement;
 using UnityEngine.EventSystems;
-using Asstes.Scripts.Managers;
+using Assets.Scripts.GameStates;
 
-namespace Assets.Scripts.Managers
+namespace Assets.Scripts.AgentSystem
 {
-    public partial class AgentSelectionManager : SingletoneBase<AgentSelectionManager>, ISlaveManager
+    public partial class AgentSelectionManager : SingletoneBase<AgentSelectionManager>, IScriptEnabler
     {
         [SerializeField] private Transform _selectionTransform;
         

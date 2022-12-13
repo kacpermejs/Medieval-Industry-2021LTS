@@ -1,5 +1,5 @@
 using Assets.Scripts.BuildingSystem;
-using Asstes.Scripts.Managers;
+using Assets.Scripts.GameStates;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -30,9 +30,9 @@ namespace Assets.Scripts.TerrainGeneration
                 {
                     var position = new Vector3Int(x, y, -1);
                     //leave editor placed tiles in place
-                    if (!GameManager.Instance.TilemapGround.HasTile(position))
+                    if (!MapManager.Instance.TilemapGround.HasTile(position))
                     {
-                        GameManager.Instance.TilemapGround.SetTile(position, _tiles["Grass"] as TileBase);
+                        MapManager.Instance.TilemapGround.SetTile(position, _tiles["Grass"] as TileBase);
                     }
 
 

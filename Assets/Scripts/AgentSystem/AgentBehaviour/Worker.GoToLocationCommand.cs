@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Assets.Scripts.AgentSystem.Movement;
-using Asstes.Scripts.Managers;
+using Assets.Scripts.GameStates;
+using Assets.Scripts.BuildingSystem;
 
 namespace Assets.Scripts.AgentSystem.AgentBehaviour
 {
@@ -27,7 +28,7 @@ namespace Assets.Scripts.AgentSystem.AgentBehaviour
                 base.Execute();
                 Mover mover = TargetWorker.GetComponent<Mover>();
 
-                Vector3Int cellPos = GameManager.ConvertToGridPosition(Position);
+                Vector3Int cellPos = MapManager.ConvertToGridPosition(Position);
 
                 var moveCommand = new Mover.MoveCommand(mover, cellPos);
                 moveCommand.OnExecutionEnded += ExecutionEnded;

@@ -6,11 +6,11 @@ using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
 using Assets.Scripts.CustomTiles;
 using Assets.Scripts.Utills;
-using Asstes.Scripts.Managers;
+using Assets.Scripts.GameStates;
 
 namespace Assets.Scripts.BuildingSystem
 {
-    public class BuildingSystemManager : SingletoneBase<BuildingSystemManager>, ISlaveManager
+    public class BuildingSystemManager : SingletoneBase<BuildingSystemManager>, IScriptEnabler
     {
         public enum MarkerType
         {
@@ -72,16 +72,16 @@ namespace Assets.Scripts.BuildingSystem
                     {
                         Vector2 screenPoint = _camera.ScreenToWorldPoint(Input.mousePosition);
 
-                        Vector3Int gridPoint = GameManager.Instance.GridLayout.LocalToCell(screenPoint);
+                        Vector3Int gridPoint = MapManager.Instance.GridLayout.LocalToCell(screenPoint);
 
                         Tilemap destTilemap;
                         switch (_tileToPlace.Layer)
                         {
                             case IMapElement.DestinationMapLayer.Markers:
-                                destTilemap = GameManager.Instance.TilemapMarkers;
+                                destTilemap = MapManager.Instance.TilemapMarkers;
                                 break;
                             default:
-                                destTilemap = GameManager.Instance.TilemapGround;
+                                destTilemap = MapManager.Instance.TilemapGround;
                                 break;
                         }
 
@@ -130,17 +130,17 @@ namespace Assets.Scripts.BuildingSystem
 
         public void DisplayMarkers(BoundsInt area, MarkerType markerType)
         {
-            TilemapUtills.SetTilesBlock(area, _markerTiles[markerType], GameManager.Instance.TilemapMarkers);
+            TilemapUtills.SetTilesBlock(area, _markerTiles[markerType], MapManager.Instance.TilemapMarkers);
         }
 
         public void ClearAllMarkers()
         {
-            GameManager.Instance.TilemapMarkers.ClearAllTiles();
+            MapManager.Instance.TilemapMarkers.ClearAllTiles();
         }
 
         public void PlaceMarker(Vector3Int pos, MarkerType markerType)
         {
-            GameManager.Instance.TilemapMarkers.SetTile(pos, _markerTiles[markerType]);
+            MapManager.Instance.TilemapMarkers.SetTile(pos, _markerTiles[markerType]);
         }
 
         #endregion
@@ -175,7 +175,7 @@ namespace Assets.Scripts.BuildingSystem
             tile.Place(tilemap, gridPoint);
 
             //GameManager.NotifyMapChanged();
-            GameManager.NotifyMapChanged(area);
+            MapManager.NotifyMapChanged(area);
         }
 
         private bool CanBePlaced(IMapElement tile, Tilemap tilemap, BoundsInt area)
@@ -184,9 +184,9 @@ namespace Assets.Scripts.BuildingSystem
             if (tile.UseStandardRules)
             {
                 BoundsInt area2 = new BoundsInt(area.position + new Vector3Int(0, 0, -1), new Vector3Int(area.size.x, area.size.y, 1));
-                if ( !(TilemapUtills.CheckIfAreaEmpty(area, GameManager.Instance.TilemapGround)
-                     && TilemapUtills.CheckIfAreaEmpty(area, GameManager.Instance.TilemapColliders)
-                     && TilemapUtills.CheckIfCanBeBuiltUpon(GameManager.Instance.TilemapGround, area2)) )
+                if ( !(TilemapUtills.CheckIfAreaEmpty(area, MapManager.Instance.TilemapGround)
+                     && TilemapUtills.CheckIfAreaEmpty(area, MapManager.Instance.TilemapColliders)
+                     && TilemapUtills.CheckIfCanBeBuiltUpon(MapManager.Instance.TilemapGround, area2)) )
                 {
                     return false;
                 }

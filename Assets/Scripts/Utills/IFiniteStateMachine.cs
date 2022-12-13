@@ -1,4 +1,4 @@
-﻿namespace Assets.Scripts.AgentSystem
+﻿namespace Assets.Scripts.Utills
 {
     public interface IFiniteStateMachine<T>
     {

@@ -6,7 +6,7 @@ using Unity.Burst;
 using Assets.Scripts.BuildingSystem;
 using System.Collections;
 using Assets.Scripts.Utills;
-using Asstes.Scripts.Managers;
+using Assets.Scripts.GameStates;
 
 namespace Assets.Scripts.Pathfinding
 {
@@ -40,7 +40,7 @@ namespace Assets.Scripts.Pathfinding
             _walkableArray = new NativeArray<int>(MAP_X_SIZE * MAP_Y_SIZE, Allocator.Persistent);
             ZeroPointOffset = new Vector3Int(-MAP_X_SIZE / 2, -MAP_Y_SIZE / 2);
 
-            GameManager.OnMapChanged += MapChangedHandler;
+            MapManager.OnMapChanged += MapChangedHandler;
 
             
             //TODO: This is temporary solution to make sure that update happens after the map has been loaded
@@ -146,14 +146,14 @@ namespace Assets.Scripts.Pathfinding
 
                     Vector3Int vec = ConvertToTilemapCoordinates(new int2(x, y));
 
-                    var tileBelow = GameManager.Instance.TilemapGround.GetTile(vec + new Vector3Int(0, 0, -1));
+                    var tileBelow = MapManager.Instance.TilemapGround.GetTile(vec + new Vector3Int(0, 0, -1));
 
 
                     if (tileBelow != null)
                     {
                         if (((IMapElement)tileBelow).Walkable)
                         {
-                            var tileAbove = GameManager.Instance.TilemapGround.GetTile(vec);
+                            var tileAbove = MapManager.Instance.TilemapGround.GetTile(vec);
 
                             if (tileAbove == null)
                             {
@@ -176,7 +176,7 @@ namespace Assets.Scripts.Pathfinding
                                 }
                             }
 
-                            tileAbove = GameManager.Instance.TilemapColliders.GetTile(vec);
+                            tileAbove = MapManager.Instance.TilemapColliders.GetTile(vec);
 
                             if (tileAbove == null)
                             {
