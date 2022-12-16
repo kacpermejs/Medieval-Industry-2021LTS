@@ -3,13 +3,13 @@
 
     public partial class Worker
     {
-        public class GoToGathererTarget : WorkerCommandBase
+        public class GoToGathererTargetCommand : WorkerCommandBase
         {
-            public GoToGathererTarget(Worker worker = null) : base(worker) { }
+            public GoToGathererTargetCommand(Worker worker = null) : base(worker) { }
 
             public override WorkerCommandBase Clone()
             {
-                return new GoToGathererTarget();
+                return new GoToGathererTargetCommand();
             }
 
             public override void Execute()

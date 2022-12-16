@@ -267,7 +267,7 @@ GameObject:
   - component: {fileID: 8574325654235895670}
   m_Layer: 0
   m_Name: IconImage
-  m_TagString: Untagged
+  m_TagString: Icon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -329,7 +329,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 3
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 0, b: 0.89797544, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -457,12 +457,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <WorkerCount>k__BackingField: 0
-  OnCycleEnded:
-    m_PersistentCalls:
-      m_Calls: []
+  _iconHolder: {fileID: 6521248621749182131}
   _targetPrefab: {fileID: 0}
-  _searchingRadius: 2
   _areaCollider: {fileID: 2939532725423540637}
+  _storage: {fileID: 0}
 --- !u!114 &855973413405232926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -488,7 +486,7 @@ GameObject:
   - component: {fileID: 2939532725423540637}
   m_Layer: 0
   m_Name: Area
-  m_TagString: TaskArea
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

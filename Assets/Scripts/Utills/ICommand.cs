@@ -1,6 +1,4 @@
-﻿using UnityEngine.Events;
-
-namespace Assets.Scripts.AgentSystem
+﻿namespace Assets.Scripts.AgentSystem
 {
     public interface ICommand
     {

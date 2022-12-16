@@ -12,16 +12,10 @@ namespace Assets.Scripts.AgentSystem.AgentBehaviour
 
         public void Gather(Action _callback)
         {
-            /*Mover mover = GetComponent<Mover>();
-
-            var command = new Mover.HoldCommand();
-            command.Seconds = 1; //TODO: resource gathering
-            command.OnExecutionEnded += _callback;
-            mover.AddCommand(command);*/
-            if (TargetResourceTransform != null)
+            if (TargetResourceTransform != null
+                && TargetResourceTransform.TryGetComponent<Resource>(out var resource))
             {
-                TargetResourceTransform.GetComponent<Resource>()
-                                       .Consume(1);
+                resource.Consume(1);
             }
             else
             {

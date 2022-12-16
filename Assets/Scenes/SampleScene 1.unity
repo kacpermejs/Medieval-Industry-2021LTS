@@ -74731,11 +74731,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8648059836366385822, guid: c92c14972a52a774a87a8eeba7bfc7a9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.1686218
+      value: 5.39
       objectReference: {fileID: 0}
     - target: {fileID: 8648059836366385822, guid: c92c14972a52a774a87a8eeba7bfc7a9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.39680636
+      value: -0.83
       objectReference: {fileID: 0}
     - target: {fileID: 8648059836366385822, guid: c92c14972a52a774a87a8eeba7bfc7a9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -76871,7 +76871,7 @@ PrefabInstance:
     - target: {fileID: 6819955497521586928, guid: c3d1556c7fd318c44b4ff57e66916315, type: 3}
       propertyPath: m_Icon
       value: 
-      objectReference: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
+      objectReference: {fileID: 0}
     - target: {fileID: 6819955497521586928, guid: c3d1556c7fd318c44b4ff57e66916315, type: 3}
       propertyPath: m_Name
       value: AreaGatheringTask

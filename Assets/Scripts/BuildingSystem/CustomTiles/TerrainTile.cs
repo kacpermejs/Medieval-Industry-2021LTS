@@ -1,20 +1,18 @@
-﻿using Assets.Scripts.BuildingSystem;
+﻿using Assets.Scripts.Utills;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace Assets.Scripts.CustomTiles
+namespace Assets.Scripts.BuildingSystem.CustomTiles
 {
     [CreateAssetMenu]
-    public class TerrainTile : Tile, IMapElement
+    public class TerrainTile : Tile, IMapElement, IInfo
     {
-        #region IMapElement Properties Implementation
-
         [SerializeField] private bool _walkable = true;
         [SerializeField] private bool _canWalkThrough = false;
         [SerializeField] private bool _canBuildUpon = true;
         [SerializeField] private float _walkingSpeedFactor = 0.5f;
         [SerializeField] private bool _useStandardRules;
-        [SerializeField] private IMapElement.DestinationMapLayer _layer = IMapElement.DestinationMapLayer.Ground;
+        [SerializeField] private DestinationMapLayer _layer = DestinationMapLayer.Ground;
 
         public string Name => name;
         public bool Walkable => _walkable;
@@ -23,7 +21,7 @@ namespace Assets.Scripts.CustomTiles
         public float WalkingSpeedFactor => _walkingSpeedFactor;
         public bool UseStandardRules => _useStandardRules;
         public Sprite Icon => sprite;
-        public IMapElement.DestinationMapLayer Layer => _layer;
+        public DestinationMapLayer Layer => _layer;
 
 
         public bool CanBePlaced(Tilemap tilemap, BoundsInt area)
@@ -35,8 +33,6 @@ namespace Assets.Scripts.CustomTiles
         {
             tilemap.SetTile(position, this);
         }
-
-        #endregion
 
     }
 }

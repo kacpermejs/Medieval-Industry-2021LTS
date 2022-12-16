@@ -1,12 +1,13 @@
 using Assets.Scripts.BuildingSystem;
+using Assets.Scripts.UI;
 using Assets.Scripts.Utills;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace Assets.Scripts.CustomTiles
+namespace Assets.Scripts.BuildingSystem.CustomTiles
 {
     [CreateAssetMenu]
-    public class RoadTile : IsometricRuleTile<RoadTile.Neighbor>, IMapElement
+    public class RoadTile : IsometricRuleTile<RoadTile.Neighbor>, IMapElement, IInfo
     {
         #region private fields
         //IMapElement
@@ -14,7 +15,7 @@ namespace Assets.Scripts.CustomTiles
         [SerializeField] private bool _canWalkThrough = false;
         [SerializeField] private bool _canBuildUpon = true;
         [SerializeField] private float _walkingSpeedFactor = 2f;
-        [SerializeField] private IMapElement.DestinationMapLayer _layer;
+        [SerializeField] private DestinationMapLayer _layer;
         [SerializeField] private bool _useStandardRules = false;
         //Road specific
         [SerializeField] private TileBase[] _canReplace;
@@ -28,7 +29,7 @@ namespace Assets.Scripts.CustomTiles
         public float WalkingSpeedFactor => _walkingSpeedFactor;
         public bool UseStandardRules => _useStandardRules;
         public Sprite Icon => m_DefaultSprite;
-        public IMapElement.DestinationMapLayer Layer => _layer;
+        public DestinationMapLayer Layer => _layer;
 
         #endregion
 

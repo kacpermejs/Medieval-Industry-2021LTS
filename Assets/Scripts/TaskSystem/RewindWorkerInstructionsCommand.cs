@@ -1,6 +1,6 @@
 ﻿using Assets.Scripts.AgentSystem.AgentBehaviour;
 
-namespace Assets.Scripts.JobSystem
+namespace Assets.Scripts.TaskSystem
 {
     public class RewindWorkerInstructionsCommand : Worker.WorkerCommandBase
     {

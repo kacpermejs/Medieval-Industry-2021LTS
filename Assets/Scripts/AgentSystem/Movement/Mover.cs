@@ -13,8 +13,6 @@ using Assets.Scripts.GameStates;
 
 namespace Assets.Scripts.AgentSystem.Movement
 {
-
-
     public partial class Mover : MonoBehaviour
     {
         public const float Y_OFFSET = 0.22f;
@@ -27,15 +25,11 @@ namespace Assets.Scripts.AgentSystem.Movement
         private MoverComandBase _command;
         private NativeList<int2> _resultPath;
 
-
-        //Scheduling Pathfinding calculations
+        //Pathfinding
         private Vector3Int _startPoint;
         private int _pathIndex = -1;
         private JobHandle _jobHandle;
         [SerializeField, ReadOnlyInspector] private bool _busy;
-
-
-        //public event EventHandler OnArrivedAtDestination;
 
         #region UnityMethods
 

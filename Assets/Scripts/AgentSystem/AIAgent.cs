@@ -5,9 +5,6 @@ using System.Linq;
 
 namespace Assets.Scripts.AgentSystem
 {
-    /// <summary>
-    /// This Component handles enabling different behaviour components of an AIAgent depending on encountered conditions
-    /// </summary>
     public partial class AIAgent : MonoBehaviour, ISelectableAgent
     {
         private AIBehaviour[] _stateComponents;

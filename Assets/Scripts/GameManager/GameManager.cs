@@ -1,4 +1,5 @@
 
+using Assets.Scripts.BuildingSystem;
 using Assets.Scripts.PlaceableObjectBehaviour;
 using Assets.Scripts.Utills;
 using System;
@@ -27,12 +28,15 @@ namespace Assets.Scripts.GameStates
 
         void Start()
         {
-            StorageBuildings = FindObjectsOfType<Storage>().ToList();
             SwitchState(new DefaultState());
         }
 
         private void OnEnable()
         {
+            StorageBuildings = FindObjectsOfType<Storage>().ToList();//TODO: repeat when map changed
+
+            MapManager.OnMapChanged += (e) => StorageBuildings = FindObjectsOfType<Storage>().ToList();
+
             scriptEnablers = new Dictionary<Type, IScriptEnabler>();
 
             scriptEnablers = 

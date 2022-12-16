@@ -1,5 +1,5 @@
 using Assets.Scripts.BuildingSystem;
-using Assets.Scripts.GameStates;
+using Assets.Scripts.Utills;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -21,7 +21,7 @@ namespace Assets.Scripts.TerrainGeneration
             _tiles = Resources
                 .LoadAll<TileBase>("Tiles/TerrainTiles")
                 .Cast<IMapElement>()
-                .ToDictionary(elem => elem.Name);
+                .ToDictionary(elem => (elem as IInfo).Name);
 
 
             for (int x = -127; x < 127; x++)

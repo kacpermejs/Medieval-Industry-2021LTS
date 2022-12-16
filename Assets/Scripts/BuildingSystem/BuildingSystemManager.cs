@@ -4,9 +4,10 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
-using Assets.Scripts.CustomTiles;
 using Assets.Scripts.Utills;
 using Assets.Scripts.GameStates;
+using Assets.Scripts.BuildingSystem.CustomTiles;
+using Assets.Scripts.UI;
 
 namespace Assets.Scripts.BuildingSystem
 {
@@ -42,7 +43,6 @@ namespace Assets.Scripts.BuildingSystem
 
         public bool AlwaysActive => false;
 
-
         #region Unity methods
 
         private void Awake()
@@ -77,7 +77,7 @@ namespace Assets.Scripts.BuildingSystem
                         Tilemap destTilemap;
                         switch (_tileToPlace.Layer)
                         {
-                            case IMapElement.DestinationMapLayer.Markers:
+                            case DestinationMapLayer.Markers:
                                 destTilemap = MapManager.Instance.TilemapMarkers;
                                 break;
                             default:
@@ -86,10 +86,50 @@ namespace Assets.Scripts.BuildingSystem
                         }
 
                         Debug.Log(gridPoint);
-                        Place(destTilemap, gridPoint, _tileToPlace, true);
+                        PlaceObject(destTilemap, gridPoint, _tileToPlace, true);
                     }
                 }
             }
+        }
+
+        #endregion
+
+        #region Public methods
+
+        private void DisplayBuildingMarkers()
+        {
+            /*var area = new BoundsInt(new Vector3Int(-50, -50, 1), new Vector3Int(100, 100, 1));
+            GameManager.SetTilesBlock(area, _markerTiles[MarkerType.GreenTile], GameManager.Instance.TilemapMarkers);*/
+        }
+
+        public void DisplayMarkers(BoundsInt area, MarkerType markerType)
+        {
+            TilemapUtills.SetTilesBlock(area, _markerTiles[markerType], MapManager.Instance.TilemapMarkers);
+        }
+
+        public void ClearAllMarkers()
+        {
+            MapManager.Instance.TilemapMarkers.ClearAllTiles();
+        }
+
+        public void PlaceMarker(Vector3Int pos, MarkerType markerType)
+        {
+            MapManager.Instance.TilemapMarkers.SetTile(pos, _markerTiles[markerType]);
+        }
+        public static void SetNewTileToBuild(IMapElement obj)
+        {
+            if( obj is IMapElement mapElement)
+            Instance._tileToPlace = mapElement;
+        }
+
+        public void Enable()
+        {
+            this.enabled = true;
+        }
+
+        public void Disable()
+        {
+            this.enabled = false;
         }
 
         #endregion
@@ -120,35 +160,10 @@ namespace Assets.Scripts.BuildingSystem
 
         #endregion
 
-        #region Markers
-
-        private void DisplayBuildingMarkers()
-        {
-            /*var area = new BoundsInt(new Vector3Int(-50, -50, 1), new Vector3Int(100, 100, 1));
-            GameManager.SetTilesBlock(area, _markerTiles[MarkerType.GreenTile], GameManager.Instance.TilemapMarkers);*/
-        }
-
-        public void DisplayMarkers(BoundsInt area, MarkerType markerType)
-        {
-            TilemapUtills.SetTilesBlock(area, _markerTiles[markerType], MapManager.Instance.TilemapMarkers);
-        }
-
-        public void ClearAllMarkers()
-        {
-            MapManager.Instance.TilemapMarkers.ClearAllTiles();
-        }
-
-        public void PlaceMarker(Vector3Int pos, MarkerType markerType)
-        {
-            MapManager.Instance.TilemapMarkers.SetTile(pos, _markerTiles[markerType]);
-        }
-
-        #endregion
-
-        private void Place(Tilemap tilemap, Vector3Int gridPoint, IMapElement tile, bool useCanBePlaced)
+        private void PlaceObject(Tilemap tilemap, Vector3Int gridPoint, IMapElement element, bool useCanBePlaced)
         {
             //add offset if tile is a ground block like the road
-            if (tile.Layer == IMapElement.DestinationMapLayer.Ground)
+            if (element.Layer == DestinationMapLayer.Ground)
             {
                 gridPoint.z -= 1;
             }
@@ -156,7 +171,7 @@ namespace Assets.Scripts.BuildingSystem
             //Only tiles with game objects attached can take area bigger than 1x1x1
             var area = new BoundsInt(gridPoint, new Vector3Int(1,1,1));
 
-            if (tile is PlaceableObject obj)
+            if (element is PlaceableObject obj)
             {
                 //set bound area size
                 area.size = obj.Bounds.size;
@@ -166,19 +181,19 @@ namespace Assets.Scripts.BuildingSystem
 
             if (useCanBePlaced)
             {
-                if (!CanBePlaced(tile, tilemap, area))
+                if (!CanBePlacedDefault(element, tilemap, area))
                 {
                     Debug.Log("<color=red>Building cannot be placed!");
                     return;//TODO: do something if cannot be placed like play audio or sth
                 }
             }
-            tile.Place(tilemap, gridPoint);
+            element.Place(tilemap, gridPoint);
 
             //GameManager.NotifyMapChanged();
             MapManager.NotifyMapChanged(area);
         }
 
-        private bool CanBePlaced(IMapElement tile, Tilemap tilemap, BoundsInt area)
+        private bool CanBePlacedDefault(IMapElement tile, Tilemap tilemap, BoundsInt area)
         {
             // Standard rules
             if (tile.UseStandardRules)
@@ -199,19 +214,5 @@ namespace Assets.Scripts.BuildingSystem
             return true;
         }
 
-        public void SetNewTileToBuild(int index)
-        {
-            _tileToPlace = _placableTiles[index];
-        }
-
-        public void Enable()
-        {
-            this.enabled = true;
-        }
-
-        public void Disable()
-        {
-            this.enabled = false;
-        }
     }
 }

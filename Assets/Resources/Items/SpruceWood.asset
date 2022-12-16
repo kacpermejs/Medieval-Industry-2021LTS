@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfd1fd80555cbf440b92eede1802069c, type: 3}
   m_Name: SpruceWood
   m_EditorClassIdentifier: 
-  _id: 0
-  _name: Spruce wood
-  _sprite: {fileID: 1004409487, guid: cd0b21a8052e849459570eb987fc08a2, type: 3}
+  <Id>k__BackingField: 0
+  <Name>k__BackingField: Spruce wood
+  <Sprite>k__BackingField: {fileID: 1004409487, guid: cd0b21a8052e849459570eb987fc08a2, type: 3}

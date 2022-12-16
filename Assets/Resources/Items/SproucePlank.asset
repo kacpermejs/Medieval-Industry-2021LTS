@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfd1fd80555cbf440b92eede1802069c, type: 3}
   m_Name: SproucePlank
   m_EditorClassIdentifier: 
-  _id: 1
-  _name: Spruce plank
-  _sprite: {fileID: 459267957, guid: cd0b21a8052e849459570eb987fc08a2, type: 3}
+  <Id>k__BackingField: 1
+  <Name>k__BackingField: Spruce plank
+  <Sprite>k__BackingField: {fileID: 459267957, guid: cd0b21a8052e849459570eb987fc08a2, type: 3}

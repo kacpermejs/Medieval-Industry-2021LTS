@@ -1,26 +1,21 @@
 using Assets.Scripts.BuildingSystem;
-using Assets.Scripts.Pathfinding;
 using Assets.Scripts.PlaceableObjectBehaviour;
-using Assets.Scripts.CustomTiles;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Collections;
-using Unity.Jobs;
-using Unity.Mathematics;
 using UnityEngine;
 using System;
 using Assets.Scripts.AgentSystem.AgentBehaviour;
-using UnityEngine.Events;
-using Assets.Scripts.ItemSystem;
 using System.Linq;
 using Assets.Scripts.Utills;
 using Assets.Scripts.GameStates;
 
-namespace Assets.Scripts.JobSystem
+namespace Assets.Scripts.TaskSystem
 {
 
-    public partial class AreaResourceGatheringTask : WorkerTaskBase
+    public partial class AreaResourceGatheringTask : WorkerTaskBase, IInfo
     {
+        [SerializeField] private SpriteRenderer _iconHolder;
+
         [SerializeField] private Resource _targetPrefab;
 
         [SerializeField] private Collider2D _areaCollider;
@@ -28,8 +23,13 @@ namespace Assets.Scripts.JobSystem
         [SerializeField, ReadOnlyInspector] private Queue<Resource> _resourcesToGather = new Queue<Resource>();
 
         [SerializeField, ReadOnlyInspector] private Storage _storage;
+
         public Storage Storage => GetSuitableStorage();
         public override bool CanPerformTask => _resourcesToGather.Count > 0;
+
+        public string Name => _targetPrefab.Item.Name + " Gathering Task";
+
+        public Sprite Icon => _targetPrefab.Item.Sprite;
 
         public event Action OnLocationChanged;
 
@@ -38,7 +38,7 @@ namespace Assets.Scripts.JobSystem
         private void Awake()
         {
             _instructions.Add(new Worker.GathererSetAsTarget( () => QuerryResource().transform ));
-            _instructions.Add(new Worker.GoToGathererTarget() );
+            _instructions.Add(new Worker.GoToGathererTargetCommand() );
             _instructions.Add(new Worker.GathererGatherResourceCommand());
             _instructions.Add(new Worker.GoToLocationDynamicCommand( Storage.transform ));
 
@@ -47,29 +47,17 @@ namespace Assets.Scripts.JobSystem
         private void OnEnable()
         {
             ResetSelection();
+            _iconHolder.sprite = Icon;
+            
+        }
+
+        private void Start()
+        {
             _storage = GetSuitableStorage();
+            MapManager.OnMapChanged += (e) => _storage = GetSuitableStorage();
         }
 
         #endregion
-
-        private void ResetSelection()
-        {
-            /*foreach (var elem in _resourcesToGather)
-            {
-                elem.transform.localScale -= Vector3.one;
-            }*/
-            _resourcesToGather.Clear();
-
-            FindResourcesInArea();
-        }
-
-        public void LocationChanged()
-        {
-            OnLocationChanged?.Invoke();
-
-            ResetSelection();
-        }
-
         public Resource QuerryResource()
         {
             if (_resourcesToGather.Count <= 0)
@@ -86,6 +74,30 @@ namespace Assets.Scripts.JobSystem
                 return null;
             }
         }
+        public void LocationChanged()
+        {
+            OnLocationChanged?.Invoke();
+
+            ResetSelection();
+        }
+        private IEnumerator FindStorageCoroutine()
+        {
+            yield return null;
+            _storage = GetSuitableStorage();
+        }
+
+        private void ResetSelection()
+        {
+            /*foreach (var elem in _resourcesToGather)
+            {
+                elem.transform.localScale -= Vector3.one;
+            }*/
+            _resourcesToGather.Clear();
+
+            FindResourcesInArea();
+        }
+
+
 
         private void FindResourcesInArea()
         {

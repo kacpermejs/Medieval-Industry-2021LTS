@@ -46,20 +46,19 @@ namespace Assets.Scripts.Pathfinding
 
         private void AStarLazy()
         {
+            #region variable initialisation
             bool foundPath = false;
             int2 endPosition = End;
-
             NativeList<int2> openSet = new(Allocator.Temp);
             NativeHashSet<int2> closedSet = new(256, Allocator.Temp);
             NativeHashMap<int2, Node2> allDiscoveredNodes = new(256, Allocator.Temp);
-
-            NativeArray<int2> neighbourOffsetArray = CreateOffsetArray();//only straight across, no diagonals
+            //only straight across, no diagonals
+            NativeArray<int2> neighbourOffsetArray = CreateOffsetArray();
+            #endregion
 
             //determine if we pathfind to exact location or the neighbour cell
-            bool exactLocation = true;
-            if (IsBlocked(End))
-                exactLocation = false;
-
+            bool exactLocationNotAvalaible = IsBlocked(End);
+            //This method sets up H cost for newly discovered nodes
             Node2 startNode = GetNodeLazy(Start, allDiscoveredNodes);
             startNode.GCost = 0;
 
@@ -69,17 +68,15 @@ namespace Assets.Scripts.Pathfinding
             while (openSet.Length > 0)
             {
                 currentNodePosition = GetLowestFCostNodePosition(openSet, allDiscoveredNodes);
-
                 //here node should have been already added to the hashmap
                 Node2 currentNode = GetNodeLazy(currentNodePosition, allDiscoveredNodes);
-
                 //end conditions
                 if (currentNodePosition.Equals(endPosition))
                 {
                     foundPath = true;
                     break;
                 }
-                else if (!exactLocation)
+                else if (exactLocationNotAvalaible)
                 {
                     if (IsOneCellAway(currentNode))
                     {
@@ -88,7 +85,6 @@ namespace Assets.Scripts.Pathfinding
                         break;
                     }
                 }
-
                 //Remove processed node from open set...
                 for (int i = 0; i < openSet.Length; i++)
                 {
@@ -98,27 +94,23 @@ namespace Assets.Scripts.Pathfinding
                         break;
                     }
                 }
-
                 //... and add it to closed set
                 closedSet.Add(currentNodePosition);
-
                 //evaluate neighbours
                 for (int i = 0; i < neighbourOffsetArray.Length; i++)
                 {
                     int2 neighbourOffset = neighbourOffsetArray[i];
                     int2 neighbourPosition = new int2(currentNode.position.x + neighbourOffset.x,
-                                                      currentNode.position.y + neighbourOffset.y);
+                                                        currentNode.position.y + neighbourOffset.y);
 
                     if (!ValidatePosition(neighbourPosition))
                         continue;
                     if (closedSet.Contains(neighbourPosition)) //node already processed
                         continue;
-
                     Node2 neighbourNode = GetNodeLazy(neighbourPosition, allDiscoveredNodes);
                     if (!neighbourNode.IsWalkable)
                         continue;
 
-                    //simplification - in this implementation graph edges are all the same
                     int edgeCost = WalkableArray[CalculateIndex(neighbourPosition)];
 
                     int tentativeGCost = currentNode.GCost + edgeCost;
@@ -135,9 +127,7 @@ namespace Assets.Scripts.Pathfinding
                     }
                 }
             }
-
             ReconstructPath(foundPath, endPosition, allDiscoveredNodes);
-
             //cleanup
             openSet.Dispose();
             closedSet.Dispose();

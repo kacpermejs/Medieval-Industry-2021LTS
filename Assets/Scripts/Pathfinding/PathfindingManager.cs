@@ -202,8 +202,8 @@ namespace Assets.Scripts.Pathfinding
                         }
                     }
                     
-                    // Big slow down factor ( up to 1.0 ) => High cost
-                    // Low slow down factor ( down to 0.0 ) => Low cost
+                    // low factor (f>0) = low speed = high cost
+                    // high factor = high speed = low cost
                     int value = (canWalkThere ? (int)( 1 / ((IMapElement)tileBelow).WalkingSpeedFactor * BASE_COST) : -1); //cost of steping into the node
 
                     _walkableArray[CalculateIndex(x, y, MAP_X_SIZE)] = value;

@@ -4,11 +4,11 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Assets.Scripts.GameStates;
-
+using Assets.Scripts.Utills;
 
 namespace Assets.Scripts.BuildingSystem
 {
-    public class PlaceableObject : MonoBehaviour, IMapElement
+    public class PlaceableObject : MonoBehaviour, IMapElement, IInfo
     {
         [SerializeField] private TileBase[] _tiles;
         [Header("Make sure number of cells bound is equal to number of indecies")]
@@ -31,7 +31,7 @@ namespace Assets.Scripts.BuildingSystem
         [SerializeField] private bool _canWalkThrough = false;
         [SerializeField] private bool _canBuildUpon = false;
         [SerializeField] private float _walkingSpeedFactor = 0.5f;
-        [SerializeField] private IMapElement.DestinationMapLayer _layer;
+        [SerializeField] private DestinationMapLayer _layer;
         [SerializeField] private bool _useStandardRules;
 
         public string Name => name;
@@ -48,7 +48,7 @@ namespace Assets.Scripts.BuildingSystem
                 return gameObject.GetComponentInChildren<SpriteRenderer>().sprite;
             }
         }
-        public IMapElement.DestinationMapLayer Layer => _layer;
+        public DestinationMapLayer Layer => _layer;
 
         #endregion 
 

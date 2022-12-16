@@ -1,6 +1,6 @@
 ﻿using Assets.Scripts.AgentSystem;
 using Assets.Scripts.AgentSystem.AgentBehaviour;
-using Assets.Scripts.JobSystem;
+using Assets.Scripts.TaskSystem;
 using Assets.Scripts.GameStates;
 using Assets.Scripts.UI;
 using System;

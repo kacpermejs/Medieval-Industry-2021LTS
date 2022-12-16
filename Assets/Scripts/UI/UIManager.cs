@@ -1,12 +1,10 @@
-using Assets.Scripts.AgentSystem;
-using Assets.Scripts.BuildingSystem;
 using Assets.Scripts.UI;
 using Assets.Scripts.Utills;
 using Assets.Scripts.GameStates;
 using System;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Unity.VisualScripting;
+using Assets.Scripts.BuildingSystem;
 
 public class UIManager : SingletoneBase<UIManager>
 {
@@ -61,24 +59,27 @@ public class UIManager : SingletoneBase<UIManager>
     private void CreateBuildingListViewItems(ListView buildingListView, VisualTreeAsset buildingButtonTemplate)
     {
         buildingListView.makeItem = () => buildingButtonTemplate.Instantiate();
+
+        buildingListView.itemsSource = BuildingSystemManager.Instance.PlacableTiles;
+
         buildingListView.bindItem = (elem, index) =>
         {
             Label titleLabel = elem.Q<Label>("ItemTitle");
             Button imageButton = elem.Q<Button>("ItemButton");
 
-            titleLabel.text = BuildingSystemManager.Instance.PlacableTiles[index].Name;
+            IMapElement provider = buildingListView.itemsSource[index] as IMapElement;
 
-            imageButton.style.backgroundImage = new StyleBackground(BuildingSystemManager.Instance.PlacableTiles[index].Icon);
+            titleLabel.text = (provider as IInfo).Name;
+
+            imageButton.style.backgroundImage = new StyleBackground( (provider as IInfo).Icon );
             imageButton.clicked += () =>
             {
-                BuildingSystemManager.Instance.SetNewTileToBuild(index);
+                BuildingSystemManager.SetNewTileToBuild(provider);
                 GameManager.Instance.SwitchState(new BuildingState());
                 BTN_cancel.visible = true;
             };
         };
 
-
-        buildingListView.itemsSource = BuildingSystemManager.Instance.PlacableTiles; //TODO: awful, I know to much
         buildingListView.fixedItemHeight = 100;
     }
 
