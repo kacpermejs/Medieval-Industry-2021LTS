@@ -10,12 +10,11 @@ using System;
 namespace AgentSystem
 {
 
-    public partial class Worker : MonoBehaviour, IFiniteStateMachine<Worker.WorkerStateBase>, ICommandSender<AgentCommand, Agent>
+    public partial class Worker : AgentBehaviour, IFiniteStateMachine<Worker.WorkerStateBase>, ICommandSender<AgentCommandBase, Agent>
     {
         #region PrivateFields
 
-        private SelectionMarkerController _marker;
-        private AgentCommand _currentCommand;
+        private AgentCommandBase _currentCommand;
 
         private int _currentCommandIndex = 0;
 
@@ -44,10 +43,6 @@ namespace AgentSystem
             CurrentState.EnterState(this);
         }
 
-        private void Awake()
-        {
-            _marker = GetComponent<SelectionMarkerController>();
-        }
 
         private void Update()
         {
@@ -102,25 +97,10 @@ namespace AgentSystem
             _currentCommandIndex++;
         }
 
-        public void SendCommand(Agent reciever, AgentCommand command)
+        public void SendCommand(Agent reciever, AgentCommandBase command)
         {
             reciever.AddCommand(command);
         }
-
-        /*private void CommandExecution()
-        {
-            if (_currentCommand != null && !_currentCommand.Started)
-            {
-                _currentCommand.OnExecutionEnded += CommandEndedHandler;
-                _currentCommand.Execute();
-            }
-        }
-
-        private void CommandEndedHandler()
-        {
-            _currentCommand.OnExecutionEnded -= CommandEndedHandler;
-            _currentCommandIndex++;
-        }*/
 
     }
 }

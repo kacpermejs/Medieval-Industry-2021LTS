@@ -3,7 +3,6 @@ using UnityEngine;
 using System.Collections.Generic;
 using AgentSystem;
 using Utills;
-using AgentSystem.Movement;
 using UnityEngine.EventSystems;
 using GameStates;
 
@@ -14,7 +13,6 @@ namespace AgentSystem
         [SerializeField] private Transform _selectionTransform;
         
         private List<ISelectableAgent> _agentList;
-
 
         private Vector2 _startPosition;
         private Camera _camera;
@@ -82,9 +80,12 @@ namespace AgentSystem
                                 ClearAgentList();
                                 doClear = false;
                             }
-                            selectedUnit.Select();
-                            _agentList.Add(selectedUnit);
-                            OnSelectionChanged?.Invoke();//this will not fire when there was 0 units selected
+                            if (selectedUnit.CanBeSelected)
+                            { 
+                                selectedUnit.Select();
+                                _agentList.Add(selectedUnit);
+                                OnSelectionChanged?.Invoke();//this will not fire when there was 0 units selected
+                            }
                         }
                     }
                 }
@@ -103,7 +104,7 @@ namespace AgentSystem
             this.enabled = false;
         }
 
-        public static void ClearAgentList()
+        private static void ClearAgentList()
         {
             foreach (var agent in Instance._agentList)
             {

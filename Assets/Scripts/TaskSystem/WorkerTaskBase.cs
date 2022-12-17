@@ -10,7 +10,7 @@ namespace TaskSystem
     public abstract class WorkerTaskBase : MonoBehaviour
     {
         //[field: SerializeField] protected List<Worker.WorkerCommandBase> _instructions = new List<Worker.WorkerCommandBase>();
-        protected List<AgentCommand> _instructions = new();
+        protected List<AgentCommandBase> _instructions = new();
 
         [field: SerializeField, ReadOnlyInspector] public int WorkerCount { get; private set; }
 
@@ -23,11 +23,11 @@ namespace TaskSystem
             WorkerCount++;
         }
 
-        public AgentCommand GetCommand(int index)
+        public AgentCommandBase GetCommand(int index)
         {
             var clonedCommand = _instructions[index].Clone();
 
-            return clonedCommand as AgentCommand;
+            return clonedCommand as AgentCommandBase;
         }
 
         /*public Worker.WorkerCommandBase QueryCommand(int index, Worker targetWorker)

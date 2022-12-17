@@ -1,7 +1,7 @@
-﻿using AgentSystem.Movement;
-using ItemSystem;
+﻿using ItemSystem;
 using System;
 using UnityEngine;
+using Utills;
 
 namespace AgentSystem
 {

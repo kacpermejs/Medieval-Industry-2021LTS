@@ -1,14 +1,11 @@
-﻿using AgentSystem.Movement;
-using ItemSystem;
-using System;
-using UnityEngine;
+﻿using ItemSystem;
 
 namespace AgentSystem
 {
 
 
 
-    public class GatherResourceCommand : AgentCommand
+    public class GatherResourceCommand : AgentCommandBase
     {
         public override object Clone()
         {
@@ -22,30 +19,5 @@ namespace AgentSystem
         }
 
 
-    }
-
-    [System.Serializable]
-    public class SetAsTarget : AgentCommand
-    {
-        private Func<Transform> _targetProvider;
-
-        public SetAsTarget(Func<Transform> function)
-        {
-            _targetProvider = function;
-        }
-
-        public override object Clone()
-        {
-            return new SetAsTarget(_targetProvider);
-        }
-
-        public override void Execute()
-        {
-            var targeter = _agent.GetComponent<ITargeter>();
-
-            targeter.CurrentTarget = _targetProvider();
-
-            ExecutionEnded();
-        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace AgentSystem
+namespace Utills
 {
     public interface ITargeter
     {

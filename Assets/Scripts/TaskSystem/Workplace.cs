@@ -12,7 +12,7 @@ namespace TaskSystem
 {
     public partial class Workplace : MonoBehaviour, IUICreator
     {
-        [field: SerializeField] public Worker AssignedWorker { get; private set; }
+        [field: SerializeField] public HashSet<Worker> AssignedWorkers = new();
 
         [field: SerializeField] public WorkerTaskBase WorkerTask { get; private set; }
 
@@ -25,7 +25,7 @@ namespace TaskSystem
 
         public void AddWorker(Worker worker)
         {
-            AssignedWorker = worker;
+            AssignedWorkers.Add(worker);
             worker.AssignWorkplace(this);
             WorkerTask.AssignWorker(worker);
 
@@ -56,16 +56,7 @@ namespace TaskSystem
 
         private void AddWorkersButtonHandler(ClickEvent evt)
         {
-            foreach (var agent in AgentSelectionManager.Instance.AgentList)
-            {
-                if (agent is Agent agent2)
-                {
-                    if (agent2.TryGetComponent<Worker>(out Worker worker))
-                    {
-                        AddWorker(worker);
-                    }
-                }
-            }
+            UnitCommander.AddAllSellectedWorkersToWorkplace(this);
         }
 
     }

@@ -37,16 +37,11 @@ namespace TaskSystem
 
         private void Awake()
         {
-            //in the end this should be a custom inspector thing and task should be generic
-            /*            _instructions.Add(new Worker.GathererSetAsTarget( () => QuerryResource().transform ));
-                        _instructions.Add(new Worker.GoToGathererTargetCommand() );
-                        _instructions.Add(new Worker.GathererGatherResourceCommand());
-                        _instructions.Add(new Worker.GoToLocationDynamicCommand( Storage.transform ));*/
-
-            _instructions.Add(new SetAsTarget(() => QuerryResource().transform));
+            //TODO: make it into inspector functionality
+            _instructions.Add(new SetTargetCommand(() => QuerryResource().transform));
             _instructions.Add(new MoveToTargetCommand());
             _instructions.Add(new GatherResourceCommand());
-            _instructions.Add(new SetAsTarget(() => Storage.transform));
+            _instructions.Add(new SetTargetCommand(() => Storage.transform));
             _instructions.Add(new MoveToTargetCommand());
             
 
@@ -91,10 +86,6 @@ namespace TaskSystem
 
         private void ResetSelection()
         {
-            /*foreach (var elem in _resourcesToGather)
-            {
-                elem.transform.localScale -= Vector3.one;
-            }*/
             _resourcesToGather.Clear();
 
             FindResourcesInArea();
