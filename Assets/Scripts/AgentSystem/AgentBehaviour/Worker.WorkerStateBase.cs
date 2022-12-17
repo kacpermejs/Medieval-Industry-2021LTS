@@ -1,4 +1,4 @@
-﻿namespace Assets.Scripts.AgentSystem.AgentBehaviour
+﻿namespace AgentSystem
 {
     public partial class Worker
     {

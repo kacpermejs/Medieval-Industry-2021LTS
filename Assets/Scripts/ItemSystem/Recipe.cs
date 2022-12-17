@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts.ItemSystem
+namespace ItemSystem
 {
     [CreateAssetMenu(fileName = "New Recipe", menuName = "ScriptableObjects/Recipe")]
     public class Recipe : ScriptableObject

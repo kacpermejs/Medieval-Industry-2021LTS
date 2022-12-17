@@ -1,21 +1,21 @@
-﻿using Assets.Scripts.AgentSystem;
-using Assets.Scripts.PlaceableObjectBehaviour;
+﻿using AgentSystem;
 using UnityEngine;
-using Assets.Scripts.Utills;
-using Assets.Scripts.TaskSystem;
+using Utills;
+using TaskSystem;
 using System.Collections.Generic;
 using System.Security.Cryptography;
-using Assets.Scripts.BuildingSystem;
+using BuildingSystem;
+using System;
 
-namespace Assets.Scripts.AgentSystem.AgentBehaviour
+namespace AgentSystem
 {
 
-    public partial class Worker : AIBehaviour, IFiniteStateMachine<Worker.WorkerStateBase>
+    public partial class Worker : MonoBehaviour, IFiniteStateMachine<Worker.WorkerStateBase>, ICommandSender<AgentCommand, Agent>
     {
         #region PrivateFields
 
         private SelectionMarkerController _marker;
-        private WorkerCommandBase _currentCommand;
+        private AgentCommand _currentCommand;
 
         private int _currentCommandIndex = 0;
 
@@ -77,28 +77,37 @@ namespace Assets.Scripts.AgentSystem.AgentBehaviour
 
         private void CommandUpdate()
         {
-            if(_currentCommand != null)
-            {
-                if (_currentCommand.Finished)
-                {
-                    QueryNextCommand();
-                }
-            }
-            else
+
+            if (_currentCommand == null)
             {
                 QueryNextCommand();
             }
-            
-            CommandExecution();
 
         }
 
         private void QueryNextCommand()
         {
-            _currentCommand = Task.QueryCommand(_currentCommandIndex, this);
+            //_currentCommand = Task.QueryCommand(_currentCommandIndex, this);
+            _currentCommand =  Task.GetCommand(_currentCommandIndex);
+            _currentCommand.OnExecutionEnded += EndHandler;
+
+            SendCommand(GetComponent<Agent>(), _currentCommand);
+
         }
 
-        private void CommandExecution()
+        private void EndHandler()
+        {
+            _currentCommand.OnExecutionEnded -= EndHandler;
+            _currentCommand = null;
+            _currentCommandIndex++;
+        }
+
+        public void SendCommand(Agent reciever, AgentCommand command)
+        {
+            reciever.AddCommand(command);
+        }
+
+        /*private void CommandExecution()
         {
             if (_currentCommand != null && !_currentCommand.Started)
             {
@@ -111,7 +120,7 @@ namespace Assets.Scripts.AgentSystem.AgentBehaviour
         {
             _currentCommand.OnExecutionEnded -= CommandEndedHandler;
             _currentCommandIndex++;
-        }
+        }*/
 
     }
 }

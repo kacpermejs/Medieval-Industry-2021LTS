@@ -1,4 +1,4 @@
-﻿namespace Assets.Scripts.AgentSystem
+﻿namespace Utills
 {
     public interface ICommand
     {

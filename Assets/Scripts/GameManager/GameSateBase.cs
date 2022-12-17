@@ -1,7 +1,7 @@
-﻿using Assets.Scripts.AgentSystem;
+﻿using AgentSystem;
 using System.Linq;
 
-namespace Assets.Scripts.GameStates
+namespace GameStates
 {
 
     public abstract class GameSateBase : IState<GameManager>

@@ -1,15 +1,14 @@
-﻿using Assets.Scripts.AgentSystem;
-using Assets.Scripts.AgentSystem.AgentBehaviour;
-using Assets.Scripts.TaskSystem;
-using Assets.Scripts.GameStates;
-using Assets.Scripts.UI;
+﻿using AgentSystem;
+using TaskSystem;
+using GameStates;
+using UI;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 
-namespace Assets.Scripts.PlaceableObjectBehaviour
+namespace TaskSystem
 {
     public partial class Workplace : MonoBehaviour, IUICreator
     {
@@ -20,7 +19,7 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
         #region UI Elements
         private Button _AddWorkerButton;
 
-        public string title => "Workplace";
+        public string Title => "Workplace";
 
         #endregion
 
@@ -59,7 +58,7 @@ namespace Assets.Scripts.PlaceableObjectBehaviour
         {
             foreach (var agent in AgentSelectionManager.Instance.AgentList)
             {
-                if (agent is AIAgent agent2)
+                if (agent is Agent agent2)
                 {
                     if (agent2.TryGetComponent<Worker>(out Worker worker))
                     {

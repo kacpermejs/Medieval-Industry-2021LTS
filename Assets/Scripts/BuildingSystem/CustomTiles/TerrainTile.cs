@@ -1,8 +1,8 @@
-﻿using Assets.Scripts.Utills;
+﻿using Utills;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace Assets.Scripts.BuildingSystem.CustomTiles
+namespace BuildingSystem.CustomTiles
 {
     [CreateAssetMenu]
     public class TerrainTile : Tile, IMapElement, IInfo

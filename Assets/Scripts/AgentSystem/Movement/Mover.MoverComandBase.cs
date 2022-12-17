@@ -1,12 +1,13 @@
 ﻿using System;
+using Utills;
 
-namespace Assets.Scripts.AgentSystem.Movement
+namespace AgentSystem.Movement
 {
-    public partial class Mover
+    public partial class Walker
     {
-        public abstract class MoverComandBase : ICommand
+        public abstract class WalkerComandBase : ICommand
         {
-            public Mover Mover;
+            public Walker Walker;
             
             public event Action OnExecutionEnded;
             public abstract void Execute();

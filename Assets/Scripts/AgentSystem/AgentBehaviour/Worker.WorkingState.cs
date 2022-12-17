@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Assets.Scripts.AgentSystem.AgentBehaviour
+namespace AgentSystem
 {
     public partial class Worker
     {
@@ -16,6 +16,14 @@ namespace Assets.Scripts.AgentSystem.AgentBehaviour
                 if (worker.Workplace != null)
                 {
                     
+                    /*if(worker.Workplace.WorkerTask != null && !worker.TaskCycleFinished())
+                    {
+                        worker.CommandUpdate();
+                    }
+                    else
+                    {
+                        worker.SwitchState(new WaitingState());
+                    }*/
                     if(worker.Workplace.WorkerTask != null && !worker.TaskCycleFinished())
                     {
                         worker.CommandUpdate();

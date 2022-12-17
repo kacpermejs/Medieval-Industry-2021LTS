@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using Assets.Scripts.GameStates;
-using Assets.Scripts.Utills;
+using GameStates;
+using Utills;
 
-namespace Assets.Scripts.BuildingSystem
+namespace BuildingSystem
 {
     public class PlaceableObject : MonoBehaviour, IMapElement, IInfo
     {
@@ -96,9 +96,9 @@ namespace Assets.Scripts.BuildingSystem
             MapManager.Instance.TilemapColliders.SetTilesBlock(area, arr);    
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
-            if (GameManager.Instance != null && !GameManager.Instance.IsDestroyed())
+            if (GameManager.Ready())
             {
                 _gridPosition = MapManager.ConvertToGridPosition(transform.localPosition);
 

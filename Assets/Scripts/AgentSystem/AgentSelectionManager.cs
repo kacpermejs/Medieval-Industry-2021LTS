@@ -1,13 +1,13 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
-using Assets.Scripts.AgentSystem;
-using Assets.Scripts.Utills;
-using Assets.Scripts.AgentSystem.Movement;
+using AgentSystem;
+using Utills;
+using AgentSystem.Movement;
 using UnityEngine.EventSystems;
-using Assets.Scripts.GameStates;
+using GameStates;
 
-namespace Assets.Scripts.AgentSystem
+namespace AgentSystem
 {
     public partial class AgentSelectionManager : SingletoneBase<AgentSelectionManager>, IScriptEnabler
     {

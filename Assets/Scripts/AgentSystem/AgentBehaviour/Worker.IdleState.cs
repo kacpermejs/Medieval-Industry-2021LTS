@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Assets.Scripts.AgentSystem.AgentBehaviour
+namespace AgentSystem
 {
     public partial class Worker
     {

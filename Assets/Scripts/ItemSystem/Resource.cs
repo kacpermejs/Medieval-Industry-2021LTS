@@ -1,14 +1,14 @@
-using Assets.Scripts.ItemSystem;
-using Assets.Scripts.GameStates;
+using ItemSystem;
+using GameStates;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
-using Assets.Scripts.BuildingSystem;
+using BuildingSystem;
 
-namespace Assets.Scripts.PlaceableObjectBehaviour
+namespace ItemSystem
 {
     public class Resource : MonoBehaviour
     {

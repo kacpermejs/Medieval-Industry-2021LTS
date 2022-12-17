@@ -1,7 +1,7 @@
-﻿using Assets.Scripts.AgentSystem.AgentBehaviour;
+﻿using AgentSystem;
 using UnityEngine;
 
-namespace Assets.Scripts.AgentSystem
+namespace AgentSystem
 {
     public interface ISelectableAgent
     {

@@ -1,10 +1,10 @@
-using Assets.Scripts.BuildingSystem;
-using Assets.Scripts.UI;
-using Assets.Scripts.Utills;
+using BuildingSystem;
+using UI;
+using Utills;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace Assets.Scripts.BuildingSystem.CustomTiles
+namespace BuildingSystem.CustomTiles
 {
     [CreateAssetMenu]
     public class RoadTile : IsometricRuleTile<RoadTile.Neighbor>, IMapElement, IInfo

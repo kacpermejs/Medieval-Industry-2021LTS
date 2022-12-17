@@ -1,10 +1,10 @@
 ﻿using UnityEngine.UIElements;
 
-namespace Assets.Scripts.UI
+namespace UI
 {
     public interface IUICreator
     {
-        string title { get; }
+        string Title { get; }
         VisualElement CreateUIContent();
 
         void RegisterCallbacks();

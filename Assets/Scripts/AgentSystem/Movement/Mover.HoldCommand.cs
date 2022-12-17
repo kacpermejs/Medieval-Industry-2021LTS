@@ -1,19 +1,19 @@
 ﻿using UnityEngine.Analytics;
 using UnityEngine.Events;
 
-namespace Assets.Scripts.AgentSystem.Movement
+namespace AgentSystem.Movement
 {
-    public partial class Mover
+    /*public partial class Walker
     {
 
-        public class HoldCommand : MoverComandBase
+        public class HoldCommand : WalkerComandBase
         {
             public int Seconds;
             public override void Execute()
             {
-                Mover.StartCoroutine(Mover.HoldForSeconds(Seconds));
+                Walker.StartCoroutine(Walker.HoldForSeconds(Seconds, ExecutionEnded));
             }
         }
-    }
+    }*/
 
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts.PlaceableObjectBehaviour
+namespace Utills
 {
     public  class VisibilityChanger : MonoBehaviour
     {

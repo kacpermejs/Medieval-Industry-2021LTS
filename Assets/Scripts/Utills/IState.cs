@@ -1,4 +1,4 @@
-namespace Assets.Scripts.AgentSystem
+namespace AgentSystem
 {
     public interface IState<T>
     {

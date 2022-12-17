@@ -1,7 +1,7 @@
-﻿using Assets.Scripts.AgentSystem;
-using Assets.Scripts.BuildingSystem;
+﻿using AgentSystem;
+using BuildingSystem;
 
-namespace Assets.Scripts.GameStates
+namespace GameStates
 {
     public class DefaultState : GameSateBase
     {
@@ -9,6 +9,8 @@ namespace Assets.Scripts.GameStates
         {
             obj.scriptEnablers[typeof(BuildingSystemManager)].Disable();
             obj.scriptEnablers[typeof(AgentSelectionManager)].Enable();
+            obj.scriptEnablers[typeof(UnitCommander)].Disable();
+
         }
 
         public override void UpdateState(GameManager obj) { }

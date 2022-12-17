@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Assets.Scripts.UI
+namespace UI
 {
     [RequireComponent(typeof(Collider2D))]
     public class ColliderTriggerObject : MonoBehaviour

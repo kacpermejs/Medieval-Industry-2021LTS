@@ -1,9 +1,9 @@
-using Assets.Scripts.BuildingSystem;
-using Assets.Scripts.UI;
+using BuildingSystem;
+using UI;
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace Assets.Scripts.UI
+namespace UI
 {
     public class ObjectPropertiesController : MonoBehaviour
     {
@@ -22,7 +22,7 @@ namespace Assets.Scripts.UI
                 bool selected = true;
                 foreach (var tab in tabs)
                 {
-                    content.AddTab(tab.title, tab.CreateUIContent(), selected);
+                    content.AddTab(tab.Title, tab.CreateUIContent(), selected);
                     tab.RegisterCallbacks();
                     selected = false;
                 }

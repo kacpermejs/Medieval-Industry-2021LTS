@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Assets.Scripts.Utills
+namespace Utills
 {
     public abstract class SingletoneBase<T> : MonoBehaviour
         where T : class
@@ -24,6 +24,11 @@ namespace Assets.Scripts.Utills
                 }
                 return instance;
             }
+        }
+
+        public static bool Ready()
+        {
+            return instance != null;
         }
     }
 }

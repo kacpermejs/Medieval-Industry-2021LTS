@@ -2,10 +2,10 @@
 
 using UnityEngine.Tilemaps;
 using UnityEngine;
-using Assets.Scripts.BuildingSystem;
+using BuildingSystem;
 using System;
 
-namespace Assets.Scripts.Utills
+namespace Utills
 {
     public static class TilemapUtills
     {

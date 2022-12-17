@@ -1,7 +1,9 @@
-﻿using System;
+﻿using ItemSystem;
+using System;
 using UnityEngine;
+using Utills;
 
-namespace Assets.Scripts.AgentSystem.AgentBehaviour
+namespace AgentSystem
 {
 
     public partial class Worker
@@ -39,31 +41,6 @@ namespace Assets.Scripts.AgentSystem.AgentBehaviour
             }
 
             public abstract WorkerCommandBase Clone();
-        }
-
-        internal class GathererSetAsTarget : WorkerCommandBase
-        {
-            private Func<Transform> _walkingTargetProvider;
-
-            public GathererSetAsTarget(Func<Transform> function)
-            {
-                _walkingTargetProvider = function;
-            }
-
-            public override WorkerCommandBase Clone()
-            {
-                return new GathererSetAsTarget(_walkingTargetProvider);
-            }
-
-            public override void Execute()
-            {
-                base.Execute();
-                Gatherer gatherer = TargetWorker.GetComponent<Gatherer>();
-
-                gatherer.TargetResourceTransform = _walkingTargetProvider();
-
-                ExecutionEnded();
-            }
         }
     }
 }

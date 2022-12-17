@@ -1,10 +1,10 @@
-using Assets.Scripts.Utills;
+using Utills;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Assets.Scripts.UI
+namespace UI
 {
     public class PopUpManager : SingletoneBase<PopUpManager>
     {

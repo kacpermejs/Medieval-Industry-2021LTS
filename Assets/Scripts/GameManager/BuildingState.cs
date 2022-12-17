@@ -1,7 +1,7 @@
-﻿using Assets.Scripts.AgentSystem;
-using Assets.Scripts.BuildingSystem;
+﻿using AgentSystem;
+using BuildingSystem;
 
-namespace Assets.Scripts.GameStates
+namespace GameStates
 {
     public class BuildingState : GameSateBase
     {
@@ -9,6 +9,8 @@ namespace Assets.Scripts.GameStates
         {
             obj.scriptEnablers[typeof(BuildingSystemManager)].Enable();
             obj.scriptEnablers[typeof(AgentSelectionManager)].Disable();
+            obj.scriptEnablers[typeof(UnitCommander)].Disable();
+
 
             UIManager.Instance.OnCancelClicked =
                 () =>

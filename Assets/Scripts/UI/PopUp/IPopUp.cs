@@ -1,4 +1,4 @@
-﻿namespace Assets.Scripts.UI
+﻿namespace UI
 {
     public interface IPopUp
     {

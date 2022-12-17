@@ -1,12 +1,12 @@
-using Assets.Scripts.BuildingSystem;
-using Assets.Scripts.Utills;
+using BuildingSystem;
+using Utills;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.U2D;
 
-namespace Assets.Scripts.TerrainGeneration
+namespace TerrainGeneration
 {
     public class TerrainGenerator : MonoBehaviour
     {

@@ -1,10 +1,10 @@
-using Assets.Scripts.UI;
-using Assets.Scripts.Utills;
-using Assets.Scripts.GameStates;
+using UI;
+using Utills;
+using GameStates;
 using System;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Assets.Scripts.BuildingSystem;
+using BuildingSystem;
 
 public class UIManager : SingletoneBase<UIManager>
 {

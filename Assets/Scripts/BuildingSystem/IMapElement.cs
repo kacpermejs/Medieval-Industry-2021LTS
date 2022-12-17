@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace Assets.Scripts.BuildingSystem
+namespace BuildingSystem
 {
     public enum DestinationMapLayer
     {

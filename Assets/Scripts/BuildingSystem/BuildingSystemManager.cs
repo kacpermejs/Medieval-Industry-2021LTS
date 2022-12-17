@@ -4,12 +4,12 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
-using Assets.Scripts.Utills;
-using Assets.Scripts.GameStates;
-using Assets.Scripts.BuildingSystem.CustomTiles;
-using Assets.Scripts.UI;
+using Utills;
+using GameStates;
+using BuildingSystem.CustomTiles;
+using UI;
 
-namespace Assets.Scripts.BuildingSystem
+namespace BuildingSystem
 {
     public class BuildingSystemManager : SingletoneBase<BuildingSystemManager>, IScriptEnabler
     {

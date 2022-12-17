@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts.Utills
+namespace Utills
 {
     public interface IInfo
     {

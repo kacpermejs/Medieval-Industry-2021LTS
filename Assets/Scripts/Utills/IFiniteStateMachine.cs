@@ -1,4 +1,4 @@
-﻿namespace Assets.Scripts.Utills
+﻿namespace Utills
 {
     public interface IFiniteStateMachine<T>
     {

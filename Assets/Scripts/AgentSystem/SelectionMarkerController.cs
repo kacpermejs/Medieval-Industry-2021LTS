@@ -1,4 +1,4 @@
-using Assets.Scripts.AgentSystem;
+using AgentSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

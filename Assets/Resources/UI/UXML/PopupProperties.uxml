@@ -1,4 +1,4 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/Resources/UI/Styles/PopUpStylesheet.uss?fileID=7433441132597879392&amp;guid=62ca1d63193900945afb2a0ca9dae492&amp;type=3#PopUpStylesheet" />
-    <Assets.Scripts.UI.PopUpCustomControl picking-mode="Ignore" />
+    <UI.PopUpCustomControl picking-mode="Ignore" />
 </ui:UXML>

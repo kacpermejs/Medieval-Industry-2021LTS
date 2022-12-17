@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.PlaceableObjectBehaviour;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +7,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Assets.Scripts.UI
+namespace UI
 {
     public class TabbedMenuCustomControl : VisualElement
     {

@@ -1,12 +1,12 @@
 
-using Assets.Scripts.BuildingSystem;
-using Assets.Scripts.PlaceableObjectBehaviour;
-using Assets.Scripts.Utills;
+using BuildingSystem;
+using Utills;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ItemSystem;
 
-namespace Assets.Scripts.GameStates
+namespace GameStates
 {
     /// <summary>
     /// This class is basically a manager of managers

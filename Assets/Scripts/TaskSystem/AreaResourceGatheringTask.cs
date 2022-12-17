@@ -1,15 +1,15 @@
-using Assets.Scripts.BuildingSystem;
-using Assets.Scripts.PlaceableObjectBehaviour;
+using BuildingSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using Assets.Scripts.AgentSystem.AgentBehaviour;
+using AgentSystem;
 using System.Linq;
-using Assets.Scripts.Utills;
-using Assets.Scripts.GameStates;
+using Utills;
+using GameStates;
+using ItemSystem;
 
-namespace Assets.Scripts.TaskSystem
+namespace TaskSystem
 {
 
     public partial class AreaResourceGatheringTask : WorkerTaskBase, IInfo
@@ -37,10 +37,18 @@ namespace Assets.Scripts.TaskSystem
 
         private void Awake()
         {
-            _instructions.Add(new Worker.GathererSetAsTarget( () => QuerryResource().transform ));
-            _instructions.Add(new Worker.GoToGathererTargetCommand() );
-            _instructions.Add(new Worker.GathererGatherResourceCommand());
-            _instructions.Add(new Worker.GoToLocationDynamicCommand( Storage.transform ));
+            //in the end this should be a custom inspector thing and task should be generic
+            /*            _instructions.Add(new Worker.GathererSetAsTarget( () => QuerryResource().transform ));
+                        _instructions.Add(new Worker.GoToGathererTargetCommand() );
+                        _instructions.Add(new Worker.GathererGatherResourceCommand());
+                        _instructions.Add(new Worker.GoToLocationDynamicCommand( Storage.transform ));*/
+
+            _instructions.Add(new SetAsTarget(() => QuerryResource().transform));
+            _instructions.Add(new MoveToTargetCommand());
+            _instructions.Add(new GatherResourceCommand());
+            _instructions.Add(new SetAsTarget(() => Storage.transform));
+            _instructions.Add(new MoveToTargetCommand());
+            
 
         }
 
@@ -79,11 +87,6 @@ namespace Assets.Scripts.TaskSystem
             OnLocationChanged?.Invoke();
 
             ResetSelection();
-        }
-        private IEnumerator FindStorageCoroutine()
-        {
-            yield return null;
-            _storage = GetSuitableStorage();
         }
 
         private void ResetSelection()

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4910720989173725094}
   - component: {fileID: 3657460715902370118}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CentralAreaPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5631082863049773410}
   - component: {fileID: 7206895870527706221}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Sizer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,7 +178,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1991151611287263361}
   - component: {fileID: 2211987410845399668}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: IconArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -265,7 +265,7 @@ GameObject:
   - component: {fileID: 6521248621749182131}
   - component: {fileID: 3833456854494274651}
   - component: {fileID: 8574325654235895670}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: IconImage
   m_TagString: Icon
   m_Icon: {fileID: 0}
@@ -404,7 +404,7 @@ GameObject:
   - component: {fileID: 960589126833199003}
   - component: {fileID: 6493854244904107669}
   - component: {fileID: 855973413405232926}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: AreaGatheringTask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -443,7 +443,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <AssignedWorker>k__BackingField: {fileID: 0}
-  <WorkerTask>k__BackingField: {fileID: 0}
+  <WorkerTask>k__BackingField: {fileID: 6493854244904107669}
 --- !u!114 &6493854244904107669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -453,9 +453,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 6819955497521586928}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1ea2c7aee643f4429eb49a8c009b636, type: 3}
+  m_Script: {fileID: 11500000, guid: babe128f5b06d0a46b70d816bcd39b8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  list:
+    m_PersistentCalls:
+      m_Calls: []
   <WorkerCount>k__BackingField: 0
   _iconHolder: {fileID: 6521248621749182131}
   _targetPrefab: {fileID: 0}
@@ -484,7 +487,7 @@ GameObject:
   - component: {fileID: 460971244136242738}
   - component: {fileID: 3996217256713674425}
   - component: {fileID: 2939532725423540637}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}

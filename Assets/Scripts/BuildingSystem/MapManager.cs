@@ -1,9 +1,9 @@
 ﻿using System;
 using UnityEngine;
-using Assets.Scripts.Utills;
+using Utills;
 using UnityEngine.Tilemaps;
 
-namespace Assets.Scripts.BuildingSystem
+namespace BuildingSystem
 {
     public class MapManager : SingletoneBase<MapManager>
     {

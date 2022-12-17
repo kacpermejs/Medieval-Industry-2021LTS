@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Assets.Scripts.UI
+namespace UI
 {
 
     public class PopUpCustomControl : VisualElement, IPopUp

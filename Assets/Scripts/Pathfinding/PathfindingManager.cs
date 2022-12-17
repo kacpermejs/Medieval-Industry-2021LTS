@@ -3,12 +3,12 @@ using UnityEngine;
 using Unity.Mathematics;
 using Unity.Collections;
 using Unity.Burst;
-using Assets.Scripts.BuildingSystem;
+using BuildingSystem;
 using System.Collections;
-using Assets.Scripts.Utills;
-using Assets.Scripts.GameStates;
+using Utills;
+using GameStates;
 
-namespace Assets.Scripts.Pathfinding
+namespace Pathfinding
 {
     public class PathfindingManager : SingletoneBase<PathfindingManager>
     {

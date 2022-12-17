@@ -7,7 +7,7 @@ using System.Linq;
 using Unity.Burst;
 using Unity.VisualScripting;
 
-namespace Assets.Scripts.Pathfinding
+namespace Pathfinding
 {
     [BurstCompile]
     public struct PathfindingJob : IJob

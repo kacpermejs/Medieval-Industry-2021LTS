@@ -1,4 +1,4 @@
-﻿namespace Assets.Scripts.GameStates
+﻿namespace GameStates
 {
     public interface IScriptEnabler
     {
