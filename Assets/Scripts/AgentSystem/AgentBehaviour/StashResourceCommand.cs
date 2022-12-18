@@ -1,9 +1,8 @@
-﻿using Assets.Scripts.Utills;
-using Utills;
+﻿using Utills;
 
 namespace AgentSystem
 {
-    public class GatherResourceCommand : AgentCommandBase
+    public class StashResourceCommand : AgentCommandBase
     {
         public override bool CanExecute()
         {
@@ -13,12 +12,12 @@ namespace AgentSystem
         public override void Execute()
         {
             Gatherer gatherer = _agent.GetComponent<Gatherer>();
-            gatherer.Gather(ExecutionEnded);
+            gatherer.Stash(ExecutionEnded);
         }
 
         public override object Clone()
         {
-            return new GatherResourceCommand();
+            return new StashResourceCommand();
         }
     }
 }

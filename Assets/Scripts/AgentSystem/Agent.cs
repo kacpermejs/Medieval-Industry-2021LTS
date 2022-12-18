@@ -42,6 +42,10 @@ namespace AgentSystem
             var command = commandQueue.Dequeue();
 
             command.SetAgent(this);
+            if (command.CanExecute())
+            {
+
+            }
             currentCommand = command;
             currentCommand.OnExecutionEnded += CommandFinishedHandler;
             currentCommand.Execute();

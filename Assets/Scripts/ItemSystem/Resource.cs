@@ -36,14 +36,18 @@ namespace ItemSystem
             }
         }
 
-        public void Consume(int amount)
+        public KeyValuePair<Item, int> Consume(int amount)
         {
+            int value = 0;
+
             if (amount <= _itemAmount)
             {
                 _itemAmount -= amount;
+                value = amount;
             }
             else
             {
+                value = _itemAmount;
                 _itemAmount = 0;
             }
 
@@ -51,6 +55,8 @@ namespace ItemSystem
             {
                 OnDepleted?.Invoke();
             }
+
+            return new KeyValuePair<Item, int>(this.Item, value);
         }
 
         public static void FindResourcesInRangeNonAlloc(

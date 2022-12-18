@@ -9,10 +9,25 @@ namespace AgentSystem
     {
         public Transform CurrentTarget { get; set; }
 
-        public void Gather(Action _callback)
+        private Item heldItem;
+        private int heldItemAmount;
+
+        public void Gather(Action callback)
         {
-            CurrentTarget.GetComponent<Resource>().Consume(1);
-            _callback();
+            var heldItemPair = CurrentTarget.GetComponent<Resource>().Consume(1);
+            heldItem = heldItemPair.Key;
+            heldItemAmount = heldItemPair.Value;
+            callback();
+        }
+
+        public void Stash(Action callback)
+        {
+            if (heldItemAmount > 0)
+            {
+                CurrentTarget.GetComponent<Storage>().AddItem(heldItem, heldItemAmount);
+                heldItemAmount = 0;
+            }
+            callback();
         }
     }
 }

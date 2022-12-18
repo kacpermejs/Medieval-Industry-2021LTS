@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+using Utills;
 
 namespace AgentSystem
 {
@@ -16,16 +16,19 @@ namespace AgentSystem
         {
             _position = position;
         }
-
-        public override object Clone()
+        public override bool  CanExecute()
         {
-            return new MoveCommand(_position);
+            return _agent.gameObject.HasComponent<IActorMove>();
         }
 
         public override void Execute()
         {
             IActorMove mover = _agent.GetComponent<IActorMove>();
             mover.Move(_position, ExecutionEnded);
+        }
+        public override object Clone()
+        {
+            return new MoveCommand(_position);
         }
     }
 

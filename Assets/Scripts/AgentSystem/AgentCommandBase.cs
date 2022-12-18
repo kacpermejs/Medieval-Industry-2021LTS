@@ -11,14 +11,13 @@ namespace AgentSystem
 
         protected Agent _agent;
 
+        public abstract bool CanExecute();
         public abstract void Execute();
+        public abstract object Clone();
         public virtual void ExecutionEnded()
         {
             OnExecutionEnded?.Invoke();
         }
-
-        public abstract object Clone();
-
         internal void SetAgent(Agent agent)
         {
             _agent = agent;

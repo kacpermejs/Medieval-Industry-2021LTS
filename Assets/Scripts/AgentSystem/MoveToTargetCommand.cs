@@ -10,9 +10,9 @@ namespace AgentSystem
         {
         }
 
-        public override object Clone()
+        public override bool CanExecute()
         {
-            return new MoveToTargetCommand();
+            return _agent.gameObject.HasComponent<IActorHold>() && base.CanExecute();
         }
         public override void Execute()
         {
@@ -20,9 +20,9 @@ namespace AgentSystem
             base.Execute();
         }
 
+        public override object Clone()
+        {
+            return new MoveToTargetCommand();
+        }
     }
-
-
-
-    
 }

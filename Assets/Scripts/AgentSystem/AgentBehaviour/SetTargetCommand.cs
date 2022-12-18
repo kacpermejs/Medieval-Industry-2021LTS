@@ -14,6 +14,11 @@ namespace AgentSystem
             _targetProvider = function;
         }
 
+        public override bool CanExecute()
+        {
+            return _agent.gameObject.HasComponent<Gatherer>();
+        }
+
         public override object Clone()
         {
             return new SetTargetCommand(_targetProvider);

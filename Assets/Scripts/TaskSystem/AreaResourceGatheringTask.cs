@@ -43,6 +43,7 @@ namespace TaskSystem
             _instructions.Add(new GatherResourceCommand());
             _instructions.Add(new SetTargetCommand(() => Storage.transform));
             _instructions.Add(new MoveToTargetCommand());
+            _instructions.Add(new StashResourceCommand());
             
 
         }

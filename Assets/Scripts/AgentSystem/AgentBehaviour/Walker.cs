@@ -21,7 +21,7 @@ namespace AgentSystem
 
 
 
-    public partial class Walker : MonoBehaviour, IActorMove, IActorHold, IFiniteStateMachine<Walker.WalkerStateBase>
+    public partial class Walker : AgentBehaviour, IActorMove, IActorHold, IFiniteStateMachine<Walker.WalkerStateBase>
     {
         public Transform MovePoint;
 

@@ -1,4 +1,6 @@
-﻿namespace AgentSystem
+﻿using Utills;
+
+namespace AgentSystem
 {
     [System.Serializable]
     public class HoldCommand : AgentCommandBase
@@ -10,9 +12,9 @@
             _seconds = seconds;
         }
 
-        public override object Clone()
+        public override bool CanExecute()
         {
-            return new HoldCommand(_seconds);
+            return _agent.gameObject.HasComponent<IActorHold>();
         }
 
         public override void Execute()
@@ -21,6 +23,10 @@
             holder.HoldForSeconds(_seconds, ExecutionEnded);
         }
 
+        public override object Clone()
+        {
+            return new HoldCommand(_seconds);
+        }
             
     }
 
