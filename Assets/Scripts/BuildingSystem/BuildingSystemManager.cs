@@ -116,7 +116,7 @@ namespace BuildingSystem
         {
             MapManager.Instance.TilemapMarkers.SetTile(pos, _markerTiles[markerType]);
         }
-        public static void SetNewTileToBuild(IMapElement obj)
+        public static void SetNewBuildingObject(IMapElement obj)
         {
             if( obj is IMapElement mapElement)
             Instance._tileToPlace = mapElement;

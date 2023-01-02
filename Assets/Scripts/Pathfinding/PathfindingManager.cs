@@ -14,11 +14,10 @@ namespace Pathfinding
     {
         public static readonly int MAP_X_SIZE = 256;
         public static readonly int MAP_Y_SIZE = 256;
+
         private const int BASE_COST = 150;
         private NativeArray<int> _walkableArray;
-
         
-
         #region Public Accesors
 
         public static NativeArray<int> WalkableArray { get => Instance._walkableArray; }
@@ -26,7 +25,7 @@ namespace Pathfinding
 
         #endregion
 
-        #region Events and Handlers
+        #region Events
 
         public static event Action OnWalkableArrayChanged;
 
@@ -47,10 +46,6 @@ namespace Pathfinding
             StartCoroutine(UpdateWalkableArrayLate());
         }
 
-        private void MapChangedHandler(BoundsInt area)
-        {
-            StartCoroutine(UpdateWalkableArrayLate(area));
-        }
 
         private void OnDestroy()
         {
@@ -61,10 +56,8 @@ namespace Pathfinding
 
         #region PublicMethods
 
-        //[BurstCompile]
         public static int CalculateIndex(int x, int y, int gridWidth) => x + y * gridWidth;
 
-        [BurstCompile]
         public static int CalculateIndex(int2 pos, int gridWidth) => pos.x + pos.y * gridWidth;
 
         public static Vector3Int ConvertToTilemapCoordinates(int2 vec)
@@ -106,6 +99,10 @@ namespace Pathfinding
 
         #region PrivateMethods
 
+        private void MapChangedHandler(BoundsInt area)
+        {
+            StartCoroutine(UpdateWalkableArrayLate(area));
+        }
 
         /// <summary>
         /// Coroutine used to update a native array of walkable tiles one frame after its called

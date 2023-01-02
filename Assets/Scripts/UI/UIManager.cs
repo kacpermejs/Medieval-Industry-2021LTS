@@ -74,7 +74,7 @@ public class UIManager : SingletoneBase<UIManager>
             imageButton.style.backgroundImage = new StyleBackground( (provider as IInfo).Icon );
             imageButton.clicked += () =>
             {
-                BuildingSystemManager.SetNewTileToBuild(provider);
+                BuildingSystemManager.SetNewBuildingObject(provider);
                 GameManager.Instance.SwitchState(new BuildingState());
                 BTN_cancel.visible = true;
             };
